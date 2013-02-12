@@ -4,7 +4,6 @@
 DOXYGEN=`which doxygen`
 PYTHON=`which python`
 DESTDIR=/
-BUILDIR=$(CURDIR)/debian/sipptam
 PROJECT=sipptam
 VERSION=0.99.0
 

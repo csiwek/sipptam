@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- sipp_ta_manager basic configuration -->
 <sipptam
-   dutHost="10.22.22.110"
-   dutPort="5060"
-   logLevel="info"
-   logColor="True">
-
+    dutHost="10.22.22.110"
+    dutPort="5060"
+    logLevel="info"
+    logColor="True">
+  
   <!-- sipptas user agents definition -->
   <slaveList defaultPort="5000" defaultJobs="1">
     <slave host="10.22.22.200"/>

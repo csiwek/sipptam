@@ -89,7 +89,6 @@ if __name__ == '__main__':
     Main execution thread.
     '''
     import sys
-    import os
 
     # We need the configuration file as input parameter.
     if len(sys.argv) < 2:

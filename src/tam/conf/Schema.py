@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-tam.conf.schema.py
+tam.conf.Schema.py
 
 This module contains a basic XML schema to parse the input configuration file.
 
