@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-config.Configuration.py
+tam.config.Configuration.py
 
 Generic object to save the configuration parameters.
 
