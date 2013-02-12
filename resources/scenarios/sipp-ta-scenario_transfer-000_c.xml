@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<scenario name="">
+  <send retrans="500" start_rtd="true">
+<![CDATA[
+INVITE sip:[field0]@[remote_ip];INconf='test-900' SIP/2.0
+Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+From: [field1] <sip:[field1]@[local_ip]:[local_port]>;tag=[call_number]-UA0
+To: [field0] <sip:[field0]@[remote_ip]:[remote_port]>
+Call-ID: [call_id]
+CSeq: [cseq] INVITE
+Contact: [field1] <sip:[field1]@[local_ip]:[local_port]>
+Max-Forwards: 70
+Content-Type: application/sdp
+Content-Length: 0
+]]>
+  </send>
+  <recv response="100" rtd="true" optional="true" />
+  <recv response="180" rtd="true" optional="true" />
+  <recv response="200" rtd="true" rrs="true" />
+  <send>
+<![CDATA[
+ACK sip:[service]@[remote_ip]:[remote_port] SIP/2.0
+[last_Via:]
+[last_From:]
+[last_To:]
+[last_Call-ID:]
+CSeq: [cseq] ACK
+Max-Forwards: 70
+Content-Length: 0
+[routes]
+]]>
+  </send>
+</scenario>

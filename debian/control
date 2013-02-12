@@ -1,0 +1,13 @@
+Source: sipptam
+Section: net
+Priority: optional
+Maintainer: Luis Martin Gil <martingil.luis@gmail.com>
+Uploaders: Luis Martin Gil <martingil.luis@gmail.com>
+Build-Depends: debhelper (>= 7.3.5), python-all (>= 2.6)
+Standards-Version: 3.9.3
+
+Package: sipptam
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends}
+Description: Sipp test automation manager.
+

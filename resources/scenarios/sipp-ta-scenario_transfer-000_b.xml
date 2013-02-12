@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<scenario name="">
+  <recv request="INVITE" rrs="true" crlf="true">
+    <action>
+      <ereg regexp="tag=([[:alnum:]\-]*)"
+	    search_in="hdr"
+	    header="From:"
+	    check_it="true"
+	    assign_to="10"/>
+    </recv>
+  </action>
+  <send>
+<![CDATA[
+SIP/2.0 180 Ringing
+[last_Via:]
+[last_From:]
+[last_To:];tag=[call_number]-UA1
+[last_Call-ID:]
+[last_CSeq:]
+Contact: [field0] <sip:[field0]@[local_ip]:[local_port]>
+[last_Record-Route:]
+Content-Length: 0
+]]>
+  </send>
+  <send retrans="500">
+<![CDATA[
+SIP/2.0 200 OK
+[last_Via:]
+[last_From:]
+[last_To:];tag=[call_number]-UA1
+[last_Call-ID:]
+[last_CSeq:]
+[last_Record-Route:]
+Contact: [field0] <sip:[field0]@[local_ip]:[local_port]>
+Content-Type: application/sdp
+Content-Length: 0
+]]>
+  </send>
+  <recv request="ACK" crlf="true" />
+  <pause milliseconds="2000"/>
+  <send>
+<![CDATA[
+REFER sip:[field0]@[remote_ip]:[remote_port] SIP/2.0
+Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+From: 911 <sip:911@[local_ip]:[local_port]>;tag=[call_number]-UA1
+To: 2604462807 <sip:2604462807@[remote_ip]:[remote_port]>;[$10]
+[last_Call-ID:]
+CSeq: [cseq] ACK
+Max-Forwards: 70
+Refer-To: sip:refered_user@10.22.22.202:5070
+Content-Length: 0
+[routes]
+]]>
+  </send>
+  <recv response="200" rtd="true" crlf="true" />
+  <recv request="NOTIFY" crlf="true" />
+  <send>
+<![CDATA[
+SIP/2.0 200 OK
+[last_Via:]
+[last_From:]
+[last_To:]
+[last_Call-ID:]
+[last_CSeq:]
+[last_Event:]
+Contact: <sip:[local_ip]:[local_port];transport=[transport]>
+Content-Length: 0
+]]>
+  </send>
+  <recv request="NOTIFY" crlf="true" />
+  <send>
+<![CDATA[
+SIP/2.0 200 OK
+[last_Via:]
+[last_From:]
+[last_To:]
+[last_Call-ID:]
+[last_CSeq:]
+[last_Event:]
+Contact: <sip:[local_ip]:[local_port];transport=[transport]>
+Content-Length: 0
+]]>
+  </send>
+</scenario>
