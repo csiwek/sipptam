@@ -7,11 +7,11 @@
     logColor="True">
   
   <!-- sipptas user agents definition -->
-  <slaveList defaultPort="5000" defaultJobs="1">
-    <slave host="10.22.22.200"/>
-    <slave host="10.22.22.201" port="5001" jobs="2"/>
-    <slave host="10.22.22.202" port="5002" jobs="4"/>
-  </slaveList>
+  <tasList defaultPort="5000" defaultJobs="1">
+    <tas host="10.22.22.200"/>
+    <tas host="10.22.22.201" port="5001" jobs="2"/>
+    <tas host="10.22.22.202" port="5002" jobs="4"/>
+  </tasList>
 
   <!-- Test framework -->
   <testrunList

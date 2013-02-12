@@ -20,7 +20,7 @@ schema = StringIO.StringIO('''\
     <xs:element name="sipptam">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="slaveList" type="slaveListType" maxOccurs="1"/>
+                <xs:element name="tasList" type="tasListType" maxOccurs="1"/>
                 <xs:element name="testrunList" type="testrunListType" maxOccurs="1"/>
             </xs:sequence>
             <xs:attribute name="dutHost" type="IPType" use="required"/>
@@ -30,15 +30,15 @@ schema = StringIO.StringIO('''\
         </xs:complexType>
     </xs:element>
 
-    <xs:complexType name="slaveListType">
+    <xs:complexType name="tasListType">
         <xs:sequence>
-            <xs:element name="slave" type="slaveType" maxOccurs="unbounded"/>        
+            <xs:element name="tas" type="tasType" maxOccurs="unbounded"/>        
         </xs:sequence>
         <xs:attribute name="defaultPort" type="xs:positiveInteger" use="required"/>
         <xs:attribute name="defaultJobs" type="xs:positiveInteger" use="required"/>
     </xs:complexType>
 
-    <xs:complexType name="slaveType">
+    <xs:complexType name="tasType">
         <xs:attribute name="host" type="IPType" use="required"/>
         <xs:attribute name="port" type="xs:string"/>
         <xs:attribute name="jobs" type="xs:positiveInteger"/>
