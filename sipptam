@@ -3,8 +3,8 @@ import getopt
 import os
 import sys
 
-from ta_manager.conf.Schema import schema
-from ta_manager.conf.Configuration import Configuration
+from tam.conf.Schema import schema
+from tam.conf.Configuration import Configuration
 
 if __name__ == '__main__':
 
