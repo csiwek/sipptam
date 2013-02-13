@@ -53,17 +53,17 @@ if __name__ == '__main__':
 
     # Playing a little bit with this
     print config
-    # Playing with it... Lets print all the slaves
-    defaultN = config.getAttr('slaveList', 'defaultJobs')
-    defaultPort = config.getAttr('slaveList', 'defaultPort')
-    for slave in config.getList('slaveList'):
+    # Playing with it... Lets print all the tass
+    defaultN = config.getAttr('tasList', 'defaultJobs')
+    defaultPort = config.getAttr('tasList', 'defaultPort')
+    for tas in config.getList('tasList'):
         try:
-            tmp_n = slave['jobs']
+            tmp_n = tas['jobs']
         except:
             tmp_n = defaultN
         try:
-            tmp_port = slave['port']
+            tmp_port = tas['port']
         except:
             tmp_port = defaultPort
         for n in range(0, int(tmp_n)):
-            print '%s:%s:%s' % (slave['host'], tmp_port, n)
+            print '%s:%s:%s' % (tas['host'], tmp_port, n)

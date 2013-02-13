@@ -16,12 +16,15 @@ Object which represents a testrun element.
 class Testrun(object):
     '''
     '''
-    def init(self):
-        print 'todo'
+    def __init__(self, **kwargs):
+        self.args = kwargs
 
+    def __str__(self):
+        return str(self.args)
 
 if __name__ == '__main__':
     '''
     Main execution thread.
     '''
-    print 'todo'
+    t = Testrun(color="red", bold=False)
+    print t

@@ -5,7 +5,6 @@ DOXYGEN=`which doxygen`
 PYTHON=`which python`
 DESTDIR=/
 PROJECT=sipptam
-VERSION=0.99.0
 
 all:
 	@echo "make test - Run the test environment"
@@ -16,7 +15,7 @@ all:
 	@echo "make builddeb - Generate a deb package"
 	@echo "make clean - Get rid of scratch and byte files"
 test:
-	echo 'todo'
+	python /usr/local/lib/python2.6/dist-packages/tam/tests/main.py
 
 doc:
 	cd doc; $(DOXYGEN) doxygen.conf
