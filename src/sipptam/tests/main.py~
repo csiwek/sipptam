@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-tam.tests.Tests.py
+sipptam.tests.Tests.py
 
 This runs all the tests.
 
@@ -15,8 +15,8 @@ This runs all the tests.
 import unittest
 
 
-import tam.tests.test_Configuration
-import tam.tests.test_Schema
+import sipptam.tests.test_Configuration
+import sipptam.tests.test_Schema
 
 
 if __name__ == '__main__':

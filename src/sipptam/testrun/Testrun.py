@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 '''
-tam.tas.Tas.py
+sipptam.tas.Testrun.py
 
-Object which represents a the Test Automation Slave.
+Object which represents a testrun element.
 
 @author:  Luis Martin Gil
 @contact: luis.martin.gil@indigital.net
@@ -13,15 +13,18 @@ Object which represents a the Test Automation Slave.
 '''
 
 
-class Tas(object):
+class Testrun(object):
     '''
     '''
-    def init(self):
-        print 'todo'
+    def __init__(self, **kwargs):
+        self.args = kwargs
 
+    def __str__(self):
+        return str(self.args)
 
 if __name__ == '__main__':
     '''
     Main execution thread.
     '''
-    print 'todo'
+    t = Testrun(color="red", bold=False)
+    print t
