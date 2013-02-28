@@ -1,5 +1,8 @@
 # $Id: Makefile,v 1.6 2008/10/29 01:01:35 ghantoos Exp $
 #
+LBLUE_ON = \033[0;36m
+GREEN_ON = \033[0;32m
+OFF = \033[m
 
 DOXYGEN=`which doxygen`
 PYTHON=`which python`
@@ -7,13 +10,18 @@ DESTDIR=/
 PROJECT=sipptam
 
 all:
-	@echo "make test - Run the test environment"
-	@echo "make doc - Create doxygen/LaTeX documentation"
-	@echo "make source - Create source package"
-	@echo "make install - Install on local system"
-	@echo "make buildrpm - Generate a rpm package"
-	@echo "make builddeb - Generate a deb package"
-	@echo "make clean - Get rid of scratch and byte files"
+	@echo "$(GREEN_ON)make localshop.indigital$(OFF) - sdist to the localshop.indigital"
+	@echo "$(GREEN_ON)make test$(OFF) - Run the test environment"
+	@echo "$(GREEN_ON)make doc$(OFF) - Create associated documentation (doxygen/LaTeX)"
+	@echo "$(GREEN_ON)make source$(OFF) - Create source package"
+	@echo "$(GREEN_ON)make install$(OFF) - Install on local system"
+	@echo "$(GREEN_ON)make buildrpm$(OFF) - Generate a $(LBLUE_ON)rpm$(OFF) package"
+	@echo "$(GREEN_ON)make builddeb$(OFF) - Generate a $(LBLUE_ON)deb$(OFF) package"
+	@echo "$(GREEN_ON)make clean$(OFF) - Get rid of scratch and byte files"
+
+localshop.indigital:
+	python setup.py register -r indigital sdist upload -r indigital
+
 test:
 	python /usr/local/lib/python2.6/dist-packages/tam/tests/main.py
 

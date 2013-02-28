@@ -3,11 +3,10 @@ import getopt
 import os
 import sys
 
-from tam.conf.Schema import schema
-from tam.conf.Configuration import Configuration
+from conf.Schema import schema
+from conf.Configuration import Configuration
 
-if __name__ == '__main__':
-
+def main ():
     # Setting some default variables
     name = 'sipptam'
     configFile = '/etc/sipptam/sipptam.conf'
@@ -67,3 +66,7 @@ if __name__ == '__main__':
             tmp_port = defaultPort
         for n in range(0, int(tmp_n)):
             print '%s:%s:%s' % (tas['host'], tmp_port, n)
+
+
+if __name__ == '__main__':
+    main()

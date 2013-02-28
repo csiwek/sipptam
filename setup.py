@@ -2,26 +2,35 @@
 
 import glob
 import os
-
+import sys
 from setuptools import setup, find_packages
 
 nname = 'sipptam'
 
 setup(name         = nname,
-      version      = "0.0.2",
+      version      = "0.0.8",
       author       = "INdigital Telecom",
       author_email = "luis.martin.gil@indigital.net",
       url          = "http://www.indigital.net",
       description  = "%s - Sipp Testing Automation Manager" % nname,
       classifiers  = [
-            "Development Status :: 5 - Production/Stable",
-            "Intended Audience :: Service Providers",
-            "License :: GNU General Public License 3",
-            "Operating System :: OS Independent",
-            "Programming Language :: Python"
+        "Classifier: Development Status :: 4 - Beta",
+        "Classifier: Operating System :: POSIX :: Linux",
+        "Classifier: Operating System :: MacOS :: MacOS X",
+        "Classifier: Programming Language :: Python :: 2.6",
+        "Classifier: Programming Language :: Python :: 2.7",
+        "Classifier: Environment :: Console",
                      ],
       package_dir  = {"":"src"},
       packages     = find_packages('src'),
-      scripts      = [nname],
-      data_files   = [('share/' + nname + '/scenarios', glob.glob(os.path.join('resources', 'scenarios', '*.xml')))]
+      entry_points = {
+        'console_scripts': [
+            'sipptam = sipptam.sipptam:main',
+            ],
+        },
+      install_requires = ['lxml'],
+      data_files = [(os.path.join(sys.prefix, 'usr', 'local', 'share', nname, 'scenarios'),
+                     glob.glob(os.path.join('resources', 'scenarios', '*.xml'))),
+                    (os.path.join(sys.prefix, 'usr', 'local', 'share', nname, 'config'),
+                     glob.glob(os.path.join('resources', 'sipptam.xml.sample')))]
       )

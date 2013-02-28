@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-tam.config.Configuration.py
+sipptam.config.Configuration.py
 
 Generic object to save the configuration parameters.
 
@@ -17,8 +17,8 @@ import types
 from lxml import etree
 from pprint import pformat
 
-from tam.utils.Utils import formatXML, listField, contentField, recursive_print
-from tam.conf.Schema import schema
+from utils.Utils import formatXML, listField, contentField, recursive_print
+from conf.Schema import schema
 
 class Configuration(object):
     '''
