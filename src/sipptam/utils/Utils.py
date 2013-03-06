@@ -16,6 +16,17 @@ import logging
 import re
 from lxml import etree
 
+
+def str2bool(v):
+    '''
+    Returns a Boolean type from the v string value.
+
+    @v: String to match as a Boolean.
+    @type v:  str
+    '''
+    return v.lower() in ("yes", "true", "t", "1")
+
+
 def recursive_print(src, dpth = 0, key = ''):
     """ Recursively prints nested elements."""
     tabs = lambda n: ' ' * n * 4 # or 2 or 8 or...
@@ -33,6 +44,7 @@ def recursive_print(src, dpth = 0, key = ''):
             logging.info(tabs(dpth) + '%s = %s' % (key, repr(src)))
         else:
             logging.info(tabs(dpth) + '- %s' % src)
+
 
 '''
 translates the context of a string based on a given dictionary

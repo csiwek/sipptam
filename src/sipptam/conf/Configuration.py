@@ -20,11 +20,12 @@ from pprint import pformat
 from sipptam.utils.Utils import formatXML, listField, contentField, recursive_print
 from sipptam.conf.Schema import schema
 
+
 class Configuration(object):
     '''
     '''
-    pdict = None
-
+    root = None
+    xmldict = None
     def __init__(self, file, validate = None):
         if not os.path.exists(file):
             raise Exception('Configuration file not found')
@@ -37,8 +38,8 @@ class Configuration(object):
                 xmlschema = etree.XMLSchema(xmlschema_doc)
                 # Lets validate against the XSD schema.
                 xmlschema.assertValid(tree)
-            root = tree.getroot()
-            self.xmldict = formatXML(root, 'List')
+            self.root = tree.getroot()
+            self.xmldict = formatXML(self.root, 'List')
         except:
             self.xmldict = None
             raise
@@ -51,7 +52,7 @@ class Configuration(object):
 
     def searchAttr(self, dict, node, attr):
         '''
-        Recursive private function to search an attr for a given node.
+        Recursive private function to search an attr of a given node.
         '''
         ret = None
         if dict.has_key(node):
@@ -83,7 +84,7 @@ class Configuration(object):
         If it doesn't exist, returns None.
         '''
         return self.searchAttr(self.xmldict.copy(), node, contentField)
-
+    
 if __name__ == '__main__':
     '''
     Main execution thread.
@@ -106,8 +107,6 @@ if __name__ == '__main__':
     else:
         print p
         print 'Lexical validation succeed!'
-
-
 
     # Playing with it... Lets print all the probes
     defaultN = p.getAttr('probeList', 'defaultN')

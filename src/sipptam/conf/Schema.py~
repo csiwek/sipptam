@@ -1,16 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+"""
+    conf.Schema
+    ~~~~~~~~~~~~~~~
 
-'''
-tam.conf.Schema.py
+    Contains a basic XML schema to parse the input configuration file.
 
-This module contains a basic XML schema to parse the input configuration file.
-
-@author:  Luis Martin Gil
-@contact: luis.martin.gil@indigital.net
-@organization: INdigital Telecom, Inc.
-@copyright: INdigital Telecom, Inc. 2013
-'''
+    :copyright: (c) 2013 by luismartingil.
+    :license: See LICENSE_FILE.
+"""
 
 import StringIO
 
@@ -48,10 +46,9 @@ schema = StringIO.StringIO('''\
         <xs:sequence>
             <xs:element name="testrun" type="testrunType" maxOccurs="unbounded"/>
         </xs:sequence>
-        <xs:attribute name="scenariosFolder" type="xs:string" use="required"/>
-        <xs:attribute name="regex" type="xs:string" use="required"/>
-        <xs:attribute name="pause" type="positiveFloat" use="required"/>
-        <xs:attribute name="defaultFieldsFile" type="xs:string"/>
+        <xs:attribute name="scenariosPath" type="xs:string" use="required"/>
+        <xs:attribute name="validateScenarioXML" type="myBoolType" use="required"/>
+        <xs:attribute name="defaultPause" type="positiveFloat" use="required"/>
         <xs:attribute name="defaultParamR" type="xs:positiveInteger" use="required"/>
         <xs:attribute name="defaultParamM" type="xs:positiveInteger" use="required"/>
     </xs:complexType>
@@ -125,6 +122,13 @@ schema = StringIO.StringIO('''\
     <xs:simpleType name="positiveFloat">
         <xs:restriction base="xs:float">
             <xs:minInclusive value="0.0"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="myBoolType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="True"/>
+            <xs:enumeration value="False"/>
         </xs:restriction>
     </xs:simpleType>
 

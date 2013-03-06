@@ -7,8 +7,8 @@
 	    header="From:"
 	    check_it="true"
 	    assign_to="10"/>
-    </recv>
-  </action>
+    </action>
+  </recv>
   <send>
 <![CDATA[
 SIP/2.0 180 Ringing
