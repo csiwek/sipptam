@@ -7,8 +7,8 @@
     logColor="True">
   
   <!-- sipptas user agents definition -->
-  <tasList defaultPort="5000" defaultJobs="1">
-    <tas host="10.22.22.200"/>
+  <tasList>
+    <tas host="10.22.22.200" port="5000" jobs="2"/>
     <tas host="10.22.22.201" port="5001" jobs="2"/>
     <tas host="10.22.22.202" port="5002" jobs="4"/>
   </tasList>
@@ -16,13 +16,12 @@
   <!-- Test framework -->
   <testrunList
      scenariosPath="/System/Library/Frameworks/Python.framework/Versions/2.7/usr/local/share/sipptam/scenarios/*xml"
-     validateScenarioXML="True"
-     defaultPause="30.0"
-     defaultParamR="1"
-     defaultParamM="1">
+     scenarioMaxN="10000"
+     scenarioMaxSize="1000"
+     validateScenarioXML="True">
     <!-- Running 1 call of each test for all tests in serial mode -->
     <testrun applyRegex="(.*-000.*)" pause="5.0" 
-	     execMode="serial" tries="2"/>
+	     paramR="1" paramM="1" execMode="serial" tries="2"/>
     <!-- Running {5, 10} calls at a time with a maximum of {100, 200} 
 	 calls in serial mode -->
     <testrun applyRegex="(.*-001.*)" pause="20.0" 
@@ -32,23 +31,23 @@
     <testrun applyRegex="(.*-002.*)" pause="10.0" 
 	     paramR="5;10" paramM="500;1000" execMode="parallel" tries="4"/>
     <!-- Example of more advance configuration -->
-    <testrun applyRegex="(.*)" pause="10.0" 
-	     paramM="1;20;40;80" execMode="serial" tries="1">
+    <testrun applyRegex="(.*)" pause="10.0"
+	     paramR="1" paramM="1;20;40;80" execMode="serial" tries="1">
       <modificationList>
 	<!-- Conversion -->
 	<replaceList applyRegex="(.*_a.xml)">
-	  <replace from="__tmp1a__" to="tmp1a"/>
-	  <replace from="__tmp2b__" to="tmp2b"/>
+	  <replace src="__tmp1a__" dst="tmp1a"/>
+	  <replace src="__tmp2a__" dst="tmp2a"/>
 	</replaceList>
 	<!-- Conversion -->
 	<replaceList applyRegex="(.*_b.xml)">
-	  <replace from="__tmp2a__" to="tmp2a"/>
+	  <replace src="__tmp1b__" dst="tmp1b"/>
 	</replaceList>
 	<!-- Conversion -->
 	<replaceList applyRegex="(.*_c.xml)" fieldsFile="users3.csv">
-	  <replace from="__tmp3a__" to="tmp3a"/>
-	  <replace from="__tmp3b__" to="tmp3b"/>
-	  <replace from="__tmp3c__" to="tmp3c"/>
+	  <replace src="__tmp1c__" dst="tmp1c"/>
+	  <replace src="__tmp2c__" dst="tmp2c"/>
+	  <replace src="__tmp3c__" dst="tmp3c"/>
 	</replaceList>
       </modificationList>
     </testrun>

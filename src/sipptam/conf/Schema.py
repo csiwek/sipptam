@@ -32,14 +32,12 @@ schema = StringIO.StringIO('''\
         <xs:sequence>
             <xs:element name="tas" type="tasType" maxOccurs="unbounded"/>        
         </xs:sequence>
-        <xs:attribute name="defaultPort" type="xs:positiveInteger" use="required"/>
-        <xs:attribute name="defaultJobs" type="xs:positiveInteger" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="tasType">
         <xs:attribute name="host" type="IPType" use="required"/>
-        <xs:attribute name="port" type="xs:string"/>
-        <xs:attribute name="jobs" type="xs:positiveInteger"/>
+        <xs:attribute name="port" type="xs:string" use="required"/>
+        <xs:attribute name="jobs" type="xs:positiveInteger" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="testrunListType">
@@ -47,10 +45,9 @@ schema = StringIO.StringIO('''\
             <xs:element name="testrun" type="testrunType" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute name="scenariosPath" type="xs:string" use="required"/>
+        <xs:attribute name="scenarioMaxN" type="xs:positiveInteger" use="required"/>
+        <xs:attribute name="scenarioMaxSize" type="xs:positiveInteger" use="required"/>
         <xs:attribute name="validateScenarioXML" type="myBoolType" use="required"/>
-        <xs:attribute name="defaultPause" type="positiveFloat" use="required"/>
-        <xs:attribute name="defaultParamR" type="xs:positiveInteger" use="required"/>
-        <xs:attribute name="defaultParamM" type="xs:positiveInteger" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="testrunType">
@@ -59,8 +56,8 @@ schema = StringIO.StringIO('''\
         </xs:sequence>
         <xs:attribute name="applyRegex" type="xs:string" use="required"/>
         <xs:attribute name="pause" type="positiveFloat" use="required"/>
-        <xs:attribute name="paramR" type="numberListType"/>
-        <xs:attribute name="paramM" type="numberListType"/>
+        <xs:attribute name="paramR" type="numberListType" use="required"/>
+        <xs:attribute name="paramM" type="numberListType" use="required"/>
         <xs:attribute name="execMode" type="execModeType" use="required"/>
         <xs:attribute name="tries" type="xs:positiveInteger" use="required"/>
     </xs:complexType>
@@ -80,8 +77,8 @@ schema = StringIO.StringIO('''\
     </xs:complexType>
 
     <xs:complexType name="replaceType">
-        <xs:attribute name="from" type="xs:string" use="required"/>
-        <xs:attribute name="to" type="xs:string" use="required"/>
+        <xs:attribute name="src" type="xs:string" use="required"/>
+        <xs:attribute name="dst" type="xs:string" use="required"/>
     </xs:complexType>
 
     <xs:simpleType name="numberListType">
