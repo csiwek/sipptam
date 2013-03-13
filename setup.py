@@ -32,5 +32,5 @@ setup(name         = nname,
       data_files = [(os.path.join(sys.prefix, 'usr', 'local', 'share', nname, 'scenarios'),
                      glob.glob(os.path.join('resources', 'scenarios', '*.xml'))),
                     (os.path.join(sys.prefix, 'usr', 'local', 'share', nname, 'config'),
-                     glob.glob(os.path.join('resources', 'sipptam.xml.sample')))]
+                     glob.glob(os.path.join('resources', 'sipptam.sample.xml')))]
       )
