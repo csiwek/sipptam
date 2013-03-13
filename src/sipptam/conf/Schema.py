@@ -20,11 +20,9 @@ schema = StringIO.StringIO('''\
             <xs:sequence>
                 <xs:element name="tasList" type="tasListType" maxOccurs="1"/>
                 <xs:element name="testrunList" type="testrunListType" maxOccurs="1"/>
+                <xs:element name="configurationList" type="configurationListType" maxOccurs="1"/>
             </xs:sequence>
-            <xs:attribute name="dutHost" type="IPType" use="required"/>
-            <xs:attribute name="dutPort" type="xs:positiveInteger" use="required"/>
             <xs:attribute name="logLevel" type="logLevelType" use="required"/>
-            <xs:attribute name="logColor" type="xs:string" use="required"/>
         </xs:complexType>
     </xs:element>
 
@@ -51,34 +49,50 @@ schema = StringIO.StringIO('''\
     </xs:complexType>
 
     <xs:complexType name="testrunType">
-        <xs:sequence>
-            <xs:element name="modificationList" type="modificationListType" minOccurs="0" maxOccurs="1"/>
-        </xs:sequence>
-        <xs:attribute name="applyRegex" type="xs:string" use="required"/>
+        <xs:attribute name="regex" type="xs:string" use="required"/>
         <xs:attribute name="pause" type="positiveFloat" use="required"/>
         <xs:attribute name="paramR" type="numberListType" use="required"/>
         <xs:attribute name="paramM" type="numberListType" use="required"/>
         <xs:attribute name="execMode" type="execModeType" use="required"/>
         <xs:attribute name="tries" type="xs:positiveInteger" use="required"/>
+        <xs:attribute name="conf" type="xs:string"/>
     </xs:complexType>
 
-    <xs:complexType name="modificationListType">
+    <xs:complexType name="configurationListType">
+        <xs:sequence>
+            <xs:element name="configuration" type="configurationType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="configurationType">
         <xs:sequence>
             <xs:element name="replaceList" type="replaceListType" maxOccurs="unbounded"/>        
+            <xs:element name="fieldsFileList" type="fieldsFileListType" maxOccurs="unbounded"/>        
         </xs:sequence>
+        <xs:attribute name="id" type="xs:string" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="replaceListType">
         <xs:sequence>
             <xs:element name="replace" type="replaceType" maxOccurs="unbounded"/>        
         </xs:sequence>
-        <xs:attribute name="applyRegex" type="xs:string" use="required"/>
-        <xs:attribute name="fieldsFile" type="xs:string"/>
     </xs:complexType>
 
     <xs:complexType name="replaceType">
+        <xs:attribute name="regex" type="xs:string" use="required"/>
         <xs:attribute name="src" type="xs:string" use="required"/>
         <xs:attribute name="dst" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="fieldsFileListType">
+        <xs:sequence>
+            <xs:element name="fieldsFile" type="fieldsFileType" maxOccurs="unbounded"/>        
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="fieldsFileType">
+        <xs:attribute name="regex" type="xs:string" use="required"/>
+        <xs:attribute name="fieldsFile" type="xs:string" use="required"/>
     </xs:complexType>
 
     <xs:simpleType name="numberListType">

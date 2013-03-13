@@ -17,8 +17,8 @@ import types
 from lxml import etree
 from pprint import pformat
 
-from utils.Utils import formatXML, listField, contentField, recursive_print
-from conf.Schema import schema
+from sipptam.utils.Utils import formatXML, listField, contentField, recursive_print
+from sipptam.conf.Schema import schema
 
 
 class Configuration(object):

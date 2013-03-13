@@ -26,7 +26,7 @@ class Configuration(object):
     '''
     root = None
     xmldict = None
-    def __init__(self, file, validate = None):
+    def __init__(self, file, validate = False):
         if not os.path.exists(file):
             raise Exception('Configuration file not found')
         try:

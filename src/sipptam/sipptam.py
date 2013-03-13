@@ -88,15 +88,7 @@ def main ():
     print config
     print '=' * 60    
 
-
-
-
-
-    class Modification(object):
-        def __init__(self):
-            pass
-
-    class FieldsFile(Modification):
+    class FieldsFile(object):
         '''
         '''
         ffile = None
@@ -107,7 +99,7 @@ def main ():
             return 'FieldsFile ffile:%s' % \
                 (self.ffile)
 
-    class Replace(Modification):
+    class Replace(object):
         '''
         '''
         src = None
@@ -119,6 +111,31 @@ def main ():
         def __str__(self):
             return 'Replace src:%s, dst:%s' % \
                 (self.src, self.dst)
+
+    class Configuration(object):
+        '''
+        '''
+        id = None
+        replaces = None
+        fields = None
+        def __init__(self, id):
+            self.id = id
+            self.replaces = []
+            self.fields = []
+        def __str__(self):
+            return 'configuration:%s \n%s' % \
+                (str(self.id),
+                 '\n'.join(str(n) for n in self.replaces),
+                 '\n'.join(str(n) for n in self.fields))
+        def __eq__(self, name):
+            return (self.id == name)
+        def add(self, item):
+            if isinstance(item, Replace):
+                self.replaces.append(item)
+            elif isinstance(item, FieldsFile):
+                self.fields.append(item)
+            else:
+                raise Exception('Item type unknown')
 
 
     class Scenario(object):
@@ -132,12 +149,18 @@ def main ():
         def __eq__(self, name):
             return (self.path == name)
         def __str__(self):
-            mods = '\n'.join(str(n) for n in self.mods)
-            return '%s \n%s' % (str(self.path), mods)
+            return '%s \n%s' % (str(self.path),
+                                '\n'.join(str(n) for n in self.mods))
         def add(self, mod):
             self.mods.append(mod)
         def hasMods(self):
             return self.mod
+        def apply(self, cache):
+            try:
+                content = cache[self.path]
+                #map(lambda x : x., self.mods)
+            except:
+                raise
 
     class ScenarioAlreadyAdded(Exception):
         pass
@@ -157,19 +180,21 @@ def main ():
             if scenario in self.scenarios:
                 raise ScenarioAlreadyAdded
             self.scenarios.append(scenario)
-        def updateScenario(self, scenario, mod):
-            if scenario in self.scenarios:
-                index = self.scenarios.index(scenario)
-                self.scenarios[index].add(mod)
-            else:
-                raise Exception('Can\'t update scenario:%s. Doesn\'t exist') % \
-                    scenario
+#        def updateScenario(self, scenario, mod):
+#            if scenario in self.scenarios:
+#                index = self.scenarios.index(scenario)
+#                self.scenarios[index].add(mod)
+#            else:
+#                raise Exception('Can\'t update scenario:%s. Doesn\'t exist') % \
+#                    scenario
         def setCache(self, cache):
             self.cache = cache
-            print id(cache)
+        def run(self):
+            for s in self.scenarios:
+                print s.apply(self.cache)
 
     from sets import Set
-    scenarioCacheSet = Set([]) # All the scenarios that really applied
+    scenarioCacheSet = Set([]) # All the scenarios that applied
     trs = []
     
     def applies(regex, l):
@@ -193,26 +218,7 @@ def main ():
             tr = Testrun()
             map(lambda x : tr.addScenario(Scenario(x)), apply)
             # Lets see if we have modifications here
-            if testrun.has_key('modificationList'):
-                for replaceList in testrun['modificationList']['__list__']:
-                    applyM = applies(replaceList['applyRegex'], ss)
-                    mods = []
-                    # Getting the FieldsFile modifications
-                    try:
-                        ff = replaceList['fieldsFile']
-                        mods.append(FieldsFile(ff))
-                    except Exception, msg:
-                        print 'DEBUG. fieldsFile not found. %s' % msg
-                    # Getting the Replace modifications
-                    try:
-                        rlist = replaceList['__list__']
-                        for r in rlist:
-                            mods.append(Replace(r['src'], r['dst']))
-                    except Exception, msg:
-                        print 'ERROR. %s' % msg
-                    # Applying the modifications to the test
-                    for m in mods:
-                        map((lambda x: tr.updateScenario(x, m)), applyM)
+            # 
             # Adding the testrun tr the testrun list
             trs.append(tr)
 
@@ -226,7 +232,7 @@ def main ():
     print '=' * 60
     for tmp in trs:
         print '-' * 30
-        print tmp
+        tmp.run()
     print '=' * 60
 
 if __name__ == '__main__':
