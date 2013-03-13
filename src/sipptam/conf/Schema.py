@@ -18,19 +18,14 @@ schema = StringIO.StringIO('''\
     <xs:element name="sipptam">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="tasList" type="tasListType" maxOccurs="1"/>
-                <xs:element name="testrunList" type="testrunListType" maxOccurs="1"/>
-                <xs:element name="configurationList" type="configurationListType" maxOccurs="1"/>
+                <xs:element name="tas" type="tasType" minOccurs="1" maxOccurs="unbounded"/>
+                <xs:element name="test" type="testType" minOccurs="1" maxOccurs="unbounded"/>
+                <xs:element name="modification" type="modificationType" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="advanced" type="advancedType" minOccurs="1" maxOccurs="1"/>
             </xs:sequence>
-            <xs:attribute name="logLevel" type="logLevelType" use="required"/>
+            <xs:attribute name="scenarioPath" type="xs:string" use="required"/>
         </xs:complexType>
     </xs:element>
-
-    <xs:complexType name="tasListType">
-        <xs:sequence>
-            <xs:element name="tas" type="tasType" maxOccurs="unbounded"/>        
-        </xs:sequence>
-    </xs:complexType>
 
     <xs:complexType name="tasType">
         <xs:attribute name="host" type="IPType" use="required"/>
@@ -38,44 +33,22 @@ schema = StringIO.StringIO('''\
         <xs:attribute name="jobs" type="xs:positiveInteger" use="required"/>
     </xs:complexType>
 
-    <xs:complexType name="testrunListType">
-        <xs:sequence>
-            <xs:element name="testrun" type="testrunType" maxOccurs="unbounded"/>
-        </xs:sequence>
-        <xs:attribute name="scenariosPath" type="xs:string" use="required"/>
-        <xs:attribute name="scenarioMaxN" type="xs:positiveInteger" use="required"/>
-        <xs:attribute name="scenarioMaxSize" type="xs:positiveInteger" use="required"/>
-        <xs:attribute name="validateScenarioXML" type="myBoolType" use="required"/>
-    </xs:complexType>
-
-    <xs:complexType name="testrunType">
+    <xs:complexType name="testType">
         <xs:attribute name="regex" type="xs:string" use="required"/>
         <xs:attribute name="pause" type="positiveFloat" use="required"/>
         <xs:attribute name="paramR" type="numberListType" use="required"/>
         <xs:attribute name="paramM" type="numberListType" use="required"/>
         <xs:attribute name="execMode" type="execModeType" use="required"/>
         <xs:attribute name="tries" type="xs:positiveInteger" use="required"/>
-        <xs:attribute name="conf" type="xs:string"/>
+        <xs:attribute name="mod" type="xs:string"/>
     </xs:complexType>
 
-    <xs:complexType name="configurationListType">
-        <xs:sequence>
-            <xs:element name="configuration" type="configurationType" maxOccurs="unbounded"/>
-        </xs:sequence>
-    </xs:complexType>
-
-    <xs:complexType name="configurationType">
-        <xs:sequence>
-            <xs:element name="replaceList" type="replaceListType" maxOccurs="unbounded"/>        
-            <xs:element name="fieldsFileList" type="fieldsFileListType" maxOccurs="unbounded"/>        
-        </xs:sequence>
-        <xs:attribute name="id" type="xs:string" use="required"/>
-    </xs:complexType>
-
-    <xs:complexType name="replaceListType">
+    <xs:complexType name="modificationType">
         <xs:sequence>
             <xs:element name="replace" type="replaceType" maxOccurs="unbounded"/>        
+            <xs:element name="fieldsf" type="fieldsfType" maxOccurs="unbounded"/>        
         </xs:sequence>
+        <xs:attribute name="id" type="xs:string" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="replaceType">
@@ -84,15 +57,16 @@ schema = StringIO.StringIO('''\
         <xs:attribute name="dst" type="xs:string" use="required"/>
     </xs:complexType>
 
-    <xs:complexType name="fieldsFileListType">
-        <xs:sequence>
-            <xs:element name="fieldsFile" type="fieldsFileType" maxOccurs="unbounded"/>        
-        </xs:sequence>
+    <xs:complexType name="fieldsfType">
+        <xs:attribute name="regex" type="xs:string" use="required"/>
+        <xs:attribute name="f" type="xs:string" use="required"/>
     </xs:complexType>
 
-    <xs:complexType name="fieldsFileType">
-        <xs:attribute name="regex" type="xs:string" use="required"/>
-        <xs:attribute name="fieldsFile" type="xs:string" use="required"/>
+    <xs:complexType name="advancedType">
+            <xs:attribute name="logLevel" type="logLevelType" use="required"/>
+            <xs:attribute name="scenarioMaxN" type="xs:positiveInteger" use="required"/>
+            <xs:attribute name="scenarioMaxSize" type="xs:positiveInteger" use="required"/>
+            <xs:attribute name="scenarioValidate" type="myBoolType" use="required"/>
     </xs:complexType>
 
     <xs:simpleType name="numberListType">

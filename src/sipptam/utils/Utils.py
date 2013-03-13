@@ -27,24 +27,92 @@ def str2bool(v):
     return v.lower() in ("yes", "true", "t", "1")
 
 
-def recursive_print(src, dpth = 0, key = ''):
-    """ Recursively prints nested elements."""
-    tabs = lambda n: ' ' * n * 4 # or 2 or 8 or...
-    brace = lambda s, n: '%s%s%s' % ('['*n, s, ']'*n)
+## {{{ http://code.activestate.com/recipes/534109/ (r8)
+import re
+import xml.sax.handler
 
-    if isinstance(src, dict):
-        for key, value in src.iteritems():
-            logging.info(tabs(dpth) + brace(key, dpth))
-            recursive_print(value, dpth + 1, key)
-    elif isinstance(src, list):
-        for litem in src:
-            recursive_print(litem, dpth + 2)
+def xml2obj(src):
+    """
+    A simple function to converts XML data into native Python object.
+    """
+
+    non_id_char = re.compile('[^_0-9a-zA-Z]')
+    def _name_mangle(name):
+        return non_id_char.sub('_', name)
+
+    class DataNode(object):
+        def __init__(self):
+            self._attrs = {}    # XML attributes and child elements
+            self.data = None    # child text data
+        def __len__(self):
+            # treat single element as a list of 1
+            return 1
+        def __getitem__(self, key):
+            if isinstance(key, basestring):
+                return self._attrs.get(key,None)
+            else:
+                return [self][key]
+        def __contains__(self, name):
+            return self._attrs.has_key(name)
+        def __nonzero__(self):
+            return bool(self._attrs or self.data)
+        def __getattr__(self, name):
+            if name.startswith('__'):
+                # need to do this for Python special methods???
+                raise AttributeError(name)
+            return self._attrs.get(name,None)
+        def _add_xml_attr(self, name, value):
+            if name in self._attrs:
+                # multiple attribute of the same name are represented by a list
+                children = self._attrs[name]
+                if not isinstance(children, list):
+                    children = [children]
+                    self._attrs[name] = children
+                children.append(value)
+            else:
+                self._attrs[name] = value
+        def __str__(self):
+            return self.data or ''
+        def __repr__(self):
+            items = sorted(self._attrs.items())
+            if self.data:
+                items.append(('data', self.data))
+            return u'{%s}' % ', '.join([u'%s:%s' % (k,repr(v)) for k,v in items])
+
+    class TreeBuilder(xml.sax.handler.ContentHandler):
+        def __init__(self):
+            self.stack = []
+            self.root = DataNode()
+            self.current = self.root
+            self.text_parts = []
+        def startElement(self, name, attrs):
+            self.stack.append((self.current, self.text_parts))
+            self.current = DataNode()
+            self.text_parts = []
+            # xml attributes --> python attributes
+            for k, v in attrs.items():
+                self.current._add_xml_attr(_name_mangle(k), v)
+        def endElement(self, name):
+            text = ''.join(self.text_parts).strip()
+            if text:
+                self.current.data = text
+            if self.current._attrs:
+                obj = self.current
+            else:
+                # a text only node is simply represented by the string
+                obj = text or ''
+            self.current, self.text_parts = self.stack.pop()
+            self.current._add_xml_attr(_name_mangle(name), obj)
+        def characters(self, content):
+            self.text_parts.append(content)
+
+    builder = TreeBuilder()
+    if isinstance(src,basestring):
+        xml.sax.parseString(src, builder)
     else:
-        if key:
-            logging.info(tabs(dpth) + '%s = %s' % (key, repr(src)))
-        else:
-            logging.info(tabs(dpth) + '- %s' % src)
-
+        xml.sax.parse(src, builder)
+    return builder.root._attrs.values()[0]
+## end of http://code.activestate.com/recipes/534109/ }}}
 
 '''
 translates the context of a string based on a given dictionary
@@ -68,45 +136,3 @@ def text2dic(text, assign = '=', sep = ';'):
     ret = dict((n,v) for n,v in (a.split(assign, 1) for a in l))
     logging.debug('converted dic:\"%s\"' % (ret))
     return ret
-
-
-listField = '__list__'
-contentField = '__content__'
-def formatXML(xmltree, listToken):
-    '''
-    Returns a XML tree formated as dicts and lists. Decision whether to add the tag
-    as a list or dictionary is based on finding the 'listToken' word in the actual tag.
-    Recursive operation.
-
-    # Example 1:
-    tree = lxml.etree.parse('path_to_file')
-    root = tree.getroot()
-    xmldict = formatXML(root)
-
-    # Example 2:
-    tree = lxml.etree.fromstring(reply)
-    xmldict = formatXML(tree)
-
-    @xmltree: XML tree to be processed.
-    @type xmltree:  lxml.etree structure.
-    '''
-
-    def format(tree):
-        '''
-        @tree: XML tree to be processed.
-        @type tree:  lxml.etree structure.
-        '''
-        ret = {}
-        if tree.items(): ret.update(dict(tree.items()))
-        if tree.text: ret[contentField] = tree.text
-        if (listToken in tree.tag):
-            ret[listField] = []
-            for element in tree:
-                if element.tag is not etree.Comment:
-                    ret[listField].append(format(element))
-        else:
-            for element in tree:
-                if element.tag is not etree.Comment:
-                    ret[element.tag] = format(element)
-        return ret
-    return {xmltree.tag : format(xmltree)}
