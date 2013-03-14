@@ -40,10 +40,11 @@ def main ():
 
     def usage():
         '''
-        Small helper function which exists
+        Helper function to which prints how to run this script
         '''
         print 'usage: %s [-c <<config_file>>]' % name
         sys.exit(1)
+
     # Lets parse input parameters
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'c:')
@@ -69,8 +70,10 @@ def main ():
         # Parsing configuration file. Lexical validation
         config = Parser(configFile, validate=schema)
     except Exception, err:
-        print 'Configuration file error. Error:%s' % str(err)
+        print 'Error: Configuration file error. %s' % str(err)
         usage()
+
+    # Validating the modifications defined and used.
     try:
         # Getting the Set of all the modifications
         ids = sets.Set([x.id for x in config.obj.modification])
@@ -84,8 +87,52 @@ def main ():
         print 'Error: %s' % (err)
         usage()
 
-    # Checking if regexs are well formed
-    if str2bool(config.obj.advanced.regexValidate):
+    # Lets get a list of scenarios with scenarioPath. 
+    scenarioPath = config.obj.scenarioPath
+    scenarioMaxN = int(config.obj.advanced.scenarioMaxN)
+    ss = glob.glob(config.obj.scenarioPath)
+    # Validating the number of scenarios. scenarioMaxN
+    try:
+        if not ss:
+            raise scenarioPathExcept ('None scenarios found. ' + \
+                                          ' scenarioPath:\"%s\"' \
+                                          % scenarioPath)
+        elif int(scenarioMaxN) < len(ss):
+            raise scenarioMaxN ('Found more scenarios than allowed. ' + \
+             'Scenarios found:\"%s\" scenarioMaxN:\"%s\"' \
+             % (len(ss), scenarioMaxN))
+    except Exception, err:
+        print 'Error: %s' % (err)
+        usage()
+    else:
+        print 'Info. Success validating scenarioPath:\"%s\"' % scenarioPath
+        print 'Info. Success validating scenarioMaxN:\"%s\".' % scenarioMaxN + \
+            ' (Number of scenarios found:\"%s\")' % (len(ss))
+
+    # Validating the max size for an scenario. scenarioMaxSize
+    # Validating XML scenarios. scenarioValidate
+    scenarioMaxSize = int(config.obj.advanced.scenarioMaxSize)
+    scenarioValidate = str2bool(config.obj.advanced.scenarioValidate)
+    for s in ss:
+        try:
+            if scenarioMaxSize < os.path.getsize(s):
+                raise scenarioMaxSizeExcept \
+                    ('Found scenario bigger than allowed' +
+                     'Scenario:\"%s\" (\"%s\"B), scenarioMaxSize:\"%s\"B.' % \
+                         (s, os.path.getsize(s), scenarioMaxSize))
+            if scenarioValidate:
+                try:
+                    lxml.etree.parse(s)
+                except Exception, err:
+                    raise scenarioValidate \
+                        ('Bad XML validation of scenario:\"%s\"' % s)
+        except Exception, err:
+            print 'Error: %s' % (err)
+            usage()
+
+    # Validating the regexs. regexValidate
+    regexValidate = config.obj.advanced.regexValidate
+    if regexValidate:
         tmp = sets.Set(map(lambda x : x.regex, config.obj.test))
         for mod in config.obj.modification:
             tmp.update(sets.Set([a.regex for a in \
@@ -96,10 +143,21 @@ def main ():
             except Exception, err:
                 print 'Error: Bad regex found regex:\"%s\". %s' % (r, err)
                 usage()
-    print 'Info. Done!'
+        print 'Info. Success validating regexs.'
+    else:
+        print 'Info. No need to validate regexs. regexValidate=%s' % \
+            config.obj.regexValidate
 
-    # Unknown modification
+    # Some exception
     class UnknownMod(Exception):
+        pass
+    class scenarioPathExcept(Exception):
+        pass
+    class scenarioMaxNExcept(Exception):
+        pass
+    class scenarioMaxSizeExcept(Exception):
+        pass
+    class scenarioValidate(Exception):
         pass
 
 if __name__ == '__main__':

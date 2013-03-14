@@ -43,9 +43,14 @@
    </modification>
    
    <!-- Mandatory. Change in case you know what you're doing. -->
+   <!-- * logLevel         : {debug, info, warning, error, critical} -->
+   <!-- * scenarioMaxN     : Max number of scenarios allowed -->
+   <!-- * scenarioMaxSize  : Max size (Bytes) allowed for each scenario -->
+   <!-- * scenarioValidate : Validates well formed scenarios -->
+   <!-- * regexValidate    : Validates well formed regexs -->
    <advanced logLevel="info"
-	     scenarioMaxN="10000"
-	     scenarioMaxSize="1000"
+	     scenarioMaxN="30"
+	     scenarioMaxSize="2000"
 	     scenarioValidate="True"
 	     regexValidate="True"/>
 </sipptam>
