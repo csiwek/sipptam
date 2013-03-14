@@ -21,12 +21,9 @@ schema = StringIO.StringIO('''\
                 <xs:element name="tas" type="tasType" minOccurs="1" maxOccurs="unbounded"/>
                 <xs:element name="test" type="testType" minOccurs="1" maxOccurs="unbounded"/>
                 <xs:element name="modification" type="modificationType" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="advanced" type="advancedType" minOccurs="1" maxOccurs="1"/>
             </xs:sequence>
-            <xs:attribute name="logLevel" type="logLevelType" use="required"/>
             <xs:attribute name="scenarioPath" type="xs:string" use="required"/>
-            <xs:attribute name="scenarioMaxN" type="xs:positiveInteger" use="required"/>
-            <xs:attribute name="scenarioMaxSize" type="xs:positiveInteger" use="required"/>
-            <xs:attribute name="scenarioValidate" type="myBoolType" use="required"/>
         </xs:complexType>
     </xs:element>
 
@@ -49,7 +46,7 @@ schema = StringIO.StringIO('''\
     <xs:complexType name="modificationType">
         <xs:sequence>
             <xs:element name="replace" type="replaceType" maxOccurs="unbounded"/>        
-            <xs:element name="fieldsFile" type="fieldsFileType" maxOccurs="unbounded"/>        
+            <xs:element name="fieldsf" type="fieldsfType" maxOccurs="unbounded"/>        
         </xs:sequence>
         <xs:attribute name="id" type="xs:string" use="required"/>
     </xs:complexType>
@@ -60,9 +57,16 @@ schema = StringIO.StringIO('''\
         <xs:attribute name="dst" type="xs:string" use="required"/>
     </xs:complexType>
 
-    <xs:complexType name="fieldsFileType">
+    <xs:complexType name="fieldsfType">
         <xs:attribute name="regex" type="xs:string" use="required"/>
         <xs:attribute name="f" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="advancedType">
+            <xs:attribute name="logLevel" type="logLevelType" use="required"/>
+            <xs:attribute name="scenarioMaxN" type="xs:positiveInteger" use="required"/>
+            <xs:attribute name="scenarioMaxSize" type="xs:positiveInteger" use="required"/>
+            <xs:attribute name="scenarioValidate" type="myBoolType" use="required"/>
     </xs:complexType>
 
     <xs:simpleType name="numberListType">

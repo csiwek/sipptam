@@ -67,6 +67,7 @@ schema = StringIO.StringIO('''\
             <xs:attribute name="scenarioMaxN" type="xs:positiveInteger" use="required"/>
             <xs:attribute name="scenarioMaxSize" type="xs:positiveInteger" use="required"/>
             <xs:attribute name="scenarioValidate" type="myBoolType" use="required"/>
+            <xs:attribute name="regexValidate" type="myBoolType" use="required"/>
     </xs:complexType>
 
     <xs:simpleType name="numberListType">

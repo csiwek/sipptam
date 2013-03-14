@@ -43,7 +43,6 @@ class Parser(object):
         except:
             self.obj = None
             raise
-
     def __str__(self):
         return pformat(self.obj)
     

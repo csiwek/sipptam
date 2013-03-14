@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<sipptam  scenarioPath="/etc/sipptam/*.xml">
+<sipptam  scenarioPath="/etc/sipptam/scenarios/*.xml">
 
    <!-- Mandatory. ta slaves to use. -->
    <tas host="10.22.22.200" port="5000" jobs="2"/>
@@ -19,30 +19,33 @@
 	 paramR="5;10"
 	 paramM="100;200"
          execMode="parallel" 
-	 tries="2"/>
+	 tries="2"
+	 mod="two"/>
    <test regex="(.*)"      
 	 pause="10.0"
 	 paramR="1"    
 	 paramM="1;20;40;80"
          execMode="serial"   
-	 tries="1"/>
+	 tries="1"
+	 mod="two"/>
 
    <!-- Optional. Modifications that might be applied by a test. -->
    <modification id="one">
-        <replace regex="(.*_a.xml)" src="__tmp1a__" dst="tmp1a"/>
-        <fieldsf regex="(.*_a.xml)" f="path_to_file"/>
-        <fieldsf regex="(.*_b.xml)" f="path_to_file"/>
+     <replace regex="(.*_a.xml)" src="__tmp1a__" dst="tmp1a"/>
+     <fieldsf regex="(.*_a.xml)" f="path_to_file"/>
+     <fieldsf regex="(.*_b.xml)" f="path_to_file"/>
    </modification>
-
+   
    <modification id="two">
-        <replace regex="(.*_a.xml)" src="__tmp1a__" dst="tmp1a"/>
-        <fieldsf regex="(.*_a.xml)" f="path_to_file"/>
-        <fieldsf regex="(.*_b.xml)" f="path_to_file"/>
+     <replace regex="(.*_a.xml)" src="__tmp1a__" dst="tmp1a"/>
+     <fieldsf regex="(.*_a.xml)" f="path_to_file"/>
+     <fieldsf regex="(.*_b.xml)" f="path_to_file"/>
    </modification>
-
+   
    <!-- Mandatory. Change in case you know what you're doing. -->
    <advanced logLevel="info"
 	     scenarioMaxN="10000"
 	     scenarioMaxSize="1000"
-	     scenarioValidate="True"/>
+	     scenarioValidate="True"
+	     regexValidate="True"/>
 </sipptam>

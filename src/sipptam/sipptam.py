@@ -15,6 +15,7 @@ import sys
 import glob
 import lxml
 import re
+import sets
 
 from conf.Schema import schema
 from conf.Parser import Parser
@@ -27,7 +28,7 @@ def main ():
     '''
     # Setting some default variables
     name = 'sipptam'
-    configFile = '/etc/sipptam/sipptam.conf'
+    configFile = '/etc/sipptam/config/sipptam.xml'
     logFormat = '%(levelname)-7s ' + \
         '%(name)6s ' + \
         '%(asctime)s ' + \
@@ -38,39 +39,68 @@ def main ():
         '%(message)s '
 
     def usage():
+        '''
+        Small helper function which exists
+        '''
         print 'usage: %s [-c <<config_file>>]' % name
         sys.exit(1)
-
     # Lets parse input parameters
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'c:')
     except getopt.GetoptError:
         usage()
-        sys.exit(1)
-    global_config = {}
-
     # Looking for command line parameters
     for o, a in opts:
         if o == '-c':
             configFile = a
             continue
 
+    # Show which config file are we using
+    print 'Info. Using configFile: \"%s\"' % configFile
     # Parsing the config file
     if not configFile:
         usage()
     if not os.path.exists(configFile):
         print 'Error: configuration file not found: \"%s\"' % configFile
         usage()
+
+    # Parsing the config file
     try:
         # Parsing configuration file. Lexical validation
         config = Parser(configFile, validate=schema)
     except Exception, err:
         print 'Configuration file error. Error:%s' % str(err)
         usage()
+    try:
+        # Getting the Set of all the modifications
+        ids = sets.Set([x.id for x in config.obj.modification])
+        # Getting the Set of all modifications that the tests are using
+        testsM = sets.Set(map(lambda x : x.mod, \
+                                  filter(lambda x : x.mod, config.obj.test)))
+        if not ids.issuperset(testsM):
+            raise UnknownMod('Not all modifications used:%s are defined:%s'
+                             % (list(testsM), list(ids)))
+    except Exception, err:
+        print 'Error: %s' % (err)
+        usage()
 
-    print '=' * 60
-    print config
-    print '=' * 60
+    # Checking if regexs are well formed
+    if str2bool(config.obj.advanced.regexValidate):
+        tmp = sets.Set(map(lambda x : x.regex, config.obj.test))
+        for mod in config.obj.modification:
+            tmp.update(sets.Set([a.regex for a in \
+                                     (list(mod.replace) + list(mod.fieldsf))]))
+        for r in tmp:
+            try:
+                re.compile(r)
+            except Exception, err:
+                print 'Error: Bad regex found regex:\"%s\". %s' % (r, err)
+                usage()
+    print 'Info. Done!'
+
+    # Unknown modification
+    class UnknownMod(Exception):
+        pass
 
 if __name__ == '__main__':
     main()
