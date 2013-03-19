@@ -16,10 +16,28 @@ import glob
 import lxml
 import re
 import sets
+import collections
 
 from conf.Schema import schema
 from conf.Parser import Parser
 from utils.Utils import str2bool
+from tas.Tas import Tas
+from testrun.Testrun import Testrun
+from modification.Modification import Modification
+
+# Some exceptions
+class duplicatedTasExcept(Exception):
+    pass
+class UnknownMod(Exception):
+    pass
+class scenarioPathExcept(Exception):
+    pass
+class scenarioMaxNExcept(Exception):
+    pass
+class scenarioMaxSizeExcept(Exception):
+    pass
+class scenarioValidate(Exception):
+    pass
 
 
 def main ():
@@ -77,12 +95,12 @@ def main ():
     try:
         # Getting the Set of all the modifications
         ids = sets.Set([x.id for x in config.obj.modification])
-        # Getting the Set of all modifications that the tests are using
-        testsM = sets.Set(map(lambda x : x.mod, \
-                                  filter(lambda x : x.mod, config.obj.test)))
-        if not ids.issuperset(testsM):
+        # Getting the Set of all modifications that the testruns are using
+        testrunsM = sets.Set(map(lambda x : x.mod, \
+                                  filter(lambda x : x.mod, config.obj.testrun)))
+        if not ids.issuperset(testrunsM):
             raise UnknownMod('Not all modifications used:%s are defined:%s'
-                             % (list(testsM), list(ids)))
+                             % (list(testrunsM), list(ids)))
     except Exception, err:
         print 'Error: %s' % (err)
         usage()
@@ -133,7 +151,7 @@ def main ():
     # Validating the regexs. regexValidate
     regexValidate = config.obj.advanced.regexValidate
     if regexValidate:
-        tmp = sets.Set(map(lambda x : x.regex, config.obj.test))
+        tmp = sets.Set(map(lambda x : x.regex, config.obj.testrun))
         for mod in config.obj.modification:
             tmp.update(sets.Set([a.regex for a in \
                                      (list(mod.replace) + list(mod.fieldsf))]))
@@ -148,17 +166,32 @@ def main ():
         print 'Info. No need to validate regexs. regexValidate=%s' % \
             config.obj.regexValidate
 
-    # Some exception
-    class UnknownMod(Exception):
-        pass
-    class scenarioPathExcept(Exception):
-        pass
-    class scenarioMaxNExcept(Exception):
-        pass
-    class scenarioMaxSizeExcept(Exception):
-        pass
-    class scenarioValidate(Exception):
-        pass
+    # Validating the tas list so we dont have any duplicates.
+    try:
+        tmp = [(x.host, x.port) for x in config.obj.tas]
+        if any([x for _,size in collections.Counter(tmp).items() if size > 1]):
+            raise duplicatedTasExcept('tas duplicated. Same host and port.')
+    except Exception, err:
+        print 'Error: Validating the tas list. %s' % (err)
+        usage()
+
+    # Creating some objects...
+    def fill(tmpClass, args):
+        tmp = []
+        map(lambda x: tmp.append(tmpClass(**dict(x._attrs))), args)
+        return tmp
+    tasL = fill(Tas, config.obj.tas)
+    testrunL = fill(Testrun, config.obj.testrun)
+    
+    
+    for m in config.obj.modification:
+        for mm in m.replace:
+            print mm._attrs
+
+    
+
+    #print tasL
+    #print testrunL
 
 if __name__ == '__main__':
     main()

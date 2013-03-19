@@ -19,7 +19,7 @@ schema = StringIO.StringIO('''\
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="tas" type="tasType" minOccurs="1" maxOccurs="unbounded"/>
-                <xs:element name="test" type="testType" minOccurs="1" maxOccurs="unbounded"/>
+                <xs:element name="testrun" type="testrunType" minOccurs="1" maxOccurs="unbounded"/>
                 <xs:element name="modification" type="modificationType" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element name="advanced" type="advancedType" minOccurs="1" maxOccurs="1"/>
             </xs:sequence>
@@ -33,7 +33,7 @@ schema = StringIO.StringIO('''\
         <xs:attribute name="jobs" type="xs:positiveInteger" use="required"/>
     </xs:complexType>
 
-    <xs:complexType name="testType">
+    <xs:complexType name="testrunType">
         <xs:attribute name="regex" type="xs:string" use="required"/>
         <xs:attribute name="pause" type="positiveFloat" use="required"/>
         <xs:attribute name="paramR" type="numberListType" use="required"/>

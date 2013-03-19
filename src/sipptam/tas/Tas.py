@@ -14,11 +14,24 @@ Object which represents a the Test Automation Slave.
 
 
 class Tas(object):
-    '''
-    '''
-    def init(self):
-        print 'todo'
+    host, port, jobs = None, None, None
+    id = None
 
+    def __init__(self, **kwargs):
+        #for key, value in kwargs.iteritems():
+        #    print "%s = %s" % (key, value)
+        self.id   = '%s_%s_%s' % (kwargs['host'],
+                                  kwargs['port'],
+                                  kwargs['jobs'])
+
+    def __str__(self):
+        return self.id
+
+    def getId(self):
+        return self.id
+
+    def connect(self):
+        pass
 
 if __name__ == '__main__':
     '''

@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 '''
-sipptam.tas.Testrun.py
+sipptam.modification.Modification.py
 
-Object which represents a testrun element.
+Object which represents a modification element.
 
 @author:  Luis Martin Gil
 @contact: luis.martin.gil@indigital.net
@@ -13,7 +13,7 @@ Object which represents a testrun element.
 '''
 
 
-class Testrun(object):
+class Modification(object):
     '''
     '''
     def __init__(self, **kwargs):
@@ -28,5 +28,5 @@ if __name__ == '__main__':
     '''
     Main execution thread.
     '''
-    t = Testrun(color="red", bold=False)
+    t = Modification(color="red", bold=False)
     print t
