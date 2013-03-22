@@ -6,7 +6,7 @@
 
     Main sipptam module.
 
-    :copyright: (c) 2013 by luismartingil.
+    :copyright: (c) 2013 INdigital Telecom. luismartingil.
     :license: See LICENSE_FILE.
 """
 import getopt
@@ -15,29 +15,13 @@ import sys
 import glob
 import lxml
 import re
-import sets
-import collections
 
-from conf.Schema import schema
-from conf.Parser import Parser
-from utils.Utils import str2bool
+from validate.Validate import Validate
+from utils.Utils import str2bool, fill
 from tas.Tas import Tas
 from testrun.Testrun import Testrun
-from modification.Modification import Modification
-
-# Some exceptions
-class duplicatedTasExcept(Exception):
-    pass
-class UnknownMod(Exception):
-    pass
-class scenarioPathExcept(Exception):
-    pass
-class scenarioMaxNExcept(Exception):
-    pass
-class scenarioMaxSizeExcept(Exception):
-    pass
-class scenarioValidate(Exception):
-    pass
+from config.Config import Config
+from mod.Mod import Mod
 
 
 def main ():
@@ -75,123 +59,27 @@ def main ():
             continue
 
     # Show which config file are we using
-    print 'Info. Using configFile: \"%s\"' % configFile
-    # Parsing the config file
-    if not configFile:
-        usage()
-    if not os.path.exists(configFile):
-        print 'Error: configuration file not found: \"%s\"' % configFile
-        usage()
-
+    print '[info] Using configFile:\"%s\"' % configFile
     # Parsing the config file
     try:
         # Parsing configuration file. Lexical validation
-        config = Parser(configFile, validate=schema)
+        config = Validate(configFile, parse=True)
+        config.checkSemantics()
     except Exception, err:
-        print 'Error: Configuration file error. %s' % str(err)
+        print '[error] Configuration file error. %s' % str(err)
         usage()
 
-    # Validating the modifications defined and used.
-    try:
-        # Getting the Set of all the modifications
-        ids = sets.Set([x.id for x in config.obj.modification])
-        # Getting the Set of all modifications that the testruns are using
-        testrunsM = sets.Set(map(lambda x : x.mod, \
-                                  filter(lambda x : x.mod, config.obj.testrun)))
-        if not ids.issuperset(testrunsM):
-            raise UnknownMod('Not all modifications used:%s are defined:%s'
-                             % (list(testrunsM), list(ids)))
-    except Exception, err:
-        print 'Error: %s' % (err)
-        usage()
 
-    # Lets get a list of scenarios with scenarioPath. 
-    scenarioPath = config.obj.scenarioPath
-    scenarioMaxN = int(config.obj.advanced.scenarioMaxN)
-    ss = glob.glob(config.obj.scenarioPath)
-    # Validating the number of scenarios. scenarioMaxN
-    try:
-        if not ss:
-            raise scenarioPathExcept ('None scenarios found. ' + \
-                                          ' scenarioPath:\"%s\"' \
-                                          % scenarioPath)
-        elif int(scenarioMaxN) < len(ss):
-            raise scenarioMaxN ('Found more scenarios than allowed. ' + \
-             'Scenarios found:\"%s\" scenarioMaxN:\"%s\"' \
-             % (len(ss), scenarioMaxN))
-    except Exception, err:
-        print 'Error: %s' % (err)
-        usage()
-    else:
-        print 'Info. Success validating scenarioPath:\"%s\"' % scenarioPath
-        print 'Info. Success validating scenarioMaxN:\"%s\".' % scenarioMaxN + \
-            ' (Number of scenarios found:\"%s\")' % (len(ss))
-
-    # Validating the max size for an scenario. scenarioMaxSize
-    # Validating XML scenarios. scenarioValidate
-    scenarioMaxSize = int(config.obj.advanced.scenarioMaxSize)
-    scenarioValidate = str2bool(config.obj.advanced.scenarioValidate)
-    for s in ss:
-        try:
-            if scenarioMaxSize < os.path.getsize(s):
-                raise scenarioMaxSizeExcept \
-                    ('Found scenario bigger than allowed' +
-                     'Scenario:\"%s\" (\"%s\"B), scenarioMaxSize:\"%s\"B.' % \
-                         (s, os.path.getsize(s), scenarioMaxSize))
-            if scenarioValidate:
-                try:
-                    lxml.etree.parse(s)
-                except Exception, err:
-                    raise scenarioValidate \
-                        ('Bad XML validation of scenario:\"%s\"' % s)
-        except Exception, err:
-            print 'Error: %s' % (err)
-            usage()
-
-    # Validating the regexs. regexValidate
-    regexValidate = config.obj.advanced.regexValidate
-    if regexValidate:
-        tmp = sets.Set(map(lambda x : x.regex, config.obj.testrun))
-        for mod in config.obj.modification:
-            tmp.update(sets.Set([a.regex for a in \
-                                     (list(mod.replace) + list(mod.fieldsf))]))
-        for r in tmp:
-            try:
-                re.compile(r)
-            except Exception, err:
-                print 'Error: Bad regex found regex:\"%s\". %s' % (r, err)
-                usage()
-        print 'Info. Success validating regexs.'
-    else:
-        print 'Info. No need to validate regexs. regexValidate=%s' % \
-            config.obj.regexValidate
-
-    # Validating the tas list so we dont have any duplicates.
-    try:
-        tmp = [(x.host, x.port) for x in config.obj.tas]
-        if any([x for _,size in collections.Counter(tmp).items() if size > 1]):
-            raise duplicatedTasExcept('tas duplicated. Same host and port.')
-    except Exception, err:
-        print 'Error: Validating the tas list. %s' % (err)
-        usage()
-
-    # Creating some objects...
-    def fill(tmpClass, args):
-        tmp = []
-        map(lambda x: tmp.append(tmpClass(**dict(x._attrs))), args)
-        return tmp
+    # Validation done. Creating objects from the parameters.
     tasL = fill(Tas, config.obj.tas)
     testrunL = fill(Testrun, config.obj.testrun)
-    
-    
-    for m in config.obj.modification:
-        for mm in m.replace:
-            print mm._attrs
 
-    
-
-    #print tasL
+    #modD = fill(Modification, config.obj.modification, dic = True)
+    #for t in testrunL:
+        #t.addModification(modD[t.get('mod')])
+    #    print t
     #print testrunL
+        
 
 if __name__ == '__main__':
     main()

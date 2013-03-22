@@ -8,7 +8,7 @@ from setuptools import setup, find_packages
 nname = 'sipptam'
 
 setup(name         = nname,
-      version      = "0.0.8",
+      version      = "0.0.9",
       author       = "INdigital Telecom",
       author_email = "luis.martin.gil@indigital.net",
       url          = "http://www.indigital.net",

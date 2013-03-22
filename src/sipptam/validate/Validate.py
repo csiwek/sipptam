@@ -1,8 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 '''
-sipptam.config.Parser.py
+sipptam.config.Validate.py
 
 Generic object to save the configuration parameters.
 
@@ -18,24 +17,25 @@ from lxml import etree
 from pprint import pformat
 
 from sipptam.utils.Utils import xml2obj
-from sipptam.conf.Schema import schema
+from sipptam.validate.Schema import schema
+from sipptam.validate.Semantic import checkSemantics
 
-class Parser(object):
+class Validate(object):
     '''
     '''
     root = None
     obj = None
-    def __init__(self, file, validate = False):
+    def __init__(self, file, parse = False):
         if not os.path.exists(file):
             raise Exception('Configuration file not found')
         try:
             # Loading config file
             tree = etree.parse(file)
-            if validate:
+            if parse:
                 # Running validation
-                xmlschema_doc = etree.parse(validate)
+                xmlschema_doc = etree.parse(schema)
                 xmlschema = etree.XMLSchema(xmlschema_doc)
-                # Lets validate against the XSD schema.
+                # Lets check against the XSD schema.
                 xmlschema.assertValid(tree)
             self.root = tree.getroot()
             with open(file, 'r') as f:
@@ -45,7 +45,9 @@ class Parser(object):
             raise
     def __str__(self):
         return pformat(self.obj)
-    
+    def checkSemantics(self):
+        checkSemantics(self.obj)
+
 if __name__ == '__main__':
     '''
     Main execution thread.

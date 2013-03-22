@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 '''
-sipptam.modification.Modification.py
+sipptam.modification.Fieldsf.py
 
-Object which represents a modification element.
+Object which represents a fieldsf element.
 
 @author:  Luis Martin Gil
 @contact: luis.martin.gil@indigital.net
@@ -13,7 +13,7 @@ Object which represents a modification element.
 '''
 
 
-class Modification(object):
+class Fieldsf(object):
     '''
     '''
     def __init__(self, **kwargs):
@@ -24,9 +24,11 @@ class Modification(object):
     def __str__(self):
         return str(self.args)
 
+    def apply(self):
+        pass
+
 if __name__ == '__main__':
     '''
     Main execution thread.
     '''
-    t = Modification(color="red", bold=False)
-    print t
+    print 'todo'

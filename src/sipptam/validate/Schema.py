@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 """
-    conf.Schema
-    ~~~~~~~~~~~
+    sipptam.conf.Schema
+    ~~~~~~~~~~~~~~~~~~~
 
     Contains a basic XML schema to parse the input configuration file.
 
@@ -19,8 +19,9 @@ schema = StringIO.StringIO('''\
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="tas" type="tasType" minOccurs="1" maxOccurs="unbounded"/>
-                <xs:element name="test" type="testType" minOccurs="1" maxOccurs="unbounded"/>
-                <xs:element name="modification" type="modificationType" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="testrun" type="testrunType" minOccurs="1" maxOccurs="unbounded"/>
+                <xs:element name="config" type="configType" minOccurs="1" maxOccurs="unbounded"/>
+                <xs:element name="mod" type="modType" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element name="advanced" type="advancedType" minOccurs="1" maxOccurs="1"/>
             </xs:sequence>
             <xs:attribute name="scenarioPath" type="xs:string" use="required"/>
@@ -33,17 +34,22 @@ schema = StringIO.StringIO('''\
         <xs:attribute name="jobs" type="xs:positiveInteger" use="required"/>
     </xs:complexType>
 
-    <xs:complexType name="testType">
+    <xs:complexType name="testrunType">
         <xs:attribute name="regex" type="xs:string" use="required"/>
-        <xs:attribute name="pause" type="positiveFloat" use="required"/>
-        <xs:attribute name="paramR" type="numberListType" use="required"/>
-        <xs:attribute name="paramM" type="numberListType" use="required"/>
-        <xs:attribute name="execMode" type="execModeType" use="required"/>
-        <xs:attribute name="tries" type="xs:positiveInteger" use="required"/>
-        <xs:attribute name="mod" type="xs:string"/>
+        <xs:attribute name="configlink" type="xs:string" use="required"/>
+        <xs:attribute name="modlink" type="xs:string"/>
     </xs:complexType>
 
-    <xs:complexType name="modificationType">
+    <xs:complexType name="configType">
+        <xs:attribute name="id" type="xs:string" use="required"/>
+        <xs:attribute name="pause" type="positiveFloat" use="required"/>
+        <xs:attribute name="ratio" type="numberListType" use="required"/>
+        <xs:attribute name="max" type="numberListType" use="required"/>
+        <xs:attribute name="execMode" type="execModeType" use="required"/>
+        <xs:attribute name="tries" type="xs:positiveInteger" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="modType">
         <xs:sequence>
             <xs:element name="replace" type="replaceType" maxOccurs="unbounded"/>        
             <xs:element name="fieldsf" type="fieldsfType" maxOccurs="unbounded"/>        
@@ -67,6 +73,7 @@ schema = StringIO.StringIO('''\
             <xs:attribute name="scenarioMaxN" type="xs:positiveInteger" use="required"/>
             <xs:attribute name="scenarioMaxSize" type="xs:positiveInteger" use="required"/>
             <xs:attribute name="scenarioValidate" type="myBoolType" use="required"/>
+            <xs:attribute name="regexValidate" type="myBoolType" use="required"/>
     </xs:complexType>
 
     <xs:simpleType name="numberListType">

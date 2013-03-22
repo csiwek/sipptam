@@ -1,11 +1,15 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 """
-This.
+    sipptam.testrun.Scenario.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    This module represents an scenario.
 
-:copyright: (c) 2013 by Luis Martin.
-:license: ISC, see LICENSE for more details.
+    @author:  Luis Martin Gil
+    @contact: luis.martin.gil@indigital.net
+    @organization: INdigital Telecom, Inc.
+    @copyright: INdigital Telecom, Inc. 2013
 """
-
 
 class Scenario(object):
     """

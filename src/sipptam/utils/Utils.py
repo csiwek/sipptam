@@ -16,7 +16,6 @@ import logging
 import re
 from lxml import etree
 
-
 def str2bool(v):
     '''
     Returns a Boolean type from the v string value.
@@ -26,6 +25,17 @@ def str2bool(v):
     '''
     return v.lower() in ("yes", "true", "t", "1")
 
+
+def fill(tmpClass, args, dic = False):
+    '''
+    Help function in conjunction to xml2obj
+    '''
+    tmp = []
+    map(lambda x: tmp.append(tmpClass(**dict(x._attrs))), args)
+    if dic:
+        return dict([(x.getId(), x) for x in tmp]) #return tmp
+    else:
+        return tmp
 
 ## {{{ http://code.activestate.com/recipes/534109/ (r8)
 import re
