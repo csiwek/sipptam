@@ -4,19 +4,19 @@
    <!-- Mandatory. ta slaves to use. -->
    <tas host="10.22.22.200" port="5000" jobs="2"/>
    <tas host="10.22.22.201" port="5001" jobs="2"/>
+   <tas host="10.22.22.202" port="5001" jobs="4"/>
    <tas host="10.22.22.202" port="5002" jobs="4"/>
-   <tas host="10.22.22.202" port="5003" jobs="4"/>
 
    <!-- Mandatory. Test to run. -->
    <testrun regex="(.*-000.*)" 
-	    configlink="conf1"
-	    modlink="two"/>
+	    configlink="conf1"/>
+
    <testrun regex="(.*-001.*)"
 	    configlink="conf1"
 	    modlink="two"/>
    <testrun regex="(.*)"
 	    configlink="conf2"
-	    modlink="two"/>
+	    modlink="one"/>
 
    <!-- Mandatory (Min 1 config). Configs used by testruns. -->
    <config id="conf1"
@@ -33,7 +33,14 @@
 	   execMode="serial"
 	   tries="1"/>
 
-   <!-- Optional. Mods that might be applied by a testrun. -->
+   <config id="conf3"
+	   pause="20.0"
+	   ratio="5;10"
+	   max="100;200"
+	   execMode="parallel"
+	   tries="1"/>
+
+   <!-- Optional. Modifications that might be applied by a testrun. -->
    <mod id="one">
      <replace regex="(.*_a.xml)" src="__tmp1a__" dst="tmp1a"/>
      <fieldsf regex="(.*_a.xml)" f="path_to_file"/>
@@ -49,12 +56,10 @@
    <!-- Mandatory. Change in case you know what you're doing. -->
    <!-- * logLevel         : {debug, info, warning, error, critical} -->
    <!-- * scenarioMaxN     : Max number of scenarios allowed -->
-   <!-- * scenarioMaxSize  : Max size (Bytes) allowed for each scenario -->
    <!-- * scenarioValidate : Validates XML syntax of scenarios -->
    <!-- * regexValidate    : Validates all the used regexs -->
    <advanced logLevel="info"
-	     scenarioMaxN="30"
-	     scenarioMaxSize="2000"
+	     scenarioMaxN="2000"
 	     scenarioValidate="True"
 	     regexValidate="True"/>
 </sipptam>

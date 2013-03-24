@@ -12,12 +12,9 @@
 import getopt
 import os
 import sys
-import glob
-import lxml
-import re
 
 from validate.Validate import Validate
-from utils.Utils import str2bool, fill
+from utils.Utils import fill
 from tas.Tas import Tas
 from testrun.Testrun import Testrun
 from config.Config import Config
