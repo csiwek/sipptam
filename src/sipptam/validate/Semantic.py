@@ -92,9 +92,10 @@ def checkSemantics(obj):
         print '[info] config:\"%s\" not used.' % (m)
 
     # Lets get a list of scenarios with scenarioPath. 
-    scenarioPath = obj.scenarioPath
-    ss = glob.glob(obj.scenarioPath)
-    print '[info] Success validating scenarioPath:\"%s\"' % scenarioPath
+    ss = sets.Set([])
+    for sp in sets.Set([x.scenarioPath for x in obj.testrun]):
+        ss.update(glob.glob(sp))
+        print '[info] Success validating scenarioPath:\"%s\"' % sp
 
     # Lets validate scenarioMaxN in case it is desired.
     scenarioMaxN = obj.advanced.scenarioMaxN

@@ -24,7 +24,6 @@ schema = StringIO.StringIO('''\
                 <xs:element name="mod" type="modType" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element name="advanced" type="advancedType" minOccurs="1" maxOccurs="1"/>
             </xs:sequence>
-            <xs:attribute name="scenarioPath" type="xs:string" use="required"/>
         </xs:complexType>
     </xs:element>
 
@@ -35,6 +34,7 @@ schema = StringIO.StringIO('''\
     </xs:complexType>
 
     <xs:complexType name="testrunType">
+        <xs:attribute name="scenarioPath" type="xs:string" use="required"/>
         <xs:attribute name="regex" type="xs:string" use="required"/>
         <xs:attribute name="configlink" type="xs:string" use="required"/>
         <xs:attribute name="modlink" type="xs:string"/>

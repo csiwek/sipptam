@@ -26,7 +26,7 @@ def main ():
     '''
     # Setting some default variables
     name = 'sipptam'
-    configFile = '/etc/sipptam/config/sipptam.xml'
+    configFilePath = '/etc/sipptam/sipptam.xml'
     logFormat = '%(levelname)-7s ' + \
         '%(name)6s ' + \
         '%(asctime)s ' + \
@@ -40,7 +40,7 @@ def main ():
         '''
         Helper function to which prints how to run this script
         '''
-        print 'Not running. Usage: %s [-c <<config_file>>]' % name
+        print 'Not running. Usage: %s [-c <<configFilePath>>]' % name
         sys.exit(1)
 
     # Lets parse input parameters
@@ -51,36 +51,42 @@ def main ():
     # Looking for command line parameters
     for o, a in opts:
         if o == '-c':
-            configFile = a
+            configFilePath = a
             continue
 
-    # Show which config file are we using
-    print '[info] Using configFile:\"%s\"' % configFile
-    # Parsing the config file
+    # Show which configFile are we using
+    print '[info] Using configFilePath:\"%s\"' % configFilePath
+    # Parsing the configFile file
     try:
-        # Parsing configuration file. Lexical validation
-        config = Validate(configFile, parse=True)
-        config.checkSemantics()
+        # Parsing configFile. Lexical validation
+        configFile = Validate(configFilePath, parse=True)
+        configFile.checkSemantics()
     except Exception, err:
-        print '[error] Configuration file error. %s' % str(err)
+        print '[error] ConfigFile file error. %s' % str(err)
         usage()
 
-
     # Validation done. Creating objects from the parameters.
-    tasL = fill(Tas, config.obj.tas)
-    testrunL = fill(Testrun, config.obj.testrun)
-    configD = fill(Config, config.obj.config, dic = True)
-    modD = fill(Mod, config.obj.mod, dic = True)
+    tasL = fill(Tas, configFile.obj.tas)
+    testrunL = fill(Testrun, configFile.obj.testrun)
+    configDic = fill(Config, configFile.obj.config, dic = True)
+    modDic = fill(Mod, configFile.obj.mod, dic = True)
 
-    print '--'
-    print tasL
-    print '--'
-    print testrunL
-    print '--'
-    print configD
-    print '--'
-    print modD
-    print '--'
+    # Attaching {config, mod} objects to the testruns.
+    for t in testrunL:
+        config = configDic[t.get('configlink')]
+        t.set('config', config, type(config))
+        if t.has('modlink'):
+            mod = modDic[t.get('modlink')]
+            t.set('mod', mod, type(mod))
 
+    # @TOREMOVE @TMP
+    for t in tasL:
+        print t
+    print '-' * 80
+    for t in testrunL:
+        print t
+        t.tmpRun()
+        print '~' * 60
+        
 if __name__ == '__main__':
     main()

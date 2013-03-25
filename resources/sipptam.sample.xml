@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<sipptam scenarioPath="/etc/sipptam/scenarios/*.xml">
+<sipptam>
 
    <!-- Mandatory. ta slaves to use. -->
    <tas host="10.22.22.200" port="5000" jobs="2"/>
@@ -8,15 +8,18 @@
    <tas host="10.22.22.202" port="5002" jobs="4"/>
 
    <!-- Mandatory. Test to run. -->
-   <testrun regex="(.*-000.*)" 
+   <testrun scenarioPath="/etc/sipptam/scenarios/*.xml"
+	    regex="(.*-000.*)" 
 	    configlink="conf1"/>
 
-   <testrun regex="(.*-001.*)"
+   <testrun scenarioPath="/etc/sipptam/scenarios/*.xml"
+	    regex="(.*-00.*a.*)"
 	    configlink="conf1"
 	    modlink="two"/>
-   <testrun regex="(.*)"
-	    configlink="conf2"
-	    modlink="one"/>
+
+   <testrun scenarioPath="/etc/sipptam/scenarios/*.xml"
+	    regex="(.*)"
+	    configlink="conf3"/>
 
    <!-- Mandatory (Min 1 config). Configs used by testruns. -->
    <config id="conf1"
@@ -38,13 +41,6 @@
 	   ratio="5;10"
 	   max="100;200"
 	   execMode="serial"
-	   tries="1"/>
-
-   <config id="conf4"
-	   pause="20.0"
-	   ratio="5;10"
-	   max="100;200"
-	   execMode="parallel"
 	   tries="1"/>
 
    <!-- Optional. Modifications that might be applied by a testrun. -->

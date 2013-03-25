@@ -15,6 +15,36 @@ Generic object to save the configuration parameters.
 import logging
 import re
 from lxml import etree
+import glob
+import os
+import sets
+
+
+def filesMatch(path, regexs):
+    '''
+    This function matches all the files contained in the path
+    that match the list of regex and return them as a list.    
+    '''
+    files = glob.glob(path)
+    def fun(item):
+        checker = re.compile(item)
+        s = sets.Set(filter(
+                lambda x : checker.match(os.path.basename(x)), 
+                files))
+        if len(s): return (True, s)
+        else: return (False, None)
+
+    def fun2(x, y):
+        b, item = x
+        if not b:
+            return (False, None)
+        else:
+            b2, item2 = fun(y)
+            return b2, item2.intersection(item)
+        
+    if len(regexs):
+        return reduce(fun2, regexs[1:], fun(regexs[0]))
+
 
 def str2bool(v):
     '''
@@ -146,3 +176,18 @@ def text2dic(text, assign = '=', sep = ';'):
     ret = dict((n,v) for n,v in (a.split(assign, 1) for a in l))
     logging.debug('converted dic:\"%s\"' % (ret))
     return ret
+
+if __name__ == '__main__':
+    '''
+    Main execution thread.
+    '''
+    tests = []
+    tests.append([])
+    tests.append(['(.*)'])
+    tests.append(['(.*_a)'])
+    tests.append(['(.*)', '(.*_b.xml)'])
+    tests.append(['(.*)', '(.*00.*)', '(.*_c.*)'])
+    for t in tests:
+        print '*' * 60
+        print t
+        print filesMatch('/etc/sipptam/scenarios/*.xml', t)
