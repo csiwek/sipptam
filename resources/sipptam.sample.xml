@@ -20,20 +20,27 @@
 
    <!-- Mandatory (Min 1 config). Configs used by testruns. -->
    <config id="conf1"
-	   pause="20.0"
-	   ratio="5;10"
-	   max="100;200"
-	   execMode="parallel"
+	   pause="1.0"
+	   ratio="1;5"
+	   max="10;50"
+	   execMode="serial"
 	   tries="1"/>
 
    <config id="conf2"
+	   pause="1.0"
+	   ratio="1;5"
+	   max="10;50"
+	   execMode="parallel"
+	   tries="1"/>
+
+   <config id="conf3"
 	   pause="20.0"
 	   ratio="5;10"
 	   max="100;200"
 	   execMode="serial"
 	   tries="1"/>
 
-   <config id="conf3"
+   <config id="conf4"
 	   pause="20.0"
 	   ratio="5;10"
 	   max="100;200"

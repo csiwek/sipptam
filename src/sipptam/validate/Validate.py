@@ -11,6 +11,7 @@ Generic object to save the configuration parameters.
 @copyright: INdigital Telecom, Inc. 2012
 '''
 
+
 import os
 import types
 from lxml import etree
@@ -19,6 +20,7 @@ from pprint import pformat
 from sipptam.utils.Utils import xml2obj
 from sipptam.validate.Schema import schema
 from sipptam.validate.Semantic import checkSemantics
+
 
 class Validate(object):
     '''

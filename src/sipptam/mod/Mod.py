@@ -24,9 +24,11 @@ class Mod(object):
     id = None
     replaces = None
     fieldsfs = None
+    kwargs = None
     def __init__(self, **kwargs):
         #for key, value in kwargs.iteritems():
         #    print "%s = %s" % (key, value)
+        #self.kwargs = kwargs
         self.id = kwargs['id']
         self.replaces = fill(Replace, kwargs['replace'])
         self.fieldsfs = fill(Fieldsf, kwargs['fieldsf'])
@@ -35,6 +37,7 @@ class Mod(object):
         return 'id:%s replaces:%s fieldsfs:%s' % (self.id,
                                                   self.replaces,
                                                   self.fieldsfs)
+
     def getId(self):
         return self.id
 

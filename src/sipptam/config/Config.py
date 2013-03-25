@@ -21,10 +21,14 @@ class Config(object):
         #for key, value in kwargs.iteritems():
         #    print "%s = %s" % (key, value)
         self.kwargs = kwargs
+        self.id = kwargs['id']
         self.mods = []
 
     def __str__(self):
         return '%s' % (str(self.kwargs))
+
+    def getId(self):
+        return self.id
 
     def get(self, attr):
         if attr in self.kwargs.keys():

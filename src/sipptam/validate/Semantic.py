@@ -11,12 +11,12 @@ This function will evaluate need semantic checks in the validation process.
 @copyright: INdigital Telecom, Inc. 2012
 '''
 
+
 import sets
 import collections
 import glob
 import lxml
 import re
-
 
 from sipptam.utils.Utils import str2bool
 
@@ -43,10 +43,18 @@ class regexValidateExcept(Exception):
 
 
 def checkDuplicates(l, exception):
+    '''
+    Checks if we have any duplicates in the list @l,
+    if not @exception is raised.
+    '''
     if any([True for _,size in collections.Counter(l).items() if size > 1]):
         raise exception
 
 def checkDefinedUsed(definedL, usedL, exception):
+    '''
+    This function checks if the members of the list @usedL 
+    are defined in the @definedL, if not @exception is raised.
+    '''
     definedSet = sets.Set(definedL)
     usedSet = sets.Set(usedL)
     if not definedSet.issuperset(usedSet):
@@ -71,7 +79,7 @@ def checkSemantics(obj):
     notused = checkDefinedUsed([x.id for x in obj.mod],
                                [x.modlink for x in obj.testrun if x.modlink],
                                modNotDefined('Found mods not defined'))
-    print '[info] Success validating used & defined mods.'
+    print '[info] Success validating \"mod\"s used & defined.'
     for m in notused:
         print '[info] mod:\"%s\" not used.' % (m)
 
@@ -79,7 +87,7 @@ def checkSemantics(obj):
     notused = checkDefinedUsed([x.id for x in obj.config],
                                [x.configlink for x in obj.testrun],
                                configNotDefined('Found configs not defined'))
-    print '[info] Success validating used & defined configs.'
+    print '[info] Success validating \"config\"s used & defined.'
     for m in notused:
         print '[info] config:\"%s\" not used.' % (m)
 
@@ -118,10 +126,13 @@ def checkSemantics(obj):
 
     # Validating well formed regexs. regexValidate
     if str2bool(obj.advanced.regexValidate):
+        # Getting a set og the regexs of the testruns.
         tmp = sets.Set([x.regex for x in obj.testrun])
+        # Updating the set with regexs of the mods.
         for m in obj.mod:
             tmp.update(sets.Set([a.regex for a in \
                                      (list(m.replace) + list(m.fieldsf))]))
+        # Trying to compile every regex defined.
         for r in tmp:
             try:
                 re.compile(r)

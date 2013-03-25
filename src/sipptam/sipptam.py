@@ -10,7 +10,6 @@
     :license: See LICENSE_FILE.
 """
 import getopt
-import os
 import sys
 
 from validate.Validate import Validate
@@ -41,7 +40,7 @@ def main ():
         '''
         Helper function to which prints how to run this script
         '''
-        print 'usage: %s [-c <<config_file>>]' % name
+        print 'Not running. Usage: %s [-c <<config_file>>]' % name
         sys.exit(1)
 
     # Lets parse input parameters
@@ -70,13 +69,18 @@ def main ():
     # Validation done. Creating objects from the parameters.
     tasL = fill(Tas, config.obj.tas)
     testrunL = fill(Testrun, config.obj.testrun)
+    configD = fill(Config, config.obj.config, dic = True)
+    modD = fill(Mod, config.obj.mod, dic = True)
 
-    #modD = fill(Modification, config.obj.modification, dic = True)
-    #for t in testrunL:
-        #t.addModification(modD[t.get('mod')])
-    #    print t
-    #print testrunL
-        
+    print '--'
+    print tasL
+    print '--'
+    print testrunL
+    print '--'
+    print configD
+    print '--'
+    print modD
+    print '--'
 
 if __name__ == '__main__':
     main()
