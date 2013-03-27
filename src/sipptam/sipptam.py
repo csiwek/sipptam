@@ -18,6 +18,10 @@ from tas.Tas import Tas
 from testrun.Testrun import Testrun
 from config.Config import Config
 from mod.Mod import Mod
+from utils.FileManager import FileManager
+from testrun.Scenario import Scenario
+from mod.Replace import Replace
+from mod.Fieldsf import Fieldsf
 
 
 def main ():
@@ -65,28 +69,36 @@ def main ():
         print '[error] ConfigFile file error. %s' % str(err)
         usage()
 
+    # Reading the files and storing them for future reads.
+    scenarioCache = FileManager()
+    scenarioCache.addFile(configFile.obj.ssSet)
+
     # Validation done. Creating objects from the parameters.
     tasL = fill(Tas, configFile.obj.tas)
     testrunL = fill(Testrun, configFile.obj.testrun)
     configDic = fill(Config, configFile.obj.config, dic = True)
     modDic = fill(Mod, configFile.obj.mod, dic = True)
 
-    # Attaching {config, mod} objects to the testruns.
+    # Lets create the proper modification objects
+    for m in configFile.obj.mod:
+        tmp = {'replaces' : fill(Replace, m.replace),
+               'fieldsfs' : fill(Fieldsf, m.fieldsf)}
+        m._attrs.update(tmp)
+
+    # Attaching {config, mod} objects in the testruns.
     for t in testrunL:
+        # Setting the proper config to the testrun.
         config = configDic[t.get('configlink')]
         t.set('config', config, type(config))
+
+        # Setting the proper mod in the testrun.
         if t.has('modlink'):
             mod = modDic[t.get('modlink')]
             t.set('mod', mod, type(mod))
 
-    # @TOREMOVE @TMP
-    for t in tasL:
-        print t
-    print '-' * 80
-    for t in testrunL:
-        print t
-        t.tmpRun()
-        print '~' * 60
-        
+        # Setting the proper scenarioCache.
+        t.set('scenarioCache', scenarioCache, type(scenarioCache))
+        t.run()
+
 if __name__ == '__main__':
     main()

@@ -10,10 +10,7 @@
     @organization: INdigital Telecom, Inc.
     @copyright: INdigital Telecom, Inc. 2013
 """
-from sipptam.mod.Mod import Mod
-from sipptam.config.Config import Config
-from sipptam.utils.Utils import filesMatch
-
+import time
 
 # Some exceptions
 class itemNotFoundExcept(Exception):
@@ -27,14 +24,20 @@ class Testrun(object):
     '''
     kwargs = None
     def __init__(self, **kwargs):
-        #for key, value in kwargs.iteritems():
-        #    print "%s = %s" % (key, value)
         self.kwargs = kwargs
 
     def __str__(self):
         tmp = []
-        tmp.append('kwargs:%s' % self.kwargs)
+        tmp.append('~' * 50)
+        tmp.append('testrun:\"%s\"' % (self.getId()))
+        tmp.append("%s" % (self.kwargs['config']))
+        if self.kwargs.has_key('mod'):
+            tmp.append("%s" % (self.kwargs['mod']))
+        tmp.append("kwargs:%s" % self.kwargs)
         return "\n".join(tmp)
+
+    def getId(self):
+        return self.kwargs['id']
 
     def has(self, attr):
         return attr in self.kwargs.keys()
@@ -53,11 +56,12 @@ class Testrun(object):
                                     'key:\"%s\" t:\"%s\" type(key):\"%s\"' %
                                     (key, t, type(key)))
 
-    def tmpRun(self):
-        print '+' * 80
-        print self.get('regex')
-        print self.get('scenarioPath')
-        print filesMatch(self.get('scenarioPath'), self.get('regex'))
+    def run(self):
+        for ratio in range(1, 3):
+            for max in range(6, 7):
+                for tries in range(1, 2):
+                    for s in self.get('scenarioNameL'):
+                        print s
 
 if __name__ == '__main__':
     '''

@@ -21,20 +21,30 @@ class Config(object):
         #for key, value in kwargs.iteritems():
         #    print "%s = %s" % (key, value)
         self.kwargs = kwargs
-        self.id = kwargs['id']
-        self.mods = []
 
     def __str__(self):
-        return '%s' % (str(self.kwargs))
+        tmp = []
+        tmp.append('=> config:\"%s\"' % self.get('id'))
+        for key, value in self.kwargs.iteritems():
+            tmp.append('    * %s:\"%s\"' % (key, value))
+        return "\n".join(tmp)
 
     def getId(self):
-        return self.id
+        return self.kwargs['id']
 
     def get(self, attr):
         if attr in self.kwargs.keys():
             return self.kwargs[attr]
         else:
-            raise itemNotFoundExcept('[error] attr:%s not found' % attr)
+            raise itemNotFoundExcept('[error] attr:\"%s\" not found' % attr)
+
+    def set(self, key, value, t):
+        if isinstance(value, t):
+            self.kwargs[key] = value
+        else:
+            raise invalidTypeExcept('Type mismatch ' +
+                                    'key:\"%s\" t:\"%s\" type(key):\"%s\"' %
+                                    (key, t, type(key)))
 
 if __name__ == '__main__':
     '''

@@ -4,6 +4,8 @@
 sipptam.config.Semantic.py
 
 This function will evaluate need semantic checks in the validation process.
+Adds some attributes to make things easier later.
+Removes not used configuration.
 
 @author:  Luis Martin Gil
 @contact: luis.martin.gil@indigital.net
@@ -18,11 +20,13 @@ import glob
 import lxml
 import re
 
-from sipptam.utils.Utils import str2bool
+from sipptam.utils.Utils import str2bool, flat
 
 
 # Some exceptions
 class duplicatedTasExcept(Exception):
+    pass
+class duplicatedTestrunExcept(Exception):
     pass
 class duplicatedConfigExcept(Exception):
     pass
@@ -34,7 +38,7 @@ class configNotDefined(Exception):
     pass
 class scenarioPathExcept(Exception):
     pass
-class scenarioMaxNExcept(Exception):
+class notEnoughTasExcept(Exception):
     pass
 class scenarioValidateExcept(Exception):
     pass
@@ -66,57 +70,58 @@ def checkSemantics(obj):
     '''
     # Check duplicated items
     checkDuplicates([(x.host, x.port) for x in obj.tas],
-                  duplicatedTasExcept('tas duplicated. Same host and port.'))
+                    duplicatedTasExcept('tas duplicated. Same host and port.'))
     print '[info] Success validating duplicated \"tas\" items.'
-    checkDuplicates([(x.id) for x in obj.config],
-                  duplicatedConfigExcept('config id duplicated.'))
+    checkDuplicates([x.id for x in obj.testrun],
+                    duplicatedTestrunExcept('testrun id duplicated.'))
+    print '[info] Success validating duplicated \"testrun\" items.'
+    checkDuplicates([x.id for x in obj.config],
+                    duplicatedConfigExcept('config id duplicated.'))
     print '[info] Success validating duplicated \"config\" items.'
     checkDuplicates([x.id for x in obj.mod],
-                  duplicatedModExcept('Mod id duplicated.'))
-    print '[info] Success validating duplicated \"mod\" items.'
+                    duplicatedModExcept('mod id duplicated.'))
+    print '[info] Success validating duplicated \"mod\" items.'    
 
-    # Checking mod defined and used. Making sure modlink exists.
-    notused = checkDefinedUsed([x.id for x in obj.mod],
-                               [x.modlink for x in obj.testrun if x.modlink],
-                               modNotDefined('Found mods not defined'))
-    print '[info] Success validating \"mod\"s used & defined.'
-    for m in notused:
-        print '[info] mod:\"%s\" not used.' % (m)
+    # Lets get a ordered list of scenarios for each testrun.
+    for t in obj.testrun:
+        t._attrs['scenarioNameL'] = sorted(glob.glob(t.scenarioPath))
+    # Removing testruns not used.
+    # Getting them to be able to output for the user.
+    notused = [x.id for x in filter(lambda x: not len(x.scenarioNameL), 
+                                    obj.testrun)]
+    obj.testrun = filter(lambda x: len(x.scenarioNameL), obj.testrun)
+    for item in notused:
+        print '[info] testrun:\"%s\" not applies to any file.' % item, \
+            'Removed. (Not parsing the rest its attributes either)' 
 
-    # Checking config defined and used.
-    notused = checkDefinedUsed([x.id for x in obj.config],
-                               [x.configlink for x in obj.testrun],
-                               configNotDefined('Found configs not defined'))
-    print '[info] Success validating \"config\"s used & defined.'
-    for m in notused:
-        print '[info] config:\"%s\" not used.' % (m)
+    # Getting a set of all the used scenarios
+    ssList = []
+    for t in obj.testrun:
+        for item in t.scenarioNameL:
+            print '[info] testrun:\"%s\" applies to scenario:\"%s\"' % \
+                (t.id, item)
+        ssList.append(t.scenarioNameL)
+    # Adding the set of the scenarios to the configuration.
+    obj._attrs['ssList'] = ssList
+    obj._attrs['ssSet'] = sets.Set(flat(ssList))
 
-    # Lets get a list of scenarios with scenarioPath. 
-    ss = sets.Set([])
-    for sp in sets.Set([x.scenarioPath for x in obj.testrun]):
-        ss.update(glob.glob(sp))
-        print '[info] Success validating scenarioPath:\"%s\"' % sp
-
-    # Lets validate scenarioMaxN in case it is desired.
-    scenarioMaxN = obj.advanced.scenarioMaxN
-    if scenarioMaxN: 
-        # Validating the number of scenarios. scenarioMaxN
-        if not ss:
-            raise scenarioPathExcept ('None scenarios found. ' + \
-                                          ' scenarioPath:\"%s\".' \
-                                          % scenarioPath)
-        elif int(scenarioMaxN) < len(ss):
-            raise scenarioMaxNExcept ('Found more scenarios than allowed. ' + \
-                                          'scenarioMaxN:\"%s\". (Found:%s)' \
-                                          % (scenarioMaxN, len(ss)))
-        print '[info] Success validating scenarioMaxN:\"%s\". (Found:%s)' % \
-            (scenarioMaxN, len(ss))
-    else:
-        print '[info] No need to validate the scenarioMaxN param.'
+    # Let's validate the length of the tas list, the scenarios 
+    # we want to run at once and the execMode.
+    obj._attrs['tasN'] = reduce(lambda x,y: x + int(y.jobs), obj.tas, 0)
+    conds = {'serial' : max(len(x) for x in ssList),
+             'parallel' : sum(len(x) for x in ssList)}
+    if obj.tasN < conds[obj.advanced.execMode]:
+        msg = 'Trying to run \"%s\" scenarios, ' % conds[obj.advanced.execMode]
+        msg += 'but we have just \"%s\" tas available. ' % obj.tasN
+        msg += 'Mode used is \"%s\".' % obj.advanced.execMode
+        raise notEnoughTasExcept(msg)
+    print '[info] Success validating testruns and size of the tas pool. ' + \
+        'available tas:\"%s\", needed tas:\"%s\".' % \
+        (obj.tasN, conds[obj.advanced.execMode])    
 
     # Validating well formed XML scenarios. scenarioValidate
     if str2bool(obj.advanced.scenarioValidate):
-        for s in ss:
+        for s in obj.ssSet:
             try:
                 lxml.etree.parse(s)
             except Exception, err:
@@ -125,11 +130,30 @@ def checkSemantics(obj):
             else:
                 print '[info] Success while XML parsing scenario:\"%s\"' % s
 
+    # Checking config defined and used.
+    notused = checkDefinedUsed([x.id for x in obj.config],
+                               [x.configlink for x in obj.testrun],
+                               configNotDefined('Found configs not defined'))
+    print '[info] Success validating \"config\"s used & defined.'
+    # Removing the configs not used.
+    obj.config = filter(lambda x: x.id not in notused, obj.config)
+    for item in notused:
+        print '[info] config:\"%s\" not used. Removed.' % item
+
+    # Checking mod defined and used. Making sure modlink exists.
+    notused = checkDefinedUsed([x.id for x in obj.mod],
+                               [x.modlink for x in obj.testrun if x.modlink],
+                               modNotDefined('Found mods not defined'))
+    print '[info] Success validating \"mod\"s used & defined.'
+    # Removing the configs not used.
+    obj.mod = filter(lambda x: x.id not in notused, obj.mod)
+    for item in notused:
+        print '[info] mod:\"%s\" not used. Removed.' % item
+
     # Validating well formed regexs. regexValidate
     if str2bool(obj.advanced.regexValidate):
-        # Getting a set og the regexs of the testruns.
-        tmp = sets.Set([x.regex for x in obj.testrun])
-        # Updating the set with regexs of the mods.
+        # Getting the set with regexs of the mods.
+        tmp = sets.Set([])
         for m in obj.mod:
             tmp.update(sets.Set([a.regex for a in \
                                      (list(m.replace) + list(m.fieldsf))]))

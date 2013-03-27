@@ -76,45 +76,6 @@
 
 
 
-    class FileItem(object):
-        '''
-        '''
-        fname = None
-        content = None
-        regexs = None
-        def __init__(self, fname, path):
-            file = os.path.join(fname, path)
-            try:
-                with open(file, 'r') as f:
-                    self.content = f.read()
-                self.fname = fname
-                self.regexs = sets.Set([])
-            except Exception, err:
-                raise
-        def addRegex(self, regex):
-            self.regexs.update(regex)
-
-    class FileManager(object):
-        '''
-        '''
-        files = None
-        def __init__(self):
-            self.files = {}
-        def addFile(self, fname, path):
-            if fname not in self.files.keys():
-                self.files.update(fname, FileItem(fname, path))
-                print '[debug] Adding this file to the FileManager:\"%s\"' % \
-                    self.fname
-            else:
-                print '[debug] File already included file:\"%s\"' % \
-                    self.fname
-        def addRegex(self, fname, regexs):
-            if fname not in self.files.keys():
-                print '[error] Unknown FileItem when updating a regex ' % \
-                    'fname:\"%s\", regex:\"%s\"' % (fname, regex)
-            else:
-                map(lambda x : self.files[fname].addRegex(x), regexs)
-        def iterFiltered(self, fname = None, regexs = None):
             
 
     fm = FileManager()

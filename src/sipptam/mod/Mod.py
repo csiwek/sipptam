@@ -12,34 +12,32 @@
     @copyright: INdigital Telecom, Inc. 2013. luismartingil.
     @license: See LICENSE_FILE.
 """
-
-from sipptam.mod.Replace import Replace
-from sipptam.mod.Fieldsf import Fieldsf
-from sipptam.utils.Utils import fill
+#from sipptam.mod.Replace import Replace
+#from sipptam.mod.Fieldsf import Fieldsf
+#from sipptam.utils.Utils import fill
 
 
 class Mod(object):
     '''
     '''
-    id = None
-    replaces = None
-    fieldsfs = None
     kwargs = None
     def __init__(self, **kwargs):
         #for key, value in kwargs.iteritems():
         #    print "%s = %s" % (key, value)
-        #self.kwargs = kwargs
-        self.id = kwargs['id']
-        self.replaces = fill(Replace, kwargs['replace'])
-        self.fieldsfs = fill(Fieldsf, kwargs['fieldsf'])
+        self.kwargs = kwargs
+        #self.id = kwargs['id']
+        #self.replaces = fill(Replace, kwargs['replace'])
+        #self.fieldsfs = fill(Fieldsf, kwargs['fieldsf'])
         
     def __str__(self):
-        return 'id:%s replaces:%s fieldsfs:%s' % (self.id,
-                                                  self.replaces,
-                                                  self.fieldsfs)
+        tmp = []
+        tmp.append('=> mod:\"%s\"' % self.getId())
+        for key, value in self.kwargs.iteritems():
+            tmp.append('    * %s:\"%s\"' % (key, value))
+        return "\n".join(tmp)
 
     def getId(self):
-        return self.id
+        return self.kwargs['id']
 
     def apply(self):
         map(lambda x : x.apply(), \

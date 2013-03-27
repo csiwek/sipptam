@@ -2,45 +2,49 @@
 <sipptam>
 
    <!-- Mandatory. ta slaves to use. -->
-   <tas host="10.22.22.200" port="5000" jobs="2"/>
-   <tas host="10.22.22.201" port="5001" jobs="2"/>
-   <tas host="10.22.22.202" port="5001" jobs="4"/>
-   <tas host="10.22.22.202" port="5002" jobs="4"/>
+   <tas host="10.22.22.200" port="5000" jobs="1"/>
+   <tas host="10.22.22.201" port="5001" jobs="1"/>
+   <tas host="10.22.22.202" port="5001" jobs="2"/>
+   <tas host="10.22.22.202" port="5002" jobs="2"/>
 
    <!-- Mandatory. Test to run. -->
-   <testrun scenarioPath="/etc/sipptam/scenarios/*.xml"
-	    regex="(.*-000.*)" 
-	    configlink="conf1"/>
+   <testrun id="test-000"
+	    scenarioPath="/etc/sipptam/scenarios/*000*.xml"
+	    configlink="simple"/>
 
-   <testrun scenarioPath="/etc/sipptam/scenarios/*.xml"
-	    regex="(.*-00.*a.*)"
-	    configlink="conf1"
+   <testrun id="test-001"
+	    scenarioPath="/etc/sipptam/scenarios/*000*.xml"
+	    configlink="simple"
+	    modlink="one"/>
+
+   <testrun id="test-notfound"
+	    scenarioPath="/etc/sipptam/scenarios/*notfound*.xml"
+	    configlink="simple2"
 	    modlink="two"/>
 
-   <testrun scenarioPath="/etc/sipptam/scenarios/*.xml"
-	    regex="(.*)"
-	    configlink="conf3"/>
-
    <!-- Mandatory (Min 1 config). Configs used by testruns. -->
-   <config id="conf1"
+   <config id="simple"
 	   pause="1.0"
 	   ratio="1;5"
 	   max="10;50"
-	   execMode="serial"
 	   tries="1"/>
 
-   <config id="conf2"
+   <config id="advanced"
 	   pause="1.0"
 	   ratio="1;5"
 	   max="10;50"
-	   execMode="parallel"
 	   tries="1"/>
 
-   <config id="conf3"
-	   pause="20.0"
-	   ratio="5;10"
-	   max="100;200"
-	   execMode="serial"
+   <config id="advanced_toremove"
+	   pause="1.0"
+	   ratio="1;5"
+	   max="10;50"
+	   tries="1"/>
+
+   <config id="advanced_toremove2"
+	   pause="1.0"
+	   ratio="1;5"
+	   max="10;50"
 	   tries="1"/>
 
    <!-- Optional. Modifications that might be applied by a testrun. -->
@@ -50,19 +54,19 @@
    </mod>
 
    <mod id="two">
-     <replace regex="(.*_a.xml)" src="__tmp1a__" dst="tmp1a"/>
-     <replace regex="(.*_b.xml)" src="__tmp1a__" dst="tmp1a"/>
-     <fieldsf regex="(.*_a.xml)" f="path_to_file"/>
-     <fieldsf regex="(.*_b.xml)" f="path_to_file"/>
+     <replace regex="(.*_aaa1.xml)" src="__tmp1a__" dst="tmp1a"/>
+     <replace regex="(.*_bbb1.xml)" src="__tmp1a__" dst="tmp1a"/>
+     <fieldsf regex="(.*_aaa2.xml)" f="path_to_file"/>
+     <fieldsf regex="(.*_bbb2.xml)" f="path_to_file"/>
    </mod>
 
    <!-- Mandatory. Change in case you know what you're doing. -->
    <!-- * logLevel         : {debug, info, warning, error, critical} -->
-   <!-- * scenarioMaxN     : Max number of scenarios allowed -->
+   <!-- * execMode         : {serial, parallel} -->
    <!-- * scenarioValidate : Validates XML syntax of scenarios -->
    <!-- * regexValidate    : Validates all the used regexs -->
    <advanced logLevel="info"
-	     scenarioMaxN="2000"
+	     execMode="parallel"
 	     scenarioValidate="True"
 	     regexValidate="True"/>
 </sipptam>

@@ -34,8 +34,8 @@ schema = StringIO.StringIO('''\
     </xs:complexType>
 
     <xs:complexType name="testrunType">
+        <xs:attribute name="id" type="xs:string" use="required"/>
         <xs:attribute name="scenarioPath" type="xs:string" use="required"/>
-        <xs:attribute name="regex" type="xs:string" use="required"/>
         <xs:attribute name="configlink" type="xs:string" use="required"/>
         <xs:attribute name="modlink" type="xs:string"/>
     </xs:complexType>
@@ -45,7 +45,6 @@ schema = StringIO.StringIO('''\
         <xs:attribute name="pause" type="positiveFloat" use="required"/>
         <xs:attribute name="ratio" type="numberListType" use="required"/>
         <xs:attribute name="max" type="numberListType" use="required"/>
-        <xs:attribute name="execMode" type="execModeType" use="required"/>
         <xs:attribute name="tries" type="xs:positiveInteger" use="required"/>
     </xs:complexType>
 
@@ -70,7 +69,7 @@ schema = StringIO.StringIO('''\
 
     <xs:complexType name="advancedType">
             <xs:attribute name="logLevel" type="logLevelType" use="required"/>
-            <xs:attribute name="scenarioMaxN" type="xs:positiveInteger"/>
+            <xs:attribute name="execMode" type="execModeType" use="required"/>
             <xs:attribute name="scenarioValidate" type="myBoolType" use="required"/>
             <xs:attribute name="regexValidate" type="myBoolType" use="required"/>
     </xs:complexType>

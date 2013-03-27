@@ -19,6 +19,11 @@ import glob
 import os
 import sets
 
+def flat(l):
+    '''
+    Flats a list, from stackoverflow.
+    '''
+    return [item for sublist in l for item in sublist]
 
 def filesMatch(path, regexs):
     '''
