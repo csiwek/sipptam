@@ -10,7 +10,6 @@
     :license: See LICENSE_FILE.
 """
 import getopt
-import sys
 
 from validate.Validate import Validate
 from utils.Utils import fill
@@ -22,6 +21,7 @@ from utils.FileManager import FileManager
 from testrun.Scenario import Scenario
 from mod.Replace import Replace
 from mod.Fieldsf import Fieldsf
+from utils.Messages import showVersion, showHelp
 
 
 def main ():
@@ -31,6 +31,10 @@ def main ():
     # Setting some default variables
     name = 'sipptam'
     configFilePath = '/etc/sipptam/sipptam.xml'
+    interactive = False
+    background = False
+    version = False
+    help = False
     logFormat = '%(levelname)-7s ' + \
         '%(name)6s ' + \
         '%(asctime)s ' + \
@@ -40,23 +44,37 @@ def main ():
         '%(funcName)-22s ' + \
         '%(message)s '
 
-    def usage():
-        '''
-        Helper function to which prints how to run this script
-        '''
-        print 'Not running. Usage: %s [-c <<configFilePath>>]' % name
-        sys.exit(1)
-
     # Lets parse input parameters
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'c:')
-    except getopt.GetoptError:
-        usage()
+        opts, args = getopt.getopt(sys.argv[1:], 'c:ibvh')
+    except getopt.GetoptError, msg:
+        print '[error] %s' % msg
+        showHelp()
     # Looking for command line parameters
     for o, a in opts:
         if o == '-c':
             configFilePath = a
             continue
+        elif o == '-i':
+            interactive = True
+            continue
+        elif o == '-b':
+            background = True
+            continue
+        elif o == '-v':
+            version = True
+            continue
+        elif o == '-h':
+            help = True
+            continue
+
+    # Output the version if the user wants it
+    if version:
+        showVersion()
+
+    # Output the help if the user wants it
+    if help: 
+        showHelp()
 
     # Show which configFile are we using
     print '[info] Using configFilePath:\"%s\"' % configFilePath
@@ -67,7 +85,7 @@ def main ():
         configFile.checkSemantics()
     except Exception, err:
         print '[error] ConfigFile file error. %s' % str(err)
-        usage()
+        showHelp()
 
     # Reading the files and storing them for future reads.
     scenarioCache = FileManager()
