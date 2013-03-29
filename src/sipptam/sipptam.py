@@ -10,6 +10,7 @@
     :license: See LICENSE_FILE.
 """
 import getopt
+import sys
 
 from validate.Validate import Validate
 from utils.Utils import fill
@@ -22,6 +23,7 @@ from testrun.Scenario import Scenario
 from mod.Replace import Replace
 from mod.Fieldsf import Fieldsf
 from utils.Messages import showVersion, showHelp
+from thread.Pool import Pool
 
 
 def main ():
@@ -35,21 +37,17 @@ def main ():
     background = False
     version = False
     help = False
-    logFormat = '%(levelname)-7s ' + \
-        '%(name)6s ' + \
-        '%(asctime)s ' + \
-        '%(threadName)-24s ' + \
-        '%(filename)-24s ' + \
-        '+%(lineno)-4d ' + \
-        '%(funcName)-22s ' + \
-        '%(message)s '
 
     # Lets parse input parameters
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'c:ibvh')
-    except getopt.GetoptError, msg:
+        optsLetters = [x for x,y in opts]
+        if '-i' in optsLetters and '-b' in optsLetters:
+            raise Exception('Interactive & background mode aren\'t compatible')
+    except Exception, msg:
         print '[error] %s' % msg
-        showHelp()
+        showHelp(name)
+
     # Looking for command line parameters
     for o, a in opts:
         if o == '-c':
@@ -70,11 +68,13 @@ def main ():
 
     # Output the version if the user wants it
     if version:
-        showVersion()
+        showVersion(name)
 
     # Output the help if the user wants it
     if help: 
-        showHelp()
+        showHelp(name)
+
+    print '[info] Found interactive mode -i'
 
     # Show which configFile are we using
     print '[info] Using configFilePath:\"%s\"' % configFilePath
@@ -85,14 +85,15 @@ def main ():
         configFile.checkSemantics()
     except Exception, err:
         print '[error] ConfigFile file error. %s' % str(err)
-        showHelp()
+        showHelp(name)
 
     # Reading the files and storing them for future reads.
     scenarioCache = FileManager()
     scenarioCache.addFile(configFile.obj.ssSet)
 
     # Validation done. Creating objects from the parameters.
-    tasL = fill(Tas, configFile.obj.tas)
+    tasPool = Pool(0.1)
+    map(lambda x: tasPool.append(x), fill(Tas, configFile.obj.tas))
     testrunL = fill(Testrun, configFile.obj.testrun)
     configDic = fill(Config, configFile.obj.config, dic = True)
     modDic = fill(Mod, configFile.obj.mod, dic = True)

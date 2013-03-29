@@ -12,7 +12,7 @@ setup(name         = nname,
       author       = "INdigital Telecom",
       author_email = "luis.martin.gil@indigital.net",
       url          = "http://www.indigital.net",
-      description  = "%s - Sipp Testing Automation Manager" % nname,
+      description  = "%s - Sipp Test Automation Manager" % nname,
       classifiers  = [
         "Classifier: Development Status :: 4 - Beta",
         "Classifier: Operating System :: POSIX :: Linux",

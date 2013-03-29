@@ -12,11 +12,12 @@
 """
 import sys
 
-def showVersion():
+def showVersion(name):
     '''
     Helper function to show the 
     '''
-    msgs = ['Beta version.',
+    msgs = ['%s' % name,
+            'Beta version.',
             'INdigital Telecom 2013.',
             'Luis Martin Gil.',
             '',
@@ -24,7 +25,7 @@ def showVersion():
     print '\n'.join(msgs)
     sys.exit(1)
 
-def showHelp():
+def showHelp(name):
     '''
     Helper function to which prints how to run this script
     '''
