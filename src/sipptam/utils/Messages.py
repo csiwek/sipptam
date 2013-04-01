@@ -21,7 +21,8 @@ def showInteractiveOut(name, version):
     '''
     msgs = ['You decided not to continue.'
             'Thanks for using this software.',
-            '%s - %s' % (name, version)]
+            '%s - %s' % (name, version),
+            '']
     sys.stdout.write('\n'.join(msgs))
     sys.exit(1)
 
@@ -33,7 +34,8 @@ def showVersion(name, version):
             'INdigital Telecom 2013.',
             'Luis Martin Gil.',
             '',
-            'Not running!']
+            'Not running!',
+            '']
     sys.stdout.write('\n'.join(msgs))
     sys.exit(1)
 
@@ -61,6 +63,7 @@ def showHelp(name, version):
             '    %s -c <configfile> -v' % name,
             '    %s -c <configfile> -h' % name,
             '',
-            'Not running!']
+            'Not running!',
+            '']
     sys.stdout.write('\n'.join(msgs))
     sys.exit(1)
