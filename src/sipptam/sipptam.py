@@ -38,22 +38,22 @@ def main ():
     '''
     # Defines a logging level and logging format based on a given string key.
     LEVELS = {'debug': (logging.DEBUG,
-                        '%(levelname)-7s %(name)-30s %(threadName)-40s' + 
+                        '%(levelname)-9s %(name)-30s %(threadName)-40s' + 
                         ' +%(lineno)-4d' +
                         ' %(message)s'),
               'info': (logging.INFO,
-                       '%(levelname)-7s %(message)s'),
+                       '%(levelname)-9s %(message)s'),
               'warning': (logging.WARNING,
-                          '%(levelname)-7s %(message)s'),
+                          '%(levelname)-9s %(message)s'),
               'error': (logging.ERROR,
-                        '%(levelname)-7s %(message)s'),
+                        '%(levelname)-9s %(message)s'),
               'critical': (logging.CRITICAL,
-                           '%(levelname)-7s %(message)s')} 
+                           '%(levelname)-9s %(message)s')} 
     
     # Setting some default variables
     _name = 'sipptam'
     _version = '0.1'
-    configFilePath = '/etc/sipptam/sipptam.xml'
+    configFilePath = '/usr/local/share/sipptam/sipptam.sample.xml'
     loglevel, logformat = LEVELS['info']
     interactive = False
     background = False
@@ -113,8 +113,6 @@ def main ():
     
     #        facility=logging.handlers.SysLogHandler.LOG_USER)
     logger.addHandler(handler)
-
-    logger.critical('warning!!!!!!!!!')
 
     # Output the version if the user wants it.
     if version:

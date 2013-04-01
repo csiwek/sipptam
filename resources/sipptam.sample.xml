@@ -13,21 +13,21 @@
 
    <!-- Mandatory. Test to run. -->
    <testrun id="test-000"
-	    scenarioPath="/etc/sipptam/scenarios/test-000*.xml"
+	    scenarioPath="/usr/local/share/sipptam/scenarios/test-000*.xml"
 	    configlink="simple"/>
 
    <testrun id="test-001"
-	    scenarioPath="/etc/sipptam/scenarios/test-001*.xml"
+	    scenarioPath="/usr/local/share/sipptam/scenarios/test-001*.xml"
 	    configlink="simple"
 	    modlink="one"/>
 
    <testrun id="test-notfound"
-	    scenarioPath="/etc/sipptam/scenarios/*notfound*.xml"
+	    scenarioPath="/usr/local/share/sipptam/scenarios/*notfound*.xml"
 	    configlink="simple2"
 	    modlink="two"/>
 
    <testrun id="test-002"
-	    scenarioPath="/etc/sipptam/scenarios/test-002*.xml"
+	    scenarioPath="/usr/local/share/sipptam/scenarios/test-002*.xml"
 	    configlink="simple"
 	    modlink="two"/>
 

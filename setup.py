@@ -31,6 +31,6 @@ setup(name         = nname,
       install_requires = ['lxml'],
       data_files = [(os.path.join(sys.prefix, 'local', 'share', nname, 'scenarios'),
                      glob.glob(os.path.join('resources', 'scenarios', '*.xml'))),
-                    (os.path.join(sys.prefix, 'local', 'share', nname, 'config'),
-                     glob.glob(os.path.join('resources', 'sipptam.sample.xml')))]
+                    (os.path.join(sys.prefix, 'local', 'share', nname),
+                     glob.glob(os.path.join('resources', '*.xml')))]
       )

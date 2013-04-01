@@ -38,6 +38,8 @@ class modNotDefined(Exception):
     pass
 class configNotDefined(Exception):
     pass
+class testrunsEmptyExcept(Exception):
+    pass
 class scenarioPathExcept(Exception):
     pass
 class notEnoughTasExcept(Exception):
@@ -111,6 +113,11 @@ def checkSemantics(obj):
     obj._attrs['ssList'] = ssList
     obj._attrs['ssSet'] = sets.Set(flat(ssList))
 
+    # If none scenario applies, just exit.
+    if not len(ssList):
+        msg = 'Testruns are empty, none scenarios found'
+        raise testrunsEmptyExcept(msg)
+    
     # Let's validate the length of the tas list, the scenarios 
     # we want to run at once and the execMode.
     obj._attrs['tasN'] = reduce(lambda x,y: x + int(y.jobs), obj.tas, 0)
