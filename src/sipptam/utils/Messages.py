@@ -10,26 +10,37 @@
     @organization: INdigital Telecom, Inc.
     @copyright: INdigital Telecom, Inc. 2013
 """
-import sys
 
-def showVersion(name):
+import sys
+import logging
+
+
+def showInteractiveOut(name, version):
+    '''
+    '''
+    msgs = ['You decided not to continue.'
+            'Thanks for using this software.',
+            '%s - %s' % (name, version)]
+    logging.info('\n'.join(msgs))
+    sys.exit(1)
+
+def showVersion(name, version):
     '''
     Helper function to show the 
     '''
-    msgs = ['%s' % name,
-            'Beta version.',
+    msgs = ['%s - %s' % (name, version),
             'INdigital Telecom 2013.',
             'Luis Martin Gil.',
             '',
             'Not running!']
-    print '\n'.join(msgs)
+    logging.info('\n'.join(msgs))
     sys.exit(1)
 
-def showHelp(name):
+def showHelp(name, version):
     '''
     Helper function to which prints how to run this script
     '''
-    msgs = ['%s. Help menu.' % name,
+    msgs = ['%s - %s. Help menu.' % (name, version),
             '',
             'Parameters:',
             ' -c  <configfile>',
@@ -46,5 +57,5 @@ def showHelp(name):
             '    %s -c <configfile> -h' % name,
             '',
             'Not running!']
-    print '\n'.join(msgs)
+    logging.info('\n'.join(msgs))
     sys.exit(1)

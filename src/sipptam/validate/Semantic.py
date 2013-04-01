@@ -13,15 +13,15 @@ Removes not used configuration.
 @copyright: INdigital Telecom, Inc. 2012
 '''
 
-
 import sets
 import collections
 import glob
 import lxml
 import re
+import logging
+import os
 
 from sipptam.utils.Utils import str2bool, flat
-
 
 # Some exceptions
 class duplicatedTasExcept(Exception):
@@ -71,35 +71,38 @@ def checkSemantics(obj):
     # Check duplicated items
     checkDuplicates([(x.host, x.port) for x in obj.tas],
                     duplicatedTasExcept('tas duplicated. Same host and port.'))
-    print '[info] Success validating duplicated \"tas\" items.'
+    logging.info('Success validating duplicated \"tas\" items.')
     checkDuplicates([x.id for x in obj.testrun],
                     duplicatedTestrunExcept('testrun id duplicated.'))
-    print '[info] Success validating duplicated \"testrun\" items.'
+    logging.info('Success validating duplicated \"testrun\" items.')
     checkDuplicates([x.id for x in obj.config],
                     duplicatedConfigExcept('config id duplicated.'))
-    print '[info] Success validating duplicated \"config\" items.'
+    logging.info('Success validating duplicated \"config\" items.')
     checkDuplicates([x.id for x in obj.mod],
                     duplicatedModExcept('mod id duplicated.'))
-    print '[info] Success validating duplicated \"mod\" items.'    
+    logging.info('Success validating duplicated \"mod\" items.')
 
     # Lets get a ordered list of scenarios for each testrun.
     for t in obj.testrun:
         t._attrs['scenarioNameL'] = sorted(glob.glob(t.scenarioPath))
+        t._attrs['scenarioNameShortL'] = \
+            [os.path.basename(x) for x in sorted(glob.glob(t.scenarioPath))]
     # Removing testruns not used.
     # Getting them to be able to output for the user.
     notused = [x.id for x in filter(lambda x: not len(x.scenarioNameL), 
                                     obj.testrun)]
     obj.testrun = filter(lambda x: len(x.scenarioNameL), obj.testrun)
     for item in notused:
-        print '[info] testrun:\"%s\" not applies to any file.' % item, \
-            'Removed. (Not parsing the rest its attributes either)' 
+        logging.info('testrun:\"%s\" not applies to any file. ' % item + \
+                         'Removed. ' + \
+                         '(Not parsing the rest its attributes either)')
 
     # Getting a set of all the used scenarios
     ssList = []
     for t in obj.testrun:
         for item in t.scenarioNameL:
-            print '[info] testrun:\"%s\" applies to scenario:\"%s\"' % \
-                (t.id, item)
+            logging.info('testrun:\"%s\" applies to scenario:\"%s\"' % \
+                             (t.id, item))
         ssList.append(t.scenarioNameL)
     # Adding the set of the scenarios to the configuration.
     obj._attrs['ssList'] = ssList
@@ -115,9 +118,9 @@ def checkSemantics(obj):
         msg += 'but we have just \"%s\" tas available. ' % obj.tasN
         msg += 'Mode used is \"%s\".' % obj.advanced.execMode
         raise notEnoughTasExcept(msg)
-    print '[info] Success validating testruns and size of the tas pool. ' + \
-        'available tas:\"%s\", needed tas:\"%s\".' % \
-        (obj.tasN, conds[obj.advanced.execMode])    
+    logging.info('Success validating testruns and size of the tas pool. ' + \
+                     'available tas:\"%s\", needed tas:\"%s\".' % \
+                     (obj.tasN, conds[obj.advanced.execMode]))
 
     # Validating well formed XML scenarios. scenarioValidate
     if str2bool(obj.advanced.scenarioValidate):
@@ -128,27 +131,27 @@ def checkSemantics(obj):
                 raise scenarioValidateExcept \
                     ('Bad XML validation of scenario:\"%s\"' % s)
             else:
-                print '[info] Success while XML parsing scenario:\"%s\"' % s
+                logging.info('Success while XML parsing scenario:\"%s\"' % s)
 
     # Checking config defined and used.
     notused = checkDefinedUsed([x.id for x in obj.config],
                                [x.configlink for x in obj.testrun],
                                configNotDefined('Found configs not defined'))
-    print '[info] Success validating \"config\"s used & defined.'
+    logging.info('Success validating \"config\"s used & defined.')
     # Removing the configs not used.
     obj.config = filter(lambda x: x.id not in notused, obj.config)
     for item in notused:
-        print '[info] config:\"%s\" not used. Removed.' % item
+        logging.info('config:\"%s\" not used. Removed.' % item)
 
     # Checking mod defined and used. Making sure modlink exists.
     notused = checkDefinedUsed([x.id for x in obj.mod],
                                [x.modlink for x in obj.testrun if x.modlink],
                                modNotDefined('Found mods not defined'))
-    print '[info] Success validating \"mod\"s used & defined.'
+    logging.info('Success validating \"mod\"s used & defined.')
     # Removing the configs not used.
     obj.mod = filter(lambda x: x.id not in notused, obj.mod)
     for item in notused:
-        print '[info] mod:\"%s\" not used. Removed.' % item
+        logging.info('mod:\"%s\" not used. Removed.' % item)
 
     # Validating well formed regexs. regexValidate
     if str2bool(obj.advanced.regexValidate):
@@ -165,6 +168,6 @@ def checkSemantics(obj):
                 raise regexValidateExcept('Bad regex:regex:\"%s\". %s' % \
                                               (r, err))
             else:
-                print '[info] Success parsing regex:\"%s\"' % r
+                logging.info('Success parsing regex:\"%s\"' % r)
     else:
-        print '[info] No need to validate the regexValidate param.'
+        logging.info('No need to validate the regexValidate param.')

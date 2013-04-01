@@ -2,24 +2,32 @@
 <sipptam>
 
    <!-- Mandatory. ta slaves to use. -->
-   <tas host="10.22.22.200" port="5000" jobs="1"/>
-   <tas host="10.22.22.201" port="5001" jobs="1"/>
-   <tas host="10.22.22.202" port="5001" jobs="2"/>
-   <tas host="10.22.22.202" port="5002" jobs="2"/>
+   <tas host="10.22.22.200" port="5000" jobs="15"/>
+   <tas host="10.22.22.201" port="5001" jobs="15"/>
 
    <!-- Mandatory. Test to run. -->
    <testrun id="test-000"
-	    scenarioPath="/etc/sipptam/scenarios/*000*.xml"
+	    scenarioPath="/etc/sipptam/scenarios/*000_a.xml"
 	    configlink="simple"/>
 
    <testrun id="test-001"
-	    scenarioPath="/etc/sipptam/scenarios/*000*.xml"
+	    scenarioPath="/etc/sipptam/scenarios/*000_b.xml"
 	    configlink="simple"
 	    modlink="one"/>
 
    <testrun id="test-notfound"
 	    scenarioPath="/etc/sipptam/scenarios/*notfound*.xml"
 	    configlink="simple2"
+	    modlink="two"/>
+
+   <testrun id="test-002"
+	    scenarioPath="/etc/sipptam/scenarios/*.xml"
+	    configlink="simple"
+	    modlink="two"/>
+
+   <testrun id="test-003"
+	    scenarioPath="/etc/sipptam/scenarios/*.xml"
+	    configlink="simple"
 	    modlink="two"/>
 
    <!-- Mandatory (Min 1 config). Configs used by testruns. -->
@@ -66,7 +74,7 @@
    <!-- * scenarioValidate : Validates XML syntax of scenarios -->
    <!-- * regexValidate    : Validates all the used regexs -->
    <advanced logLevel="info"
-	     execMode="parallel"
+	     execMode="serial"
 	     scenarioValidate="True"
 	     regexValidate="True"/>
 </sipptam>
