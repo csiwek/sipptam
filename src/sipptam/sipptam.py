@@ -14,6 +14,7 @@ import getopt
 import sys
 import threading 
 import logging
+import logging.handlers
 import Queue
 import time
 
@@ -101,8 +102,19 @@ def main ():
 
     # Configuring the log file.
     logging.basicConfig(level=loglevel, format=logformat)
+
     # Getting the log.
-    log = logging.getLogger(__name__)
+    logger = logging.getLogger(__name__)
+    if sys.platform == "darwin":
+        addr = "/var/run/syslog"
+    else:
+        addr = ('localhost', 514)
+    handler = logging.handlers.SysLogHandler(address = addr)
+    
+    #        facility=logging.handlers.SysLogHandler.LOG_USER)
+    logger.addHandler(handler)
+
+    logger.critical('warning!!!!!!!!!')
 
     # Output the version if the user wants it.
     if version:
@@ -113,14 +125,14 @@ def main ():
         showHelp(_name, _version)
 
     # Show which configFile are we using
-    log.info('Using configFilePath:\"%s\"' % configFilePath)
+    logger.info('Using configFilePath:\"%s\"' % configFilePath)
     # Parsing the configFile file
     try:
         # Parsing configFile. Lexical validation
         configFile = Validate(configFilePath, parse=True)
         configFile.checkSemantics()
     except Exception, err:
-        log.error('ConfigFile file error. %s' % str(err))
+        logger.error('ConfigFile file error. %s' % str(err))
         showHelp(_name, _version)
 
     # Reading the files and storing them for future reads.
@@ -163,9 +175,9 @@ def main ():
         n, eventWaitL = 1, [[x] for (x, y, z) in events]
     else: # parallel
         n, eventWaitL = len(testrunL), [[x for (x, y, z) in events]]
-    log.debug('events:%s' % events)
-    log.debug('eventWaitL:%s' % eventWaitL)
-    log.debug('n:%s' % n)
+    logger.debug('events:%s' % events)
+    logger.debug('eventWaitL:%s' % eventWaitL)
+    logger.debug('n:%s' % n)
 
     # Creating and starting threads.
     wthL = [threading.Thread(target=testrunWorker, args=[q,]) for x in range(n)]
@@ -179,11 +191,11 @@ def main ():
     # Lets wait for the threads to be ready and trigger them.
     for evs in eventWaitL:
         while not all(map(lambda x : x.is_set(), evs)):
-            log.debug('Waiting for the testrunWorkers to be ready...')
+            logger.debug('Waiting for the testrunWorkers to be ready...')
             time.sleep(pauseCheckeReady)
-        log.debug('All testrunWorkers are ready.')
+        logger.debug('All testrunWorkers are ready.')
         # Checking if the user still wants to run these testruns.
-        log.debug('Checking interactive mode, interactive:\"%s\"' % 
+        logger.debug('Checking interactive mode, interactive:\"%s\"' % 
                       interactive)
         if interactive:
             var = raw_input("Do you want to proceed? [N/y] ")
@@ -192,18 +204,18 @@ def main ():
             else:
                 # Stop annoying.
                 interactive = False
-        log.debug('Running the testrunWorkers...')
+        logger.debug('Running the testrunWorkers...')
         eRun.set()
         eRun.clear()
 
     # Waiting for all the eDone events.
     while not all(map(lambda (x,y,z) : z.is_set(), events)):
-        log.debug('Waiting for the testrunWorkers to be done...')
+        logger.debug('Waiting for the testrunWorkers to be done...')
         time.sleep(pauseCheckeDone)
 
     # Time to get the results.
-    log.debug('Getting results!')
-    log.info('The end!')
+    logger.debug('Getting results!')
+    logger.info('The end!')
 
 if __name__ == '__main__':
     main()
