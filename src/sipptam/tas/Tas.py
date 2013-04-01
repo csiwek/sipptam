@@ -11,6 +11,9 @@ Object which represents a the Test Automation Slave.
 @organization: INdigital Telecom, Inc.
 @copyright: INdigital Telecom, Inc. 2013
 '''
+import logging
+
+log = logging.getLogger(__name__)
 
 
 class Tas(object):

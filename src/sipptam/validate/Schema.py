@@ -68,7 +68,6 @@ schema = StringIO.StringIO('''\
     </xs:complexType>
 
     <xs:complexType name="advancedType">
-            <xs:attribute name="logLevel" type="logLevelType" use="required"/>
             <xs:attribute name="execMode" type="execModeType" use="required"/>
             <xs:attribute name="scenarioValidate" type="myBoolType" use="required"/>
             <xs:attribute name="regexValidate" type="myBoolType" use="required"/>
@@ -97,16 +96,6 @@ schema = StringIO.StringIO('''\
        <xs:restriction base="xs:string">
           <xs:pattern value="((([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]))|(\*)"/>
        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="logLevelType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="debug"/>
-            <xs:enumeration value="info"/>
-            <xs:enumeration value="warning"/>
-            <xs:enumeration value="error"/>
-            <xs:enumeration value="critical"/>
-        </xs:restriction>
     </xs:simpleType>
 
     <xs:simpleType name="positiveFloat">

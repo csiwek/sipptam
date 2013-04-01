@@ -10,9 +10,10 @@
     @organization: INdigital Telecom, Inc.
     @copyright: INdigital Telecom, Inc. 2013
 """
-
-import sys
 import logging
+import sys
+
+log = logging.getLogger(__name__)
 
 
 def showInteractiveOut(name, version):
@@ -21,7 +22,7 @@ def showInteractiveOut(name, version):
     msgs = ['You decided not to continue.'
             'Thanks for using this software.',
             '%s - %s' % (name, version)]
-    logging.info('\n'.join(msgs))
+    sys.stdout.write('\n'.join(msgs))
     sys.exit(1)
 
 def showVersion(name, version):
@@ -33,7 +34,7 @@ def showVersion(name, version):
             'Luis Martin Gil.',
             '',
             'Not running!']
-    logging.info('\n'.join(msgs))
+    sys.stdout.write('\n'.join(msgs))
     sys.exit(1)
 
 def showHelp(name, version):
@@ -43,19 +44,23 @@ def showHelp(name, version):
     msgs = ['%s - %s. Help menu.' % (name, version),
             '',
             'Parameters:',
-            ' -c  <configfile>',
+            ' -c  <configfile> ::sets the config file',
+            ' -l  <loglevel> ::sets the logging level',
+            '                  debug|info|warning|error|critical',
             ' -i  ::sets interactive mode',
             ' -b  ::sets background mode',
             ' -v  ::shows version',
             ' -h  ::shows help',
             '',
-            'Usage:',
+            'Usage examples:',
             '    %s -c <configfile>' % name,
+            '    %s -c <configfile> -l debug' % name,
+            '    %s -c <configfile> -l critical' % name,
             '    %s -c <configfile> -i' % name,
             '    %s -c <configfile> -b' % name,
             '    %s -c <configfile> -v' % name,
             '    %s -c <configfile> -h' % name,
             '',
             'Not running!']
-    logging.info('\n'.join(msgs))
+    sys.stdout.write('\n'.join(msgs))
     sys.exit(1)

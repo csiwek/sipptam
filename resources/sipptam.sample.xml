@@ -2,16 +2,22 @@
 <sipptam>
 
    <!-- Mandatory. ta slaves to use. -->
-   <tas host="10.22.22.200" port="5000" jobs="15"/>
-   <tas host="10.22.22.201" port="5001" jobs="15"/>
+   <tas host="10.22.22.200" port="5000" jobs="1"/>
+   <tas host="10.22.22.200" port="5001" jobs="1"/>
+   <tas host="10.22.22.200" port="5002" jobs="1"/>
+   <tas host="10.22.22.200" port="5003" jobs="1"/>
+   <tas host="10.22.22.201" port="5000" jobs="1"/>
+   <tas host="10.22.22.201" port="5001" jobs="1"/>
+   <tas host="10.22.22.201" port="5002" jobs="1"/>
+   <tas host="10.22.22.201" port="5003" jobs="1"/>
 
    <!-- Mandatory. Test to run. -->
    <testrun id="test-000"
-	    scenarioPath="/etc/sipptam/scenarios/*000_a.xml"
+	    scenarioPath="/etc/sipptam/scenarios/test-000*.xml"
 	    configlink="simple"/>
 
    <testrun id="test-001"
-	    scenarioPath="/etc/sipptam/scenarios/*000_b.xml"
+	    scenarioPath="/etc/sipptam/scenarios/test-001*.xml"
 	    configlink="simple"
 	    modlink="one"/>
 
@@ -21,17 +27,7 @@
 	    modlink="two"/>
 
    <testrun id="test-002"
-	    scenarioPath="/etc/sipptam/scenarios/001*.xml"
-	    configlink="simple"
-	    modlink="two"/>
-
-   <testrun id="test-003"
-	    scenarioPath="/etc/sipptam/scenarios/*.xml"
-	    configlink="simple"
-	    modlink="two"/>
-
-   <testrun id="test-004"
-	    scenarioPath="/etc/sipptam/scenarios/*.xml"
+	    scenarioPath="/etc/sipptam/scenarios/test-002*.xml"
 	    configlink="simple"
 	    modlink="two"/>
 
@@ -74,12 +70,10 @@
    </mod>
 
    <!-- Mandatory. Change in case you know what you're doing. -->
-   <!-- * logLevel         : {debug, info, warning, error, critical} -->
    <!-- * execMode         : {serial, parallel} -->
    <!-- * scenarioValidate : Validates XML syntax of scenarios -->
    <!-- * regexValidate    : Validates all the used regexs -->
-   <advanced logLevel="info"
-	     execMode="serial"
+   <advanced execMode="serial"
 	     scenarioValidate="True"
 	     regexValidate="True"/>
 </sipptam>

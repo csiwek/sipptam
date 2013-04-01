@@ -11,13 +11,15 @@ Generic object to save the configuration parameters.
 @organization: INdigital Telecom, Inc.
 @copyright: INdigital Telecom, Inc. 2013
 '''
-
 import logging
 import re
 from lxml import etree
 import glob
 import os
 import sets
+
+log = logging.getLogger(__name__)
+
 
 def flat(l):
     '''
@@ -163,23 +165,23 @@ def xml2obj(src):
 translates the context of a string based on a given dictionary
 '''
 def translate(text, d):
-    logging.debug('translating text:\"%s\" using d:\"%s\"' % (text, d))
+    log.debug('translating text:\"%s\" using d:\"%s\"' % (text, d))
     ret = reduce(lambda x, y: x.replace(y, d[y]), d, text)
-    logging.debug('translated result:\"%s\"' % (ret))
+    log.debug('translated result:\"%s\"' % (ret))
     return ret
 
 '''
 returns a dict given a string value like: key1=val1;key2=val2;keyn=valn
 '''
 def text2dic(text, assign = '=', sep = ';'):
-    '''                                                                               
-    The escape character will be '\'                                                  
-    Might raise ValueError Exception if text is not properly formed.                  
     '''
-    logging.debug('converting text to dic assign:\"%s\", sep:\"%s\", text:\"%s\"' % (assign, sep, text))
+    The escape character will be '\'
+    Might raise ValueError Exception if text is not properly formed.
+    '''
+    log.debug('converting text to dic assign:\"%s\", sep:\"%s\", text:\"%s\"' % (assign, sep, text))
     l = map (lambda x : x.replace('\\', ''), re.split(r'(?<!\\);', text))
     ret = dict((n,v) for n,v in (a.split(assign, 1) for a in l))
-    logging.debug('converted dic:\"%s\"' % (ret))
+    log.debug('converted dic:\"%s\"' % (ret))
     return ret
 
 if __name__ == '__main__':

@@ -17,39 +17,45 @@ import time
 import random
 import logging
 
+log = logging.getLogger(__name__)
+
 
 def testWorker(testrun, events):
+    '''
+    '''
     eBatonOn, eBatonOff = events
     if eBatonOn:
         eBatonOn.wait()
-        logging.debug('Baton received, baton:\"%s\"' % eBatonOn)
+        log.debug('Baton received, baton:\"%s\"' % eBatonOn)
     else:
-        logging.debug('Beginning of the chain.')
-    logging.debug('Doing my job.')
-    time.sleep(random.randint(2, 5))
-    logging.debug('Job done.')
+        log.debug('Beginning of the chain.')
+    log.debug('Doing my job.')
+    #time.sleep(random.randint(2, 5))
+    log.debug('Job done.')
     if eBatonOff:
-        logging.debug('Baton handed off, baton:\"%s\"' % eBatonOff)
+        log.debug('Baton handed off, baton:\"%s\"' % eBatonOff)
         eBatonOff.set()
     else:
-        logging.debug('End of the chain.')
-    logging.debug('Now I should check the status of the scenario.')
+        log.debug('End of the chain.')
+    log.debug('Now I should check the status of the scenario.')
 
 def testrunWorker(queue):
+    '''
+    '''
     while True:
         testrun, (eReady, eRun, eDone) = queue.get()
         sleepTime = random.randint(1, 5)
-        logging.debug('I\'m sleeping: %s secs' % sleepTime)
+        log.debug('I\'m sleeping: %s secs' % sleepTime)
         time.sleep(sleepTime)
-        logging.debug('I\'m ready!')
+        log.debug('I\'m ready!')
         eReady.set()
         eRun.wait()
         thL = []
         eL = [threading.Event() for x in 
               range(len(testrun.get('scenarioNameL')) - 1)]
         eChain = zip([None] + eL, eL + [None])
-        logging.warning(eL)
-        logging.warning(eChain)
+        log.debug('eventL:%s' % eL)
+        log.debug('eChain:%s' % eChain)
         for s, es in zip (testrun.get('scenarioNameShortL'), eChain):
             th = threading.Thread(name='%s_%s_%s' % \
                                       (threading.currentThread().name,

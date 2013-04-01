@@ -11,18 +11,13 @@ This module implements the Pool class.
 @organization: INdigital Telecom, Inc.
 @copyright: INdigital Telecom, Inc. 2012
 '''
-
 import traceback
 import threading
 import random
 import time
+import logging
 
-
-class FakeLog(object):
-    def info(self, msg):
-        print msg
-    def debug(self, msg):
-        print msg
+log = logging.getLogger(__name__)
 
 
 class Pool(object):
@@ -32,15 +27,12 @@ class Pool(object):
     pause = None
     items = None
     lock = None
-    log = None
-    def __init__(self, pause, log=None):
+    def __init__(self, pause):
         '''
         '''
         self.pause = pause
         self.items = []
         self.lock = threading.Lock()
-        if not log:
-            self.log = FakeLog()
         
     def __len__(self):
         '''
@@ -85,15 +77,15 @@ class Pool(object):
         while (not removed):
             with self.lock:
                 try:
-                    self.log.debug('trying to remove the link:%s' % (id))
+                    log.debug('trying to remove the link:%s' % (id))
                     l = filter(lambda x: x.getId() == id, self.items)[0]
                     self.items.remove(l)
                     removed = True
                 except:
-                    self.log.debug('link:%s is not in the pool. Re-trying' % (id))
+                    log.debug('link:%s is not in the pool. Re-trying' % (id))
             #trace = traceback.format_exc()
-            #self.log.debug('Exception captured. traceback:%s' % (repr(trace)))
-            self.log.debug('giving a break, sleeping little bit')
+            #log.debug('Exception captured. traceback:%s' % (repr(trace)))
+            log.debug('giving a break, sleeping little bit')
             time.sleep(self.pause)
 
     def shuffle(self):

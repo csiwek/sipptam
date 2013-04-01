@@ -35,24 +35,43 @@ def main ():
     '''
     Main function.
     '''
+    # Defines a logging level and logging format based on a given string key.
+    LEVELS = {'debug': (logging.DEBUG,
+                        '%(levelname)-7s %(name)-30s %(threadName)-40s' + 
+                        ' +%(lineno)-4d' +
+                        ' %(message)s'),
+              'info': (logging.INFO,
+                       '%(levelname)-7s %(message)s'),
+              'warning': (logging.WARNING,
+                          '%(levelname)-7s %(message)s'),
+              'error': (logging.ERROR,
+                        '%(levelname)-7s %(message)s'),
+              'critical': (logging.CRITICAL,
+                           '%(levelname)-7s %(message)s')} 
+    
     # Setting some default variables
     _name = 'sipptam'
     _version = '0.1'
     configFilePath = '/etc/sipptam/sipptam.xml'
+    loglevel, logformat = LEVELS['info']
     interactive = False
     background = False
     version = False
     help = False
     pauseTasPool = 0.1
-    pauseCheckEvent = 1.0
+    pauseCheckeReady = 1.0
+    pauseCheckeDone = 1.0
 
-    logging.basicConfig(level=logging.DEBUG,
-                        format='%(levelname)-7s (%(threadName)-2s) %(message)s',)
-
-    # Lets parse input parameters
+    # Lets parse input parameters.
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'c:ibvh')
+        opts, args = getopt.getopt(sys.argv[1:], 'c:l:ibvh')
         optsLetters = [x for x,y in opts]
+        # We must check the valid loglevel first.
+        if '-l' in optsLetters:
+            if not [y for (x,y) in opts if (x == '-l')][0] in LEVELS.keys():
+                raise Exception('Invalid loglevel. Valid loglevels are:\"%s\"' %
+                                LEVELS.keys()) 
+        # Check modes incompability.
         if '-i' in optsLetters and '-b' in optsLetters:
             raise Exception('Interactive & background mode aren\'t compatible')
     except Exception, msg:
@@ -63,6 +82,9 @@ def main ():
     for o, a in opts:
         if o == '-c':
             configFilePath = a
+            continue
+        elif o == '-l':
+            loglevel, logformat = LEVELS[a]
             continue
         elif o == '-i':
             interactive = True
@@ -77,26 +99,29 @@ def main ():
             help = True
             continue
 
-    # Output the version if the user wants it
+    # Configuring the log file.
+    logging.basicConfig(level=loglevel, format=logformat)
+    # Getting the log.
+    log = logging.getLogger(__name__)
+
+    # Output the version if the user wants it.
     if version:
         showVersion(_name, _version)
 
-    # Output the help if the user wants it
+    # Output the help if the user wants it.
     if help: 
         showHelp(_name, _version)
 
-    logging.info('Found interactive mode -i')
-
     # Show which configFile are we using
-    logging.info('Using configFilePath:\"%s\"' % configFilePath)
+    log.info('Using configFilePath:\"%s\"' % configFilePath)
     # Parsing the configFile file
     try:
         # Parsing configFile. Lexical validation
         configFile = Validate(configFilePath, parse=True)
         configFile.checkSemantics()
     except Exception, err:
-        logging.error('ConfigFile file error. %s' % str(err))
-        showHelp(_name, version)
+        log.error('ConfigFile file error. %s' % str(err))
+        showHelp(_name, _version)
 
     # Reading the files and storing them for future reads.
     scenarioCache = FileManager()
@@ -129,7 +154,7 @@ def main ():
 
     # This queue will transmit the testrun jobs to the testrun workers.
     q = Queue.Queue()
-    # Adding some events logic to comunicate with the threads.
+    # Adding some events for a fluent comunication with the testrunWorkers.
     # events = [(eReady, eRun, eDone)]
     eRun = threading.Event()
     events = [(threading.Event(), eRun, threading.Event()) 
@@ -138,9 +163,9 @@ def main ():
         n, eventWaitL = 1, [[x] for (x, y, z) in events]
     else: # parallel
         n, eventWaitL = len(testrunL), [[x for (x, y, z) in events]]
-    logging.debug(events)
-    logging.debug(eventWaitL)
-    logging.debug(n)
+    log.debug('events:%s' % events)
+    log.debug('eventWaitL:%s' % eventWaitL)
+    log.debug('n:%s' % n)
 
     # Creating and starting threads.
     wthL = [threading.Thread(target=testrunWorker, args=[q,]) for x in range(n)]
@@ -148,15 +173,18 @@ def main ():
         wth.setDaemon(True)
         wth.start()
 
-    # Feeding the threads with jobs.
+    # Feeding the threads with jobs. A job is a testrun and its events.
     map(lambda (x, y): q.put((x, y)), zip(testrunL, events))
 
     # Lets wait for the threads to be ready and trigger them.
     for evs in eventWaitL:
         while not all(map(lambda x : x.is_set(), evs)):
-            logging.info('Not all the tas are READY. Sleeping before re-trying')
-            time.sleep(pauseCheckEvent)
+            log.debug('Waiting for the testrunWorkers to be ready...')
+            time.sleep(pauseCheckeReady)
+        log.debug('All testrunWorkers are ready.')
         # Checking if the user still wants to run these testruns.
+        log.debug('Checking interactive mode, interactive:\"%s\"' % 
+                      interactive)
         if interactive:
             var = raw_input("Do you want to proceed? [N/y] ")
             if ('y' != var):
@@ -164,18 +192,18 @@ def main ():
             else:
                 # Stop annoying.
                 interactive = False
-        logging.info('Tas ready, lets go!')
+        log.debug('Running the testrunWorkers...')
         eRun.set()
         eRun.clear()
 
-    # Waiting to receive all the eDone events.
+    # Waiting for all the eDone events.
     while not all(map(lambda (x,y,z) : z.is_set(), events)):
-        logging.info('Not all the tas are DONE. Sleeping before re-trying')
-        time.sleep(pauseCheckEvent)
+        log.debug('Waiting for the testrunWorkers to be done...')
+        time.sleep(pauseCheckeDone)
 
     # Time to get the results.
-    logging.info('Getting results!')
-    logging.info('The end!')
+    log.debug('Getting results!')
+    log.info('The end!')
 
 if __name__ == '__main__':
     main()

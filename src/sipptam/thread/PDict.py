@@ -15,6 +15,8 @@ This module implements a shared resource to store the result.
 import threading
 import datetime
 
+log = logging.getLogger(__name__)
+
 
 class PDict(object):
     '''
