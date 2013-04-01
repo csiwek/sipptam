@@ -42,9 +42,9 @@ schema = StringIO.StringIO('''\
 
     <xs:complexType name="configType">
         <xs:attribute name="id" type="xs:string" use="required"/>
-        <xs:attribute name="pause" type="positiveFloat" use="required"/>
         <xs:attribute name="ratio" type="numberListType" use="required"/>
         <xs:attribute name="max" type="numberListType" use="required"/>
+        <xs:attribute name="pause" type="positiveFloat" use="required"/>
         <xs:attribute name="tries" type="xs:positiveInteger" use="required"/>
     </xs:complexType>
 

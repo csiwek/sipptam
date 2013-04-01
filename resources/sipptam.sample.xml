@@ -21,7 +21,7 @@
 	    modlink="two"/>
 
    <testrun id="test-002"
-	    scenarioPath="/etc/sipptam/scenarios/*.xml"
+	    scenarioPath="/etc/sipptam/scenarios/001*.xml"
 	    configlink="simple"
 	    modlink="two"/>
 
@@ -30,29 +30,34 @@
 	    configlink="simple"
 	    modlink="two"/>
 
+   <testrun id="test-004"
+	    scenarioPath="/etc/sipptam/scenarios/*.xml"
+	    configlink="simple"
+	    modlink="two"/>
+
    <!-- Mandatory (Min 1 config). Configs used by testruns. -->
    <config id="simple"
-	   pause="1.0"
 	   ratio="1;5"
 	   max="10;50"
-	   tries="1"/>
+	   pause="1.8"
+	   tries="3"/>
 
    <config id="advanced"
-	   pause="1.0"
 	   ratio="1;5"
 	   max="10;50"
+	   pause="1.2"
 	   tries="1"/>
 
    <config id="advanced_toremove"
-	   pause="1.0"
 	   ratio="1;5"
 	   max="10;50"
+	   pause="1.5"
 	   tries="1"/>
 
    <config id="advanced_toremove2"
-	   pause="1.0"
 	   ratio="1;5"
 	   max="10;50"
+	   pause="2.0"
 	   tries="1"/>
 
    <!-- Optional. Modifications that might be applied by a testrun. -->

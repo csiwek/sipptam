@@ -26,6 +26,8 @@ def testWorker(testrun, events):
     else:
         logging.debug('Beginning of the chain.')
     logging.debug('Doing my job.')
+    time.sleep(random.randint(2, 5))
+    logging.debug('Job done.')
     if eBatonOff:
         logging.debug('Baton handed off, baton:\"%s\"' % eBatonOff)
         eBatonOff.set()

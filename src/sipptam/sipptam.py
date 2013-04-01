@@ -44,6 +44,7 @@ def main ():
     version = False
     help = False
     pauseTasPool = 0.1
+    pauseCheckEvent = 1.0
 
     logging.basicConfig(level=logging.DEBUG,
                         format='%(levelname)-7s (%(threadName)-2s) %(message)s',)
@@ -153,8 +154,8 @@ def main ():
     # Lets wait for the threads to be ready and trigger them.
     for evs in eventWaitL:
         while not all(map(lambda x : x.is_set(), evs)):
-            logging.info('Not all the tas are ready. Sleeping before re-trying')
-            time.sleep(0.3)
+            logging.info('Not all the tas are READY. Sleeping before re-trying')
+            time.sleep(pauseCheckEvent)
         # Checking if the user still wants to run these testruns.
         if interactive:
             var = raw_input("Do you want to proceed? [N/y] ")
@@ -169,8 +170,8 @@ def main ():
 
     # Waiting to receive all the eDone events.
     while not all(map(lambda (x,y,z) : z.is_set(), events)):
-        logging.info('Not all the tas are done. Sleeping before re-trying')
-        time.sleep(0.3)
+        logging.info('Not all the tas are DONE. Sleeping before re-trying')
+        time.sleep(pauseCheckEvent)
 
     # Time to get the results.
     logging.info('Getting results!')
