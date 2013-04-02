@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 def showInteractiveOut(name, version):
     '''
     '''
-    msgs = ['You decided not to continue.'
+    msgs = ['You decided not to continue.',
             'Thanks for using this software.',
             '%s - %s' % (name, version),
             '']
@@ -49,15 +49,18 @@ def showHelp(name, version):
             ' -c  <configfile> ::sets the config file',
             ' -l  <loglevel> ::sets the logging level',
             '                  debug|info|warning|error|critical',
+            ' -s  <logFacilityLevel> ::sets the local facility for syslog',
             ' -i  ::sets interactive mode',
             ' -b  ::sets background mode',
             ' -v  ::shows version',
             ' -h  ::shows help',
             '',
             'Usage examples:',
+            '    %s' % name,
             '    %s -c <configfile>' % name,
             '    %s -c <configfile> -l debug' % name,
             '    %s -c <configfile> -l critical' % name,
+            '    %s -c <configfile> -s 2' % name,
             '    %s -c <configfile> -i' % name,
             '    %s -c <configfile> -b' % name,
             '    %s -c <configfile> -v' % name,

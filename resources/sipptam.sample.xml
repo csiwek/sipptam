@@ -70,9 +70,9 @@
    </mod>
 
    <!-- Mandatory. Change in case you know what you're doing. -->
-   <!-- * execMode         : {serial, parallel} -->
-   <!-- * scenarioValidate : Validates XML syntax of scenarios -->
-   <!-- * regexValidate    : Validates all the used regexs -->
+   <!-- * execMode            : {serial, parallel} -->
+   <!-- * scenarioValidate    : Validates XML syntax of scenarios -->
+   <!-- * regexValidate       : Validates all the used regexs -->
    <advanced execMode="serial"
 	     scenarioValidate="True"
 	     regexValidate="True"/>

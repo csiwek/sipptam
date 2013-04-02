@@ -14,7 +14,7 @@ import getopt
 import sys
 import threading 
 import logging
-import logging.handlers
+from logging.handlers import SysLogHandler
 import Queue
 import time
 
@@ -42,19 +42,20 @@ def main ():
                         ' +%(lineno)-4d' +
                         ' %(message)s'),
               'info': (logging.INFO,
-                       '%(levelname)-9s %(message)s'),
+                       '%(levelname)-9s %(name)-30s %(message)s'),
               'warning': (logging.WARNING,
-                          '%(levelname)-9s %(message)s'),
+                          '%(levelname)-9s %(name)-30s %(message)s'),
               'error': (logging.ERROR,
-                        '%(levelname)-9s %(message)s'),
+                        '%(levelname)-9s %(name)-30s %(message)s'),
               'critical': (logging.CRITICAL,
-                           '%(levelname)-9s %(message)s')} 
+                           '%(levelname)-9s %(name)-30s %(message)s')} 
     
     # Setting some default variables
     _name = 'sipptam'
     _version = '0.1'
     configFilePath = '/usr/local/share/sipptam/sipptam.sample.xml'
     loglevel, logformat = LEVELS['info']
+    logFacilityLevel = 0
     interactive = False
     background = False
     version = False
@@ -65,13 +66,16 @@ def main ():
 
     # Lets parse input parameters.
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'c:l:ibvh')
+        opts, args = getopt.getopt(sys.argv[1:], 'c:l:s:ibvh')
         optsLetters = [x for x,y in opts]
+        if '-s' in optsLetters:
+            if not int([y for (x,y) in opts if (x == '-s')][0]) in range(0, 9):
+                raise Exception('Invalid syslog facility level. Expecting 0-9')
         # We must check the valid loglevel first.
         if '-l' in optsLetters:
             if not [y for (x,y) in opts if (x == '-l')][0] in LEVELS.keys():
                 raise Exception('Invalid loglevel. Valid loglevels are:\"%s\"' %
-                                LEVELS.keys()) 
+                                LEVELS.keys())
         # Check modes incompability.
         if '-i' in optsLetters and '-b' in optsLetters:
             raise Exception('Interactive & background mode aren\'t compatible')
@@ -83,6 +87,9 @@ def main ():
     for o, a in opts:
         if o == '-c':
             configFilePath = a
+            continue
+        elif o == '-s':
+            logFacilityLevel = a
             continue
         elif o == '-l':
             loglevel, logformat = LEVELS[a]
@@ -100,19 +107,21 @@ def main ():
             help = True
             continue
 
-    # Configuring the log file.
-    logging.basicConfig(level=loglevel, format=logformat)
-
-    # Getting the log.
+    # Configuring the log file. We will log both stdout and syslog.
+    # Depending on the platform we use diferent syslog.
+    if sys.platform == "darwin": addr = '/var/run/syslog'
+    else: addr = '/dev/log'
+    logger = logging.getLogger()
+    logger.setLevel(loglevel)
+    formatter = logging.Formatter(logformat)
+    logFacility = 'local%s' % logFacilityLevel
+    handlers = [logging.StreamHandler(stream=sys.stdout),
+                SysLogHandler(address=addr, facility=logFacility)]
+    for h in handlers:
+        h.setFormatter(formatter)
+        logger.addHandler(h)
+    # Getting a basic log
     logger = logging.getLogger(__name__)
-    if sys.platform == "darwin":
-        addr = "/var/run/syslog"
-    else:
-        addr = ('localhost', 514)
-    handler = logging.handlers.SysLogHandler(address = addr)
-    
-    #        facility=logging.handlers.SysLogHandler.LOG_USER)
-    logger.addHandler(handler)
 
     # Output the version if the user wants it.
     if version:
