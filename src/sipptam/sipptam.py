@@ -30,6 +30,7 @@ from mod.Fieldsf import Fieldsf
 from utils.Messages import showVersion, showHelp, showInteractiveOut
 from thread.Pool import Pool
 from thread.Workers import testrunWorker
+from thread.PDict import PDict
 
 
 def main ():
@@ -39,7 +40,7 @@ def main ():
     # Defines a logging level and logging format based on a given string key.
     LEVELS = {'debug': (logging.DEBUG,
                         '%(levelname)-9s %(name)-30s %(threadName)-40s' + 
-                        ' +%(lineno)-4d' +
+#                        ' +%(lineno)-4d' +
                         ' %(message)s'),
               'info': (logging.INFO,
                        '%(levelname)-9s %(name)-30s %(message)s'),
@@ -61,8 +62,8 @@ def main ():
     version = False
     help = False
     pauseTasPool = 0.1
-    pauseCheckeReady = 1.0
-    pauseCheckeDone = 1.0
+    pauseCheckAlleReady = 1.0
+    pauseCheckAlleDone = 1.0
 
     # Lets parse input parameters.
     try:
@@ -113,6 +114,7 @@ def main ():
     else: addr = '/dev/log'
     logger = logging.getLogger()
     logger.setLevel(loglevel)
+    logger.handlers = [] # Clearing previous logs
     formatter = logging.Formatter(logformat)
     logFacility = 'local%s' % logFacilityLevel
     handlers = [logging.StreamHandler(stream=sys.stdout),
@@ -148,10 +150,18 @@ def main ():
 
     # Validation done. Creating objects from the parameters.
     tasPool = Pool(pauseTasPool)
-    map(lambda x: tasPool.append(x), fill(Tas, configFile.obj.tas))
+    map(lambda x: tasPool.append(x), fill(Tas, configFile.obj.tas, 
+                                          multiple='jobs'))
+    tasPool.shuffle()
     testrunL = fill(Testrun, configFile.obj.testrun)
     configDic = fill(Config, configFile.obj.config, dic = True)
     modDic = fill(Mod, configFile.obj.mod, dic = True)
+
+    # Some debugging.
+    logger.debug('tasPool:%s' % tasPool)
+    logger.debug('testrunL:%s' % testrunL)
+    logger.debug('configDic:%s' % configDic)
+    logger.debug('modDic:%s' % modDic)
 
     # Lets create the proper modification objects
     for m in configFile.obj.mod:
@@ -173,21 +183,23 @@ def main ():
 
     # This queue will transmit the testrun jobs to the testrun workers.
     q = Queue.Queue()
+    # The protected dict will hold the results.
+    pd = PDict()
     # Adding some events for a fluent comunication with the testrunWorkers.
     # events = [(eReady, eRun, eDone)]
     eRun = threading.Event()
     events = [(threading.Event(), eRun, threading.Event()) 
               for x in range(len(testrunL))]
     if 'serial' == configFile.obj.advanced.execMode:
-        n, eventWaitL = 1, [[x] for (x, y, z) in events]
+        nTestrunWorker, eventWaitL = 1, [[x] for (x, y, z) in events]
     else: # parallel
-        n, eventWaitL = len(testrunL), [[x for (x, y, z) in events]]
-    logger.debug('events:%s' % events)
-    logger.debug('eventWaitL:%s' % eventWaitL)
-    logger.debug('n:%s' % n)
+        nTestrunWorker, eventWaitL = len(testrunL), [[x for (x, y, z) in events]]
+    logger.debug('nTestrunWorker:\"%s\", events:\"%s\", eventWaitL:\"%s\"' % 
+                 (nTestrunWorker, events, eventWaitL))
 
-    # Creating and starting threads.
-    wthL = [threading.Thread(target=testrunWorker, args=[q,]) for x in range(n)]
+    # Creating and starting testrunWorker threads.
+    wthL = [threading.Thread(target=testrunWorker, args=[q, pd, tasPool, ]) 
+            for x in range(nTestrunWorker)]
     for wth in wthL:
         wth.setDaemon(True)
         wth.start()
@@ -199,7 +211,7 @@ def main ():
     for evs in eventWaitL:
         while not all(map(lambda x : x.is_set(), evs)):
             logger.debug('Waiting for the testrunWorkers to be ready...')
-            time.sleep(pauseCheckeReady)
+            time.sleep(pauseCheckAlleReady)
         logger.debug('All testrunWorkers are ready.')
         # Checking if the user still wants to run these testruns.
         logger.debug('Checking interactive mode, interactive:\"%s\"' % 
@@ -218,7 +230,7 @@ def main ():
     # Waiting for all the eDone events.
     while not all(map(lambda (x,y,z) : z.is_set(), events)):
         logger.debug('Waiting for the testrunWorkers to be done...')
-        time.sleep(pauseCheckeDone)
+        time.sleep(pauseCheckAlleDone)
 
     # Time to get the results.
     logger.debug('Getting results!')

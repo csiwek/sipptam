@@ -11,9 +11,9 @@ This module implements a shared resource to store the result.
 @organization: INdigital Telecom, Inc.
 @copyright: INdigital Telecom, Inc. 2012
 '''
-
 import threading
 import datetime
+import logging
 
 log = logging.getLogger(__name__)
 
@@ -36,9 +36,8 @@ class PDict(object):
     def __str__(self):
         '''
         '''
-        ret = []
         with self.lock:
-            print 'TODO'
+            return str(self.dict)
         
     def belongs(self, item):
         '''
@@ -60,3 +59,6 @@ class PDict(object):
         '''
         with self.lock:
             return self.dict[key]
+
+    def update(self):
+        pass

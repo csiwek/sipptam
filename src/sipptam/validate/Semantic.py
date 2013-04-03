@@ -124,9 +124,9 @@ def checkSemantics(obj):
     conds = {'serial' : max(len(x) for x in ssList),
              'parallel' : sum(len(x) for x in ssList)}
     if obj.tasN < conds[obj.advanced.execMode]:
-        msg = 'Wanted to run \"%s\" scenarios, ' % conds[obj.advanced.execMode]
-        msg += 'but we have just \"%s\" tas available. ' % obj.tasN
-        msg += 'execMode used is \"%s\".' % obj.advanced.execMode
+        msg = 'Wanted to run at least \"%s\" ' % conds[obj.advanced.execMode]
+        msg += 'scenarios at the same time, but we have just \"%s\" ' % obj.tasN
+        msg += 'tas available. execMode used is \"%s\".' % obj.advanced.execMode
         raise notEnoughTasExcept(msg)
     log.debug('Success validating testruns and size of the tas pool. ' + \
                   'available tas:\"%s\", needed tas:\"%s\".' % \

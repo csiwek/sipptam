@@ -2,14 +2,9 @@
 <sipptam>
 
    <!-- Mandatory. ta slaves to use. -->
-   <tas host="10.22.22.200" port="5000" jobs="1"/>
-   <tas host="10.22.22.200" port="5001" jobs="1"/>
-   <tas host="10.22.22.200" port="5002" jobs="1"/>
-   <tas host="10.22.22.200" port="5003" jobs="1"/>
-   <tas host="10.22.22.201" port="5000" jobs="1"/>
-   <tas host="10.22.22.201" port="5001" jobs="1"/>
-   <tas host="10.22.22.201" port="5002" jobs="1"/>
-   <tas host="10.22.22.201" port="5003" jobs="1"/>
+   <tas host="127.0.0.1" port="8008" jobs="10"/>
+   <tas host="127.0.0.1" port="8009" jobs="10"/>
+   <tas host="127.0.0.1" port="8010" jobs="10"/>
 
    <!-- Mandatory. Test to run. -->
    <testrun id="test-000"
@@ -73,7 +68,7 @@
    <!-- * execMode            : {serial, parallel} -->
    <!-- * scenarioValidate    : Validates XML syntax of scenarios -->
    <!-- * regexValidate       : Validates all the used regexs -->
-   <advanced execMode="serial"
+   <advanced execMode="parallel"
 	     scenarioValidate="True"
 	     regexValidate="True"/>
 </sipptam>

@@ -63,12 +63,18 @@ def str2bool(v):
     return v.lower() in ("yes", "true", "t", "1")
 
 
-def fill(tmpClass, args, dic = False):
+def fill(tmpClass, args, dic=False, multiple=None):
     '''
-    Help function in conjunction to xml2obj
+    Help function in conjunction to xml2obj. Returns a list
+    or dict of Classes tmpClass based on the given init params.
     '''
     tmp = []
-    map(lambda x: tmp.append(tmpClass(**dict(x._attrs))), args)
+    for arg in args:
+        if multiple: 
+            n = int(arg._attrs[multiple])
+        else: 
+            n = 1
+        tmp.extend([tmpClass(**dict(arg._attrs)) for x in range(n)])
     if dic:
         return dict([(x.getId(), x) for x in tmp]) #return tmp
     else:
