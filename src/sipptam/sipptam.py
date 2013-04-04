@@ -178,8 +178,6 @@ def main ():
         if t.has('modlink'):
             mod = modDic[t.get('modlink')]
             t.set('mod', mod, type(mod))
-        # Setting the proper scenarioCache.
-        t.set('scenarioCache', scenarioCache, type(scenarioCache))
 
     # This queue will transmit the testrun jobs to the testrun workers.
     q = Queue.Queue()
@@ -198,7 +196,8 @@ def main ():
                  (nTestrunWorker, events, eventWaitL))
 
     # Creating and starting testrunWorker threads.
-    wthL = [threading.Thread(target=testrunWorker, args=[q, pd, tasPool, ]) 
+    wthL = [threading.Thread(target=testrunWorker, 
+                             args=[q, pd, tasPool, scenarioCache, ]) 
             for x in range(nTestrunWorker)]
     for wth in wthL:
         wth.setDaemon(True)
@@ -225,7 +224,6 @@ def main ():
                 interactive = False
         logger.debug('Running the testrunWorkers...')
         eRun.set()
-        eRun.clear()
 
     # Waiting for all the eDone events.
     while not all(map(lambda (x,y,z) : z.is_set(), events)):

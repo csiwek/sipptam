@@ -46,10 +46,20 @@ class Tas(object):
         response = self.client.getPort(notused=1)
         return response.port
 
-    def runSipp(self, r, m, sf, inf, duthost, dutport, port):
+#    def runSipp(self, r, m, sf, sfcontent, inf, duthost, dutport, port):
+    def runSipp(self, sipp):
+        r = sipp.r
+        m = sipp.m
+        sf = sipp.sf
+        sfcontent = sipp.sfcontent
+        inf = sipp.inf
+        duthost = sipp.duthost
+        dutport = sipp.dutport
+        port = sipp.port
         response = self.client.runSipp(r=r,
                                        m=m,
                                        sf=sf,
+                                       sfcontent=sfcontent,
                                        inf=inf,
                                        duthost=duthost,
                                        dutport=dutport,

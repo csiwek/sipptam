@@ -37,10 +37,17 @@ class Testrun(object):
         return "\n".join(tmp)
 
     def __len__(self):
-        return len(self.kwargs['scenarioNameL'])
+        return len(self.get('scenarioNameL'))
 
+    def __iter__(self):
+        for s in self.get('scenarioNameL'):
+            yield s
+
+    def getConf(self):
+        return self.get('config')
+    
     def getId(self):
-        return self.kwargs['id']
+        return self.get('id')
 
     def has(self, attr):
         return attr in self.kwargs.keys()

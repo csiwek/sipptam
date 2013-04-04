@@ -11,8 +11,11 @@
     @copyright: INdigital Telecom, Inc. 2013
 """
 
+from itertools import product
+
 class itemNotFoundExcept(Exception):
     pass
+
 
 class Config(object):
     '''
@@ -29,8 +32,20 @@ class Config(object):
             tmp.append('    * %s:\"%s\"' % (key, value))
         return "\n".join(tmp)
 
+    def __iter__(self):
+        tmp = product([int(x) for x in self.get('ratio').split(';')],
+                      [int(x) for x in self.get('max').split(';')])
+        for t in tmp:
+            yield t
+        
     def getId(self):
-        return self.kwargs['id']
+        return self.get('id')
+
+    def getPause(self):
+        return self.get('pause')
+
+    def getTries(self):
+        return int(self.get('tries'))
 
     def get(self, attr):
         if attr in self.kwargs.keys():

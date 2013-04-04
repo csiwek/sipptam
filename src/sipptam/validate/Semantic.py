@@ -19,7 +19,6 @@ import glob
 import lxml
 import re
 import logging
-import os
 
 from sipptam.utils.Utils import str2bool, flat
 
@@ -89,8 +88,6 @@ def checkSemantics(obj):
     # Lets get a ordered list of scenarios for each testrun.
     for t in obj.testrun:
         t._attrs['scenarioNameL'] = sorted(glob.glob(t.scenarioPath))
-        t._attrs['scenarioNameShortL'] = \
-            [os.path.basename(x) for x in sorted(glob.glob(t.scenarioPath))]
     # Removing testruns not used.
     # Getting them to be able to output for the user.
     notused = [x.id for x in filter(lambda x: not len(x.scenarioNameL), 
