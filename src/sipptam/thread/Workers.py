@@ -41,12 +41,13 @@ def testWorker(testrun, events, pd, tasPool):
 
     # Asking for a free port
     port = None
+    # TODO. Add timer. We dont want to be here the whole life.
     while not port:
         try:
             port = tas.getPort()
-            logger.debug('Returned port from tas:%s' % tmp)
+            logger.debug('Got this port:%s from tas:%s' % (port, tas))
         except:
-            logger.error('Error while working with tas:%s' % tas)
+            logger.error('Error using getPort() with tas:%s. Retrying. ' % tas)
             time.sleep(pauseGetPort)
 
     # Running SIPP
@@ -93,18 +94,14 @@ def testrunWorker(queue, pd, tasPool):
     '''
     while True:
         testrun, (eReady, eRun, eDone) = queue.get()
-        sleepTime = random.randint(1, 5)
-        logger.debug('I\'m sleeping: %s secs' % sleepTime)
-        time.sleep(sleepTime)
-        logger.debug('I\'m ready!')
+        logger.debug('Setting the chain for this testrun.')
         eReady.set()
         eRun.wait()
         thL = []
         eL = [threading.Event() for x in 
               range(len(testrun.get('scenarioNameL')) - 1)]
         eChain = zip([None] + eL, eL + [None])
-        logger.debug('eventL:%s' % eL)
-        logger.debug('eChain:%s' % eChain)
+        logger.debug('eventL:\"%s\", eChain:\"%s\"' % (eL, eChain))
         for s, es in zip (testrun.get('scenarioNameShortL'), eChain):
             th = threading.Thread(name='%s_%s_%s' % \
                                       (threading.currentThread().name,

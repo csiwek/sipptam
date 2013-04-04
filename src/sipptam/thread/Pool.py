@@ -27,7 +27,7 @@ class Pool(object):
     pause = None
     items = None
     lock = None
-    def __init__(self, pause):
+    def __init__(self, pause=0.1):
         '''
         '''
         self.pause = pause
@@ -45,7 +45,7 @@ class Pool(object):
         ret = []
         with self.lock:
             map(lambda x: ret.append(str(x)), self.items)
-        return "\n".join(ret)
+        return ", ".join(ret)
    
     def append(self, item):
         '''
