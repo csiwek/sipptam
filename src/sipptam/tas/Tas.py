@@ -46,30 +46,30 @@ class Tas(object):
         response = self.client.getPort(notused=1)
         return response.port
 
-    def runSipp(self, r, m, sf, inf, host, port, p):
+    def runSipp(self, r, m, sf, inf, duthost, dutport, port):
         response = self.client.runSipp(r=r,
                                        m=m,
                                        sf=sf,
                                        inf=inf,
-                                       host=host,
-                                       port=port,
-                                       p=p)
+                                       duthost=duthost,
+                                       dutport=dutport,
+                                       port=port)
         return response.pid
 
-    def hasFinish(self, p):
-        response = self.client.hasFinish(pid=p)
+    def hasFinish(self, pid):
+        response = self.client.hasFinish(pid=pid)
         return response.ret
 
-    def checkSuccess(self, p):
-        response = self.client.checkSuccess(pid=p)
+    def checkSuccess(self, pid):
+        response = self.client.checkSuccess(pid=pid)
         return response.ret
 
-    def checkFail(self, p):
-        response = self.client.checkFail(pid=p)
+    def checkFail(self, pid):
+        response = self.client.checkFail(pid=pid)
         return response.ret
 
-    def cancel(self, p):
-        response = self.client.cancel(pid=p)
+    def cancel(self, pid):
+        response = self.client.cancel(pid=pid)
         return response.ret
 
 if __name__ == '__main__':

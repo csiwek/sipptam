@@ -51,7 +51,7 @@
    <!-- * execMode            : {serial, parallel} -->
    <!-- * scenarioValidate    : Validates XML syntax of scenarios -->
    <!-- * regexValidate       : Validates all the used regexs -->
-   <advanced execMode="parallel"
+   <advanced execMode="serial"
 	     scenarioValidate="True"
 	     regexValidate="True"/>
 </sipptam>

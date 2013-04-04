@@ -36,6 +36,9 @@ class Testrun(object):
         tmp.append("kwargs:%s" % self.kwargs)
         return "\n".join(tmp)
 
+    def __len__(self):
+        return len(self.kwargs['scenarioNameL'])
+
     def getId(self):
         return self.kwargs['id']
 
