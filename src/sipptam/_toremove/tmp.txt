@@ -1,0 +1,227 @@
+    logFormat = '%(levelname)-7s ' + \
+        '%(name)6s ' + \
+        '%(asctime)s ' + \
+        '%(threadName)-24s ' + \
+        '%(filename)-24s ' + \
+        '+%(lineno)-4d ' + \
+        '%(funcName)-22s ' + \
+        '%(message)s '
+
+            if testrun.has_key('modificationList'):
+                for replaceList in testrun['modificationList']['__list__']:
+                    applyM = applies(replaceList['applyRegex'], ss)
+                    mods = []
+                    # Getting the FieldsFile modifications
+                    try:
+                        ff = replaceList['fieldsFile']
+                        mods.append(FieldsFile(ff))
+                    except Exception, msg:
+                        print 'DEBUG. fieldsFile not found. %s' % msg
+                    # Getting the Replace modifications
+                    try:
+                        rlist = replaceList['__list__']
+                        for r in rlist:
+                            mods.append(Replace(r['src'], r['dst']))
+                    except Exception, msg:
+                        print 'ERROR. %s' % msg
+                    # Applying the modifications to the test
+                    #for m in mods:
+                    #    map((lambda x: tr.updateScenario(x, m)), applyM)
+
+
+
+    class Configuration(object):
+        '''
+        '''
+        id = None
+        replaces = None
+        fields = None
+        def __init__(self, id):
+            self.id = id
+            self.replaces = []
+            self.fields = []
+        def __str__(self):
+            return 'configuration:%s \n%s' % \
+                (str(self.id),
+                 '\n'.join(str(n) for n in self.replaces),
+                 '\n'.join(str(n) for n in self.fields))
+        def __eq__(self, name):
+            return (self.id == name)
+        def add(self, item):
+            if isinstance(item, Replace):
+                self.replaces.append(item)
+            elif isinstance(item, FieldsFile):
+                self.fields.append(item)
+            else:
+                raise Exception('Item type unknown')
+
+
+
+
+
+    class FieldsFile(object):
+        '''
+        '''
+        ffile = None
+        def __init__(self, ffile, *args, **kwargs):
+            super(FieldsFile, self).__init__(*args, **kwargs)
+            self.ffile = ffile
+        def __str__(self):
+            return 'FieldsFile ffile:%s' % \
+                (self.ffile)
+
+    class Replace(object):
+        '''
+        '''
+        src = None
+        dst = None
+        def __init__(self, src, dst, *args, **kwargs):
+            super(Replace, self).__init__(*args, **kwargs)
+            self.src = src
+            self.dst = dst
+        def __str__(self):
+            return 'Replace src:%s, dst:%s' % \
+                (self.src, self.dst)
+
+
+
+            
+
+    fm = FileManager()
+
+
+
+    class Scenario(object):
+        '''
+        '''
+        path = None
+        mods = None
+        def __init__(self, path):
+            self.path = path
+            self.mods = []
+        def __eq__(self, name):
+            return (self.path == name)
+        def __str__(self):
+            return '%s \n%s' % (str(self.path),
+                                '\n'.join(str(n) for n in self.mods))
+        def add(self, mod):
+            self.mods.append(mod)
+        def hasMods(self):
+            return self.mod
+        def apply(self, cache):
+            try:
+                content = cache[self.path]
+                #map(lambda x : x., self.mods)
+            except:
+                raise
+
+    class ScenarioAlreadyAdded(Exception):
+        pass
+
+    class Testrun(object):
+        '''
+        '''
+        scenarios = None
+        cache = None
+        def __init__(self):
+            self.scenarios = []
+        def __str__(self):
+            return '\n%s\n%s' % \
+                ('\n\n'.join(str(n) for n in self.scenarios),
+                 self.cache)
+        def addScenario(self, scenario):
+            if scenario in self.scenarios:
+                raise ScenarioAlreadyAdded
+            self.scenarios.append(scenario)
+#        def updateScenario(self, scenario, mod):
+#            if scenario in self.scenarios:
+#                index = self.scenarios.index(scenario)
+#                self.scenarios[index].add(mod)
+#            else:
+#                raise Exception('Can\'t update scenario:%s. Doesn\'t exist') % \
+#                    scenario
+        def setCache(self, cache):
+            self.cache = cache
+        def run(self):
+            for s in self.scenarios:
+                print s.apply(self.cache)
+
+    from sets import Set
+    scenarioCacheSet = Set([]) # All the scenarios that applied
+    trs = []
+    
+    def applies(regex, l):
+        '''
+        Based on a given regex and a list of paths,
+        returns the list of paths that match the regex.
+        '''
+        validator = re.compile(regex)
+        return filter(lambda x : validator.match(os.path.basename(x)), l)
+
+    # Lets get deeper in the testrunList
+    for testrun in config.getList('testrunList'):
+        # List of scenarios that match the given regex.
+        regex = testrun['applyRegex']
+        apply = applies(regex, ss)
+        scenarioCacheSet.update(apply)
+        if not apply:
+            print 'WARNING. Invalidating testrun.' + \
+                'None scenario matches to regex:\"%s\"' % (regex)
+        else:
+            tr = Testrun()
+            map(lambda x : tr.addScenario(Scenario(x)), apply)
+            # Lets see if we have modifications here
+            # 
+            # Adding the testrun tr the testrun list
+            trs.append(tr)
+
+    def fun(name):
+        with open(name, 'r') as f:
+            ret = f.read()
+        return ret
+    cache = dict(zip(scenarioCacheSet, map(fun, scenarioCacheSet)))
+    map(lambda x : x.setCache(cache), trs)
+
+    print '=' * 60
+    for tmp in trs:
+        print '-' * 30
+        tmp.run()
+    print '=' * 60
+
+
+#    for test in config.getList('testrunList'):
+        map(, config.obj.test)
+        # List of scenarios that match the given regex.
+        apply = 
+        scenarioCacheSet.update(apply)
+        if not apply:
+            print 'WARNING. Invalidating testrun.' + \
+                'None scenario matches to regex:\"%s\"' % (regex)
+        else:
+            tr = Testrun()
+            map(lambda x : tr.addScenario(Scenario(x)), apply)
+            # Lets see if we have modifications here
+            # 
+            # Adding the testrun tr the testrun list
+            trs.append(tr)
+
+
+
+
+
+
+
+
+    # Lets create some objects
+#    def applies(regex, l):
+#        '''
+#        Based on a given regex and a list of paths,
+#        returns the list of paths that match the regex.
+#        '''
+#        validator = re.compile(regex)
+#        return filter(lambda x : validator.match(os.path.basename(x)), l)
+
+
+    #cache = sets.Set([])
+    #map(lambda x : cache.update(applies(x, SS)), 
+    #    [t.regex for t in config.obj.test])   
