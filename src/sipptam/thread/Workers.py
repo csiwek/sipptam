@@ -127,8 +127,6 @@ def testrunWorker(queue, pd, tasPool, scenarioCache):
                 # This will be useful for the first iteration over (tries x r,m)
                 # to let the main thread that we are ready to start the testrun.
                 logger.debug('Looks like testworkers are ready. We set eReadyG')
-                logger.debug(eRunG)
-                logger.debug(eRunG.isSet())
                 eReadyG.set()
                 # Lets wait them to finish.
                 for th in thL:

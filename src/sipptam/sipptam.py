@@ -17,6 +17,7 @@ import logging
 from logging.handlers import SysLogHandler
 import Queue
 import time
+import itertools
 
 from validate.Validate import Validate
 from utils.Utils import fill
@@ -184,16 +185,23 @@ def main ():
     # The protected dict will hold the results.
     pd = PDict()
     # Adding some events for a fluent comunication with the testrunWorkers.
-    # events = [(eReady, eRun, eDone)]
-    eRun = threading.Event()
-    events = [(threading.Event(), eRun, threading.Event()) 
-              for x in range(len(testrunL))]
     if 'serial' == configFile.obj.advanced.execMode:
-        nTestrunWorker, eventWaitL = 1, [[x] for (x, y, z) in events]
-    else: # parallel
-        nTestrunWorker, eventWaitL = len(testrunL), [[x for (x, y, z) in events]]
-    logger.debug('nTestrunWorker:\"%s\", events:\"%s\", eventWaitL:\"%s\"' % 
-                 (nTestrunWorker, events, eventWaitL))
+        eReadyL = [threading.Event() for _ in testrunL]
+        eRunL = [threading.Event() for _ in testrunL]
+        eDoneL = [threading.Event() for _ in testrunL]
+        nTestrunWorker = 1
+        modReadyL = [[x] for (x) in eReadyL]
+        modRunL = [[x] for (x) in eRunL]
+    else:
+        eReadyL = [threading.Event() for _ in testrunL]
+        eRunL = itertools.repeat(threading.Event(), len(testrunL))
+        eDoneL = [threading.Event() for _ in testrunL]
+        nTestrunWorker = len(testrunL)
+        modReadyL = [eReadyL]
+        modRunL = [eRunL]
+
+    # Events will passed as part of the jobs
+    events = zip(eReadyL, eRunL, eDoneL)
 
     # Creating and starting testrunWorker threads.
     wthL = [threading.Thread(target=testrunWorker, 
@@ -207,8 +215,8 @@ def main ():
     map(lambda (x, y): q.put((x, y)), zip(testrunL, events))
 
     # Lets wait for the threads to be ready and trigger them.
-    for evs in eventWaitL:
-        while not all(map(lambda x : x.is_set(), evs)):
+    for modReady, modRun in zip(modReadyL, modRunL):
+        while not all(map(lambda x : x.is_set(), modReady)):
             logger.debug('Waiting for the testrunWorkers to be ready...')
             time.sleep(pauseCheckAlleReady)
         logger.debug('All testrunWorkers are ready.')
@@ -218,12 +226,11 @@ def main ():
         if interactive:
             var = raw_input("Do you want to proceed? [N/y] ")
             if ('y' != var):
+                # TODO. Save results
                 showInteractiveOut(_name, _version)
-            else:
-                # Stop annoying.
-                interactive = False
         logger.debug('Running the testrunWorkers...')
-        eRun.set()
+        map(lambda x : x.set(), modRun)
+        #eRun.set()
 
     # Waiting for all the eDone events.
     while not all(map(lambda (x,y,z) : z.is_set(), events)):

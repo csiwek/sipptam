@@ -21,6 +21,11 @@
 	    configlink="advanced"
 	    modlink="two"/>
 
+   <testrun id="test-002-twin"
+	    scenarioPath="/usr/local/share/sipptam/scenarios/test-002*.xml"
+	    configlink="advanced"
+	    modlink="two"/>
+
    <!-- Mandatory (Min 1 config). Configs used by testruns. -->
    <config id="simple"
 	   ratio="1"
