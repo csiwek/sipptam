@@ -17,7 +17,6 @@ import logging
 from logging.handlers import SysLogHandler
 import Queue
 import time
-import itertools
 
 from validate.Validate import Validate
 from utils.Utils import fill
@@ -194,7 +193,8 @@ def main ():
         modRunL = [[x] for (x) in eRunL]
     else:
         eReadyL = [threading.Event() for _ in testrunL]
-        eRunL = itertools.repeat(threading.Event(), len(testrunL))
+        tmp = threading.Event()
+        eRunL = [tmp for _ in testrunL]
         eDoneL = [threading.Event() for _ in testrunL]
         nTestrunWorker = len(testrunL)
         modReadyL = [eReadyL]
@@ -229,6 +229,7 @@ def main ():
                 # TODO. Save results
                 showInteractiveOut(_name, _version)
         logger.debug('Running the testrunWorkers...')
+        logger.debug(modRun)
         map(lambda x : x.set(), modRun)
         #eRun.set()
 
