@@ -1,4 +1,4 @@
-![ScreenShot](http://192.168.200.12/sipptam/blob/master/doc/sipptam_logo.png)
+![ScreenShot](http://192.168.200.12/sipptam/blob/master/doc/sipptam_logo_small.png)
 
 Package description  {#mainpage}
 ===================
