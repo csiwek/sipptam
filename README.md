@@ -20,9 +20,13 @@ library but weren't, including:
 - Easy event logging
 - Terminal/user interaction improvements
 
-# Detailed functionality
+# Known problems
 
-## Timing execution of a function
+## Reusing a binded port in the tas.
+- The device under tests keeps sending SIP messages to a port that we were using
+in another test. The new test if it is binded in the same port will be likely to fail.
+
+## Timing 
 
 	from Lang import timeIt	
 

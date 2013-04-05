@@ -17,66 +17,81 @@ import time
 import random
 import logging
 import os
-import traceback
 
 from sipptam.sipp.SIPp import SIPp
 
 logger = logging.getLogger(__name__)
 
 
-def perform(fun, args, max=5, pause=0.1):
-    '''
-    Just a DRY helper function which executes a function @max 
-    times with a pause of @pause in between when they fail.
-    '''
-    ret, tries, funNa = None, 0, fun.__name__
-    while not ret and tries < max:
-        try:
-            ret = fun(**args)
-            logger.debug('This fun:\"%s\" returned:\"%s\"' % (funNa, ret))
-        except Exception, err:
-            trace = traceback.format_exc()
-            logger.warning('This fun:\"%s\" didn\'t return anything' % (funNa))
-            logger.error('Excepton catched. %s. traceback:%s' % (err, trace))
-            time.sleep(pause)
-    return ret
-
-
 def testWorker(sipp, batons, triggers, pd, tasPool):
     '''
     '''
-    # I need a tas to start working with this scenario.
-    tas = tasPool.pop()
-    eBatonOn, eBatonOff = batons
-    eReady, eRun = triggers
-    # Asking for a free port
-    port = perform(tas.getPort, {})
-    sipp.setBindPort(port)
-    # We are ready to start
-    logger.debug('We just got a port and I ready to start. I set eReady.')
-    eReady.set()
-    # Lets wait until they tell me.
-    logger.debug('I have to wait for the eRun condition')
-    eRun.wait()
-    # Now we have to wait until I take the batonOn.
-    logger.debug('Waiting for the batonOn')
-    if eBatonOn: eBatonOn.wait()
-    # Time to send the sipp to the tas and execute it.
-    logger.debug('Executing sipp')
-    pid = perform(tas.runSipp, {'sipp' : sipp})
-    if not pid: logger.error('Error while running SIPp')
-    # Handling off the baton so next worker can start its scenario.
-    logger.debug('Passing the baton to the next one')
-    if eBatonOff: eBatonOff.set()
-    # Checking when is going to finish
-    logger.debug('Waiting untill sipp finishes, max=500, pause=1')
-    finish = perform(tas.hasFinish, {'pid' : pid}, max=500, pause=1)
-    if not finish: logger.error('havent finished yet!')
-    # TODO
-    #turnOff = perform(tas.turnOff, pid)
-    #perform(tas.returnPort!)
-    # This has ended. Returning the tas back to the pool.
-    tasPool.append(tas)
+    try:
+        # These events will help in the sync with the testrunWorker
+        eBatonOn, eBatonOff = batons
+        eReady, eRun = triggers
+
+        # I need a tas to start working with this scenario.
+        tas = tasPool.pop()
+
+        # Asking for a free port.
+        port = tas._getPort()
+        logger.debug('We just got a port:\"%s\"' % port)
+        sipp.setBindPort(port)
+
+        # We have a port, we are ready to start.
+        logger.debug('I\'m ready to start. I set eReady:%s' % eReady)
+        eReady.set()
+
+        # Lets wait until they tell me with the eRun condition.
+        logger.debug('I have to wait for the eRun:%s' % eRun)
+        eRun.wait()
+
+        # Now we have to wait until I take the baton.
+        logger.debug('Waiting for the baton. eBatonOn:%s' % eBatonOn)
+        if eBatonOn: eBatonOn.wait()
+
+        # Time to execute the sipp portion.
+        logger.debug('Executing sipp')
+        pid = tas._runSIPp(sipp)
+
+        # Handling off the baton so next worker can start its scenario.
+        # We set a proper pause before handling off the baton, the reason
+        # is even If we set the proper order scenarios' execution here,
+        # the lag in different tas could be different and they could end
+        # up executing in different order. This pause will fight against this.
+        logger.debug('Handling off the baton. eBatonOff:%s' % eBatonOff)
+        if eBatonOff:
+            logger.debug('Pausing a little bit before handling off the baton')
+            time.sleep(2)
+            eBatonOff.set()
+
+        # TODO. loop
+        # Here we have to detect that the test is going success
+        # or not, if not, raiseException and finish.
+        # Checking when is going to finish
+        logger.debug('Waiting until sipp finishes')
+        stats = tas._getStats(pid)
+        logger.info('got this success:%s' % stats.success)
+        logger.info('got this fail:%s' % stats.fail)
+        logger.info('got this total:%s' % stats.total)
+        logger.info('got this r:%s' % stats.r)
+        logger.info('got this m:%s' % stats.m)
+
+        # TODO
+        #if not finish: logger.error('havent finished yet!')
+        # TODO
+        # turnOff = tas.turnOff(pid)
+        # tas.returnPort !!!
+        # This has ended. Returning the tas back to the pool.
+    except Exception, msg:
+        logger.error(msg)
+        logger.debug('Error found so we fake eReady and eBatonOff and leave.')
+        eReady.set()
+        if eBatonOff: eBatonOff.set()
+    finally:
+        logger.debug('Returning tas to the pool. tas:\"%s\"', tas)
+        tasPool.append(tas)
 
 
 def testrunWorker(queue, pd, tasPool, scenarioCache):
@@ -126,7 +141,8 @@ def testrunWorker(queue, pd, tasPool, scenarioCache):
                 # testworker threads are ready so we are ready. 
                 # This will be useful for the first iteration over (tries x r,m)
                 # to let the main thread that we are ready to start the testrun.
-                logger.debug('Looks like testworkers are ready. We set eReadyG')
+                logger.debug('testworkers are ready. We set eReadyG:%s' % 
+                             eReadyG)
                 eReadyG.set()
                 # Lets wait them to finish.
                 for th in thL:

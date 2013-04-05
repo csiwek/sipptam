@@ -28,7 +28,7 @@ from utils.FileManager import FileManager
 from mod.Replace import Replace
 from mod.Fieldsf import Fieldsf
 from utils.Messages import showVersion, showHelp, showInteractiveOut
-from thread.Pool import Pool
+from tas.TasPool import TasPool
 from thread.Workers import testrunWorker
 from thread.PDict import PDict
 
@@ -149,10 +149,14 @@ def main ():
     scenarioCache.addFile(configFile.obj.ssSet)
 
     # Validation done. Creating objects from the parameters.
-    tasPool = Pool(pauseTasPool)
+    tasPool = TasPool(pauseTasPool)
     map(lambda x: tasPool.append(x), fill(Tas, configFile.obj.tas, 
                                           multiple='jobs'))
+    # We need to clean the SIPp instances that are running.
     tasPool.shuffle()
+    # We don't want previous SIPp running.
+    # TODO.
+    
     testrunL = fill(Testrun, configFile.obj.testrun)
     configDic = fill(Config, configFile.obj.config, dic = True)
     modDic = fill(Mod, configFile.obj.mod, dic = True)
@@ -200,7 +204,7 @@ def main ():
         modReadyL = [eReadyL]
         modRunL = [eRunL]
 
-    # Events will passed as part of the jobs
+    # Events will passed as part of the jobs.
     events = zip(eReadyL, eRunL, eDoneL)
 
     # Creating and starting testrunWorker threads.
@@ -217,7 +221,7 @@ def main ():
     # Lets wait for the threads to be ready and trigger them.
     for modReady, modRun in zip(modReadyL, modRunL):
         while not all(map(lambda x : x.is_set(), modReady)):
-            logger.debug('Waiting for the testrunWorkers to be ready...')
+            logger.info('Waiting for the testrunWorkers to be ready...')
             time.sleep(pauseCheckAlleReady)
         logger.debug('All testrunWorkers are ready.')
         # Checking if the user still wants to run these testruns.
@@ -228,14 +232,12 @@ def main ():
             if ('y' != var):
                 # TODO. Save results
                 showInteractiveOut(_name, _version)
-        logger.debug('Running the testrunWorkers...')
-        logger.debug(modRun)
+        logger.debug('Running the testrunWorkers. modRun:\"%s\"' % modRun)
         map(lambda x : x.set(), modRun)
-        #eRun.set()
 
     # Waiting for all the eDone events.
     while not all(map(lambda (x,y,z) : z.is_set(), events)):
-        logger.debug('Waiting for the testrunWorkers to be done...')
+        logger.info('Waiting for the testrunWorkers to be done...')
         time.sleep(pauseCheckAlleDone)
 
     # Time to get the results.

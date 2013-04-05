@@ -47,6 +47,7 @@ builddeb:
 	dpkg-buildpackage -i -I -rfakeroot
 
 clean:
+	sudo rm -frv src/sipptam.egg-info/ build/ /Library/Python/2.7/site-packages/sipptam*
 	find . -type f -name "*.pyc" -exec rm -f '{}' \;
 	find . -type f -name "*~" -exec rm -f '{}' \;
 	$(PYTHON) setup.py clean
