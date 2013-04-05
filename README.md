@@ -1,7 +1,10 @@
+![ScreenShot](http://192.168.200.12/sipptam/blob/master/doc/sipptam_logo.png)
+
 Package description  {#mainpage}
 ===================
 
-# Summary of functionality
+# SIPp Test Automation Manager
+
 
 This package provides a lot of miscellaneous things that probably should have been included in python's built-in
 library but weren't, including:
