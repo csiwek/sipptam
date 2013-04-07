@@ -22,13 +22,13 @@ instance = 0
 class noReturnExcept(Exception):
     pass
 
-def perform(fun, args, max=5, pause=0.1, funNa=None, alarm=True):
+def call(fun, args, max=5, pause=0.1, funNa=None, alarm=True):
     '''
     Just a DRY helper function which executes a function @max 
     times with a pause of @pause in between when they fail.
     @funNa if we want to set a friendly function's name for debugging.
     '''
-    logger.debug('Performing fun:\"%s\" args:\"%s\"' % (funNa, args))
+    #logger.debug('Calling fun:\"%s\" args:\"%s\"' % (funNa, args))
     if not funNa: funNa = fun.__name__
     ret, tries = None, 0
     while not ret and tries < max:
@@ -77,39 +77,26 @@ class Tas(object):
 
     def getTasPort(self):
         return self.tasPort
-    
-
-#     def runSipp(self, sipp):
-#         r = sipp.r
-#         m = sipp.m
-#         sf = sipp.sf
-#         sfcontent = sipp.sfcontent
-#         inf = sipp.inf
-#         duthost = sipp.duthost
-#         dutport = sipp.dutport
-#         port = sipp.port
-#         response = self.client.runSipp(r=r,
-#                                        m=m,
-#                                        sf=sf,
-#                                        sfcontent=sfcontent,
-#                                        inf=inf,
-#                                        duthost=duthost,
-#                                        dutport=dutport,
-#                                        port=port)
-#         #perform(response.pid)
-
 
     def _getPort(self):
-        response = perform(self.client.getPort, {'nu' : 0}, funNa='getPort')
+        response = call(self.client.getPort, {'nu' : 0}, funNa='getPort')
         return response.port
 
     def _runSIPp(self, sipp):
-        #response = perform(self.client.runSIPp, **sipp, funNa='runSIPp')
-        #return response.pid
-        pass
+        args = {'r' : sipp.r,
+                'm' : sipp.m,
+                'scenario' : sipp.scenario,
+                'scenarioContent' : sipp.scenarioContent,
+                'injection' : sipp.injection,
+                'injectionContent' : sipp.injection,
+                'duthost' : sipp.duthost,
+                'dutport' : sipp.dutport,
+                'port' : sipp.port}
+        response = call(self.client.runSIPp, args, funNa="runSIPp")
+        return response.ret
     
     def _getStats(self, pid):
-        response = perform(self.client.getStats, {'pid' : pid}, funNa='getStats')
+        response = call(self.client.getStats, {'pid' : pid}, funNa='getStats')
         return response.ret
      
 

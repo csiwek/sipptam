@@ -68,16 +68,17 @@ def fill(tmpClass, args, dic=False, multiple=None):
     or dict of Classes tmpClass based on the given init params.
     '''
     tmp = []
-    for arg in args:
-        if multiple: 
-            n = int(arg._attrs[multiple])
-        else: 
-            n = 1
-        tmp.extend([tmpClass(**dict(arg._attrs)) for x in range(n)])
-    if dic:
-        return dict([(x.getId(), x) for x in tmp]) #return tmp
-    else:
-        return tmp
+    if args is not None:
+        for arg in args:
+            if multiple: 
+                n = int(arg._attrs[multiple])
+            else: 
+                n = 1
+            tmp.extend([tmpClass(**dict(arg._attrs)) for x in range(n)])
+        if dic:
+            return dict([(x.getId(), x) for x in tmp]) #return tmp
+        else:
+            return tmp
 
 ## {{{ http://code.activestate.com/recipes/534109/ (r8)
 import re

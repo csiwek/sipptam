@@ -10,6 +10,7 @@
     :license: See LICENSE_FILE.
 """
 
+import traceback
 import getopt
 import sys
 import threading 
@@ -26,7 +27,7 @@ from config.Config import Config
 from mod.Mod import Mod
 from utils.FileManager import FileManager
 from mod.Replace import Replace
-from mod.Fieldsf import Fieldsf
+from mod.Injection import Injection
 from utils.Messages import showVersion, showHelp, showInteractiveOut
 from tas.TasPool import TasPool
 from thread.Workers import testrunWorker
@@ -39,8 +40,8 @@ def main ():
     '''
     # Defines a logging level and logging format based on a given string key.
     LEVELS = {'debug': (logging.DEBUG,
-                        '%(levelname)-9s %(name)-30s %(threadName)-40s' + 
-#                        ' +%(lineno)-4d' +
+                        '%(levelname)-9s %(name)-30s %(threadName)-54s' + 
+                        ' +%(lineno)-4d' +
                         ' %(message)s'),
               'info': (logging.INFO,
                        '%(levelname)-9s %(name)-30s %(message)s'),
@@ -141,12 +142,15 @@ def main ():
         configFile = Validate(configFilePath, parse=True)
         configFile.checkSemantics()
     except Exception, err:
+        trace = traceback.format_exc()
+        logger.debug('Exception:%s traceback:%s' % (err, trace))
         logger.error('ConfigFile file error. %s' % str(err))
         showHelp(_name, _version)
 
     # Reading the files and storing them for future reads.
     scenarioCache = FileManager()
     scenarioCache.addFile(configFile.obj.ssSet)
+    scenarioCache.addFile(configFile.obj.iSet)
 
     # Validation done. Creating objects from the parameters.
     tasPool = TasPool(pauseTasPool)
@@ -156,21 +160,23 @@ def main ():
     tasPool.shuffle()
     # We don't want previous SIPp running.
     # TODO.
-    
+
     testrunL = fill(Testrun, configFile.obj.testrun)
     configDic = fill(Config, configFile.obj.config, dic = True)
     modDic = fill(Mod, configFile.obj.mod, dic = True)
+    duthost, dutport = configFile.obj.duthost, int(configFile.obj.dutport)
 
     # Some debugging.
     logger.debug('tasPool:%s' % tasPool)
     logger.debug('testrunL:%s' % testrunL)
     logger.debug('configDic:%s' % configDic)
     logger.debug('modDic:%s' % modDic)
+    logger.info('Running test against:\"%s:%s\"' % (duthost, dutport))
 
     # Lets create the proper modification objects
     for m in configFile.obj.mod:
         tmp = {'replaces' : fill(Replace, m.replace),
-               'fieldsfs' : fill(Fieldsf, m.fieldsf)}
+               'injections' : fill(Injection, m.injection)}
         m._attrs.update(tmp)
 
     # Attaching {config, mod} objects in the testruns.
@@ -215,8 +221,9 @@ def main ():
         wth.setDaemon(True)
         wth.start()
 
-    # Feeding the threads with jobs. A job is a testrun and its events.
-    map(lambda (x, y): q.put((x, y)), zip(testrunL, events))
+    # Feeding the threads with jobs using the queue. 
+    # A job is a <(duthost, dutport), testrun, events>
+    map(lambda (x, y): q.put(((duthost, dutport), x, y)), zip(testrunL, events))
 
     # Lets wait for the threads to be ready and trigger them.
     for modReady, modRun in zip(modReadyL, modRunL):

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-sipptam.modification.Fieldsf.py
+sipptam.modification.Injection.py
 
 Object which represents a fieldsf element.
 
@@ -13,16 +13,20 @@ Object which represents a fieldsf element.
 '''
 
 
-class Fieldsf(object):
+class Injection(object):
     '''
     '''
+    kwargs = None
     def __init__(self, **kwargs):
         #for key, value in kwargs.iteritems():
         #    print "%s = %s" % (key, value)
-        pass
+        self.kwargs = kwargs
 
     def __str__(self):
-        return str(self.args)
+        tmp = []
+        for key, value in self.kwargs.iteritems():
+            tmp.append('    * %s:\"%s\"' % (key, value))
+        return "\n".join(tmp)
 
     def apply(self):
         pass

@@ -24,6 +24,8 @@ schema = StringIO.StringIO('''\
                 <xs:element name="mod" type="modType" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element name="advanced" type="advancedType" minOccurs="1" maxOccurs="1"/>
             </xs:sequence>
+        <xs:attribute name="duthost" type="xs:string" use="required"/>
+        <xs:attribute name="dutport" type="xs:positiveInteger" use="required"/>
         </xs:complexType>
     </xs:element>
 
@@ -50,8 +52,8 @@ schema = StringIO.StringIO('''\
 
     <xs:complexType name="modType">
         <xs:sequence>
-            <xs:element name="replace" type="replaceType" maxOccurs="unbounded"/>        
-            <xs:element name="fieldsf" type="fieldsfType" maxOccurs="unbounded"/>        
+            <xs:element name="replace" type="replaceType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="injection" type="injectionType" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute name="id" type="xs:string" use="required"/>
     </xs:complexType>
@@ -62,9 +64,9 @@ schema = StringIO.StringIO('''\
         <xs:attribute name="dst" type="xs:string" use="required"/>
     </xs:complexType>
 
-    <xs:complexType name="fieldsfType">
+    <xs:complexType name="injectionType">
         <xs:attribute name="regex" type="xs:string" use="required"/>
-        <xs:attribute name="f" type="xs:string" use="required"/>
+        <xs:attribute name="path" type="xs:string" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="advancedType">

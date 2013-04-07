@@ -12,6 +12,7 @@ This module implements different thread workers.
 @copyright: INdigital Telecom, Inc. 2012
 '''
 
+import traceback
 import threading
 import time
 import random
@@ -53,7 +54,10 @@ def testWorker(sipp, batons, triggers, pd, tasPool):
 
         # Time to execute the sipp portion.
         logger.debug('Executing sipp')
-        pid = tas._runSIPp(sipp)
+        ret = tas._runSIPp(sipp)
+        if ret.ret:
+            'Operation was ok!'
+        pid = ret.pid
 
         # Handling off the baton so next worker can start its scenario.
         # We set a proper pause before handling off the baton, the reason
@@ -70,7 +74,7 @@ def testWorker(sipp, batons, triggers, pd, tasPool):
         # Here we have to detect that the test is going success
         # or not, if not, raiseException and finish.
         # Checking when is going to finish
-        logger.debug('Waiting until sipp finishes')
+        logger.debug('Waiting until sipp finishes, checking the stats:')
         stats = tas._getStats(pid)
         logger.info('got this success:%s' % stats.success)
         logger.info('got this fail:%s' % stats.fail)
@@ -84,8 +88,10 @@ def testWorker(sipp, batons, triggers, pd, tasPool):
         # turnOff = tas.turnOff(pid)
         # tas.returnPort !!!
         # This has ended. Returning the tas back to the pool.
-    except Exception, msg:
-        logger.error(msg)
+    except Exception, err:
+        trace = traceback.format_exc()
+        logger.debug('Exception:%s traceback:%s' % (err, trace))
+        logger.error(err)
         logger.debug('Error found so we fake eReady and eBatonOff and leave.')
         eReady.set()
         if eBatonOff: eBatonOff.set()
@@ -98,7 +104,7 @@ def testrunWorker(queue, pd, tasPool, scenarioCache):
     '''
     '''
     while True:
-        testrun, (eReadyG, eRunG, eDoneG) = queue.get()
+        addr, testrun, (eReadyG, eRunG, eDoneG) = queue.get()
         
         pause = testrun.getConf().getPause()
         tries = testrun.getConf().getTries()
@@ -118,14 +124,23 @@ def testrunWorker(queue, pd, tasPool, scenarioCache):
                 # Trigs will help to sync with others testruns.
                 trigsL = [(threading.Event(), eRunG) for _ in testrun]
                 thL = []
-                for sf, batons, trigs in zip(testrun, batonsChain, trigsL):
+                for scenario, batons, trigs in zip(testrun, batonsChain, trigsL):
                     # TODO. Modifications.
-                    sfcontent = scenarioCache.getFile(sf)
-                    sfTmp = '%s__%s' % (testrun.getId(), os.path.basename(sf))
-                    duthost, dutport = '192.168.2.1', 5060 # TODO
-                    sipp = SIPp(r, m, sfTmp, sfcontent, duthost, dutport)
+                    scenarioContent = scenarioCache.getFile(scenario)
+                    injection, injectionContent = None, None
+                    #if testrun.has('mod'):
+                        #scenarioContent, injection  = \
+                        #    testrun.get('mod').apply(scenario, scenarioContent)
+                        #if injection:
+                        #    injectionContent = scenarioCache.getFile(injection)
+                    scenarioTmp = '%s__%s' % \
+                        (testrun.getId(), os.path.basename(scenario))
+                    duthost, dutport = addr
+                    sipp = SIPp(r, m, scenarioTmp, scenarioContent, 
+                                duthost, dutport, 
+                                injection=injection, injectionContent=injectionContent)
                     # Creating threads.                    
-                    n = '%s__%s' % (threading.currentThread().name, sfTmp)
+                    n = '%s__%s' % (threading.currentThread().name, scenarioTmp)
                     th = threading.Thread(name=n,
                                           target=testWorker,
                                           args=[sipp, batons, trigs,

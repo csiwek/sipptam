@@ -11,7 +11,8 @@ Generic object to save the configuration parameters.
 @copyright: INdigital Telecom, Inc. 2012
 '''
 
-
+import logging
+import traceback
 import os
 import types
 from lxml import etree
@@ -22,13 +23,16 @@ from sipptam.validate.Schema import schema
 from sipptam.validate.Semantic import checkSemantics
 
 
+logger = logging.getLogger(__name__)
+
+
 class Validate(object):
     '''
     '''
     root = None
     obj = None
     def __init__(self, file, parse = False):
-        if not os.path.exists(file):
+        if not os.path.isfile(file):
             raise Exception('Configuration file not found')
         try:
             # Loading config file
@@ -42,8 +46,10 @@ class Validate(object):
             self.root = tree.getroot()
             with open(file, 'r') as f:
                 self.obj = xml2obj(f.read())
-        except:
+        except Exception, err:
             self.obj = None
+            trace = traceback.format_exc()
+            logger.error('Exception:%s traceback:%s' % (err, trace))
             raise
     def __str__(self):
         return pformat(self.obj)

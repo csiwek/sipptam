@@ -19,30 +19,34 @@ log = logging.getLogger(__name__)
 
 class SIPp(object):
     r, m = None, None
-    sfpath, sf, sfcontent = None, None, None
+    scenarioPath, scenario, scenarioContent = None, None, None
     duthost, dutport = None, None
     port = None
-    inf = None
+    injectionPath, injection, injectionContent = None, None, None
     trace_err = None
     
-    def __init__(self, r, m, sf, sfcontent, duthost, dutport, 
-                 port=None, inf=None, trace_err=False):
+    def __init__(self, r, m, scenario, scenarioContent, duthost, dutport, 
+                 port=5060, injection=None, injectionContent=None,
+                 sipp='sipp', trace_err=False):
         self.r = r
         self.m = m
-        self.sf = sf
-        self.sfcontent = sfcontent
-        self.sfpath = os.path.join('/tmp/', sf)
+        self.scenario = scenario
+        self.scenarioContent = scenarioContent
+        self.scenarioPath = os.path.join('/tmp/', scenario)
         self.duthost = duthost
         self.dutport = dutport
-        if port: self.port = port
-        if inf: self.inf = inf
+        self.port = port
+        self.sipp  = sipp
+        if injection: self.injectionPath = os.path.join('/tmp/', injection)
+        self.injection = injection
+        self.injectionContent = injectionContent
         if trace_err: self.trace_err
 
     def __str__(self):
         cmd = []
-        cmd.append('sipp')
-        cmd.append('-sf %s' % self.sfpath)
-        cmd.append('-inf %s' % self.inf)
+        cmd.append(self.sipp)
+        cmd.append('-sf %s' % self.scenarioPath)
+        if self.injection: cmd.append('-inf %s' % self.injection)
         cmd.append('%s:%s' % (self.duthost, self.dutport))
         if self.port: cmd.append('-p %s' % self.port)
         cmd.append('-r %s' % self.r)
@@ -51,8 +55,13 @@ class SIPp(object):
         return ' '.join(cmd)
 
     def createScenario(self):
-        with open(self.sfpath, 'w') as f:
-            f.write(self.sfcontent)
+        with open(self.scenarioPath, 'w') as f:
+            f.write(self.scenarioContent)
+
+    def createInjection(self):
+        if self.injection is not None:
+            with open(self.injectionPath, 'w') as f:
+                f.write(self.injectionContent)
 
     def getBindedPort(self):
         return self.port
