@@ -1,8 +1,17 @@
-<!-- 
-     sipptam configuration file example.
-     luismartingil. INdigital Telecom 2013.
-  -->
 <?xml version="1.0" encoding="utf-8" ?>
+<!-- 
+
+     sipptam
+     ~~~~~~~
+     Configuration file example.
+
+     INdigital Telecom 2013.
+
+     luismartingil
+     luis.martin.gil@indigital.net
+     http://www.luismartingil.com
+
+  -->
 
 <!-- Device under test (DUT). Mandatory. -->
 <sipptam duthost="192.168.203.150"
