@@ -3,23 +3,16 @@
 <sipptam duthost="192.168.203.150"
 	 dutport="5060">
 
-   <!-- TAS -->
    <!-- Mandatory. ta slaves to use. -->
    <tas host="127.0.0.1" port="8008" jobs="5"/>
    <tas host="127.0.0.1" port="8009" jobs="5"/>
    <tas host="127.0.0.1" port="8010" jobs="10"/>
-   <!-- End TAS -->
 
-   <!-- TESTRUNS -->
    <!-- Mandatory. Test to run. -->
-   <testrun id="test-002--advanced--two"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/test-000*.xml"
+   <testrun id="test-002" scenarioPath="/usr/local/share/sipptam/scenarios/test-000*.xml"
 	    configlink="simple"
 	    modlink="one"/>
- 
-   <!-- End TESTRUNS -->
 
-   <!-- CONFIGURATIONS -->
    <!-- Mandatory (Min 1 config). Configs used by testruns. -->
    <config id="simple"
 	   ratio="2"
@@ -32,17 +25,13 @@
 	   max="10;50"
 	   pause="1.0"
 	   tries="2"/>
-   <!-- End CONFIGURATIONS -->
 
-   <!-- MODIFICATIONS -->
    <!-- Optional. Modifications that might be applied by a testrun. -->
    <mod id="one">
      <replace regex="(.*_a.xml)" src="__notusednow1__" dst="tmp1a"/>
      <replace regex="(.*_a.xml)" src="__notusednow2__" dst="tmp1a"/>
      <injection regex="(.*)" path="/usr/local/share/sipptam/injections/injection1.sample.csv"/>
    </mod>
-
-   <!-- End MODIFICATIONS -->
 
    <!-- Mandatory. Change in case you know what you're doing. -->
    <!-- * execMode            : {serial, parallel} -->
