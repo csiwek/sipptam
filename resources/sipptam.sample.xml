@@ -23,14 +23,14 @@
    <tas host="127.0.0.1" port="8010" jobs="10"/>
 
    <!-- Testruns definition. Mandatory (at least one) -->
-   <testrun id="test-002" scenarioPath="/usr/local/share/sipptam/scenarios/test-000*.xml"
+   <testrun id="test-000" scenarioPath="/usr/local/share/sipptam/scenarios/test-000*.xml"
 	    configlink="simple"
 	    modlink="one"/>
 
    <!-- Configs used by testruns. Mandatory (at least one) -->
    <config id="simple"
-	   ratio="2"
-	   max="100"
+	   ratio="1"
+	   max="50"
 	   pause="1.0"
 	   tries="1"/>
 
