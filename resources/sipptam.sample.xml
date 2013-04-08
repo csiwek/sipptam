@@ -1,19 +1,24 @@
+<!-- 
+     sipptam configuration file example.
+     luismartingil. INdigital Telecom 2013.
+  -->
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Mandatory. Device under test (DUT). -->
+
+<!-- Device under test (DUT). Mandatory. -->
 <sipptam duthost="192.168.203.150"
 	 dutport="5060">
 
-   <!-- Mandatory. ta slaves to use. -->
+   <!-- Slaves to use. Mandatory. -->
    <tas host="127.0.0.1" port="8008" jobs="5"/>
    <tas host="127.0.0.1" port="8009" jobs="5"/>
    <tas host="127.0.0.1" port="8010" jobs="10"/>
 
-   <!-- Mandatory. Test to run. -->
+   <!-- Testruns definition. Mandatory (at least one) -->
    <testrun id="test-002" scenarioPath="/usr/local/share/sipptam/scenarios/test-000*.xml"
 	    configlink="simple"
 	    modlink="one"/>
 
-   <!-- Mandatory (Min 1 config). Configs used by testruns. -->
+   <!-- Configs used by testruns. Mandatory (at least one) -->
    <config id="simple"
 	   ratio="2"
 	   max="100"
@@ -26,14 +31,14 @@
 	   pause="1.0"
 	   tries="2"/>
 
-   <!-- Optional. Modifications that might be applied by a testrun. -->
+   <!-- Modifications that might be applied by a testrun. Optional. -->
    <mod id="one">
      <replace regex="(.*_a.xml)" src="__notusednow1__" dst="tmp1a"/>
      <replace regex="(.*_a.xml)" src="__notusednow2__" dst="tmp1a"/>
      <injection regex="(.*)" path="/usr/local/share/sipptam/injections/injection1.sample.csv"/>
    </mod>
 
-   <!-- Mandatory. Change in case you know what you're doing. -->
+   <!-- Other options. Change in case you know what you're doing. Mandatory. -->
    <!-- * execMode            : {serial, parallel} -->
    <!-- * scenarioValidate    : Validates XML syntax of scenarios -->
    <!-- * regexValidate       : Validates all the used regexs -->
