@@ -81,11 +81,13 @@ def scenarioWorker(sipp, id, batons, triggers, ePowerOff, pd, tasPool):
             time.sleep(2)
             eBatonOff.set()
 
+        # TODO. If no new calls success increased in the X seconds (param)
+        # flag the call as not success.
         # Regularly check the stats and status of the scenario.
         end = False
         while not end and not ePowerOff.is_set():
             logger.debug('Checking the stats of \"%s\".' % id)
-            stats = tas._getStats(pid, sipp.scenarioPath)
+            stats = tas._getStats(pid)
             pd.update(id, stats)
             # If we have fail calls we have to powerOff the others scenarios.
             if (stats['cfail'] > 0):
@@ -109,7 +111,7 @@ def scenarioWorker(sipp, id, batons, triggers, ePowerOff, pd, tasPool):
         try:
             logger.debug('We have to sure this SIPp:\"%s\" is done.' % pid + \
                              ' Also, we need to return the port:\"%s\"' % port)
-            powerOff = tas._powerOff(pid, port)
+            powerOff = tas._powerOff(pid)
         except Exception, err:
             trace = traceback.format_exc()
             logger.debug('Exception:%s traceback:%s' % (err, trace))

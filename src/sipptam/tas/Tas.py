@@ -102,23 +102,25 @@ class Tas(object):
         response = call(self.client.runSIPp, args, funNa="runSIPp")
         return response.ret
     
-    def _getStats(self, pid, scenario):
+    def _getStats(self, pid):
         response = call(self.client.getStats, 
-                        {'pid' : pid, 'scenario' : scenario}, 
+                        {'pid' : pid}, 
                         funNa='getStats')
-        ret = {'start' : int(response.ret.start),
-               'elapsed' : int(response.ret.elapsed),
+        ret = {'startDate' : str(response.ret.startDate),
+               'startTime' : str(response.ret.startTime),
+               'elapsed' : str(response.ret.elapsed),
                'csuccess' : int(response.ret.csuccess),
                'cfail' : int(response.ret.cfail),
                'ctotal' : int(response.ret.ctotal),
-               'r' : int(response.ret.r),
-               'm' : int(response.ret.m),
+               'callrate' : float(response.ret.callrate),
+               'cdead' : int(response.ret.cdead),
+               'errors' : int(response.ret.errors),
                'end' : bool(response.ret.end)}
         return ret
 
-    def _powerOff(self, pid, port):
+    def _powerOff(self, pid):
         response = call(self.client.powerOff, 
-                        {'pid' : pid, 'port' : port},
+                        {'pid' : pid},
                         funNa='powerOff')
         return response.ret
 
