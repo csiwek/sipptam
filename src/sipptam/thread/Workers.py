@@ -20,11 +20,24 @@ import logging
 import os
 
 from sipptam.sipp.SIPp import SIPp
+from sipptam.mod.Injection import Injection
+from sipptam.mod.Replace import Replace
 
 logger = logging.getLogger(__name__)
 
 
-def testWorker(sipp, batons, triggers, pd, tasPool):
+class errorAnyScenario(Exception):
+    pass
+
+def statsWorker(pd):
+    '''
+    '''
+    while True:
+        logger.debug(pd)
+        time.sleep(2.0)
+
+
+def scenarioWorker(sipp, id, batons, triggers, ePowerOff, pd, tasPool):
     '''
     '''
     try:
@@ -52,11 +65,9 @@ def testWorker(sipp, batons, triggers, pd, tasPool):
         logger.debug('Waiting for the baton. eBatonOn:%s' % eBatonOn)
         if eBatonOn: eBatonOn.wait()
 
-        # Time to execute the sipp portion.
+        # Executing SIPp
         logger.debug('Executing sipp')
         ret = tas._runSIPp(sipp)
-        if ret.ret:
-            'Operation was ok!'
         pid = ret.pid
 
         # Handling off the baton so next worker can start its scenario.
@@ -70,43 +81,50 @@ def testWorker(sipp, batons, triggers, pd, tasPool):
             time.sleep(2)
             eBatonOff.set()
 
-        # TODO. loop
-        # Here we have to detect that the test is going success
-        # or not, if not, raiseException and finish.
-        # Checking when is going to finish
-        logger.debug('Waiting until sipp finishes, checking the stats:')
-        stats = tas._getStats(pid)
-        logger.info('got this success:%s' % stats.success)
-        logger.info('got this fail:%s' % stats.fail)
-        logger.info('got this total:%s' % stats.total)
-        logger.info('got this r:%s' % stats.r)
-        logger.info('got this m:%s' % stats.m)
+        # Regularly check the stats and status of the scenario.
+        end = False
+        while not end and not ePowerOff.is_set():
+            logger.debug('Checking the stats of \"%s\".' % id)
+            stats = tas._getStats(pid, sipp.scenarioPath)
+            pd.update(id, stats)
+            # If we have fail calls we have to powerOff the others scenarios.
+            if (stats['cfail'] > 0):
+                logger.info('Found some error calls in this SIPp instance, ' + \
+                                'setting the ePowerOff.')
+                ePowerOff.set()
+            if ((stats['end'] == True) or
+                (stats['csuccess'] == stats['ctotal'])):
+                end = True
 
-        # TODO
-        #if not finish: logger.error('havent finished yet!')
-        # TODO
-        # turnOff = tas.turnOff(pid)
-        # tas.returnPort !!!
-        # This has ended. Returning the tas back to the pool.
     except Exception, err:
+        logger.debug('Error found so we fake eReady and eBatonOff and leave.')
+        ePowerOff.set()
+        eReady.set()
+        if eBatonOff: eBatonOff.set()
         trace = traceback.format_exc()
         logger.debug('Exception:%s traceback:%s' % (err, trace))
         logger.error(err)
-        logger.debug('Error found so we fake eReady and eBatonOff and leave.')
-        eReady.set()
-        if eBatonOff: eBatonOff.set()
+
     finally:
+        try:
+            logger.debug('We have to sure this SIPp:\"%s\" is done.' % pid + \
+                             ' Also, we need to return the port:\"%s\"' % port)
+            powerOff = tas._powerOff(pid, port)
+        except Exception, err:
+            trace = traceback.format_exc()
+            logger.debug('Exception:%s traceback:%s' % (err, trace))
+            logger.error(err)
         logger.debug('Returning tas to the pool. tas:\"%s\"', tas)
         tasPool.append(tas)
 
 
-def testrunWorker(queue, pd, tasPool, scenarioCache):
+def testrunWorker(queue, pd, tasPool, filesCache):
     '''
     '''
     while True:
         addr, testrun, (eReadyG, eRunG, eDoneG) = queue.get()
         
-        pause = testrun.getConf().getPause()
+        pause = float(testrun.getConf().getPause())
         tries = testrun.getConf().getTries()
 
         # Going through the tries and all the {ratio, max} values.
@@ -121,46 +139,67 @@ def testrunWorker(queue, pd, tasPool, scenarioCache):
                 # ran in an specific order.
                 tmp = [threading.Event() for _ in testrun][:-1]
                 batonsChain = zip([None] + tmp, tmp + [None])
-                # Trigs will help to sync with others testruns.
+                # Trigs structure will help to sync with others testruns.
                 trigsL = [(threading.Event(), eRunG) for _ in testrun]
+                # ePowerOff will sync the threads when things go bad.
+                ePowerOff = threading.Event()
                 thL = []
                 for scenario, batons, trigs in zip(testrun, batonsChain, trigsL):
-                    # TODO. Modifications.
-                    scenarioContent = scenarioCache.getFile(scenario)
-                    injection, injectionContent = None, None
-                    #if testrun.has('mod'):
-                        #scenarioContent, injection  = \
-                        #    testrun.get('mod').apply(scenario, scenarioContent)
-                        #if injection:
-                        #    injectionContent = scenarioCache.getFile(injection)
+                    # Time to handle the modifications for each of the 
+                    # scenarios in the testrun.
+                    scenarioContent = filesCache.getFile(scenario)
+                    injection, injectionContent, injectionTmp = None, None, None
+                    if testrun.has('mod'):
+                        for item in testrun.get('mod'):
+                            if isinstance(item, Injection):
+                                res = item.apply(scenario)
+                                if res:
+                                    injection = res
+                                    injectionTmp = '%s__%s' % \
+                                        (testrun.getId(), os.path.basename(injection))
+                                    injectionContent = filesCache.getFile(injection)
+                            elif isinstance(item, Replace):
+                                res  = item.apply(scenario, 
+                                                  scenarioContent)
+                                if res:
+                                    scenarioContent = res
+                            else:
+                                logger.warning('Mod unknown, discarding it.')
                     scenarioTmp = '%s__%s' % \
                         (testrun.getId(), os.path.basename(scenario))
                     duthost, dutport = addr
+                    # We will create the SIPp object with the proper params.
                     sipp = SIPp(r, m, scenarioTmp, scenarioContent, 
-                                duthost, dutport, 
-                                injection=injection, injectionContent=injectionContent)
-                    # Creating threads.                    
+                                duthost, dutport, injection=injectionTmp,
+                                injectionContent=injectionContent)
+                    # Creating threads..
                     n = '%s__%s' % (threading.currentThread().name, scenarioTmp)
+                    id = '%s;%s;%s;%s;%s' % (testrun.getId(), t, r, m, scenario)
                     th = threading.Thread(name=n,
-                                          target=testWorker,
-                                          args=[sipp, batons, trigs,
+                                          target=scenarioWorker,
+                                          args=[sipp, id, 
+                                                batons, trigs, ePowerOff,
                                                 pd, tasPool])
                     th.setDaemon(True)
                     thL.append(th)
                 # Lets start the threads
                 map(lambda x:x.start(), thL)
-                # Wait for all testworker threads to be ready.
-                logger.debug('Waiting for the testworkers to be ready')
+                # Wait for all scenarioWorker threads to be ready.
+                logger.debug('Waiting for the scenarioWorkers to be ready')
                 while not all(map(lambda (x,y) : x.is_set(), trigsL)):
                     time.sleep(0.5)
-                # testworker threads are ready so we are ready. 
+                # scenarioWorker threads are ready so we are ready. 
                 # This will be useful for the first iteration over (tries x r,m)
                 # to let the main thread that we are ready to start the testrun.
-                logger.debug('testworkers are ready. We set eReadyG:%s' % 
-                             eReadyG)
+                logger.debug('scenarioWorkers ready. Setting eReadyG:%s' % eReadyG)
                 eReadyG.set()
                 # Lets wait them to finish.
+                logger.debug('Joining the scenarioWorkers.')
                 for th in thL:
                     th.join()
+                # Little pause at the end. This will pause also even
+                # if this is the last 'try' of the testrun.
+                logger.info('Pausing \"%s\"secs between tries.' % pause)
+                time.sleep(pause)
         # Setting the finish flag
         eDoneG.set()

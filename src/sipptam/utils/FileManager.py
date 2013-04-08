@@ -23,7 +23,7 @@ class FileManager(object):
         self.files = {}
 
     def __str__(self):
-        return str(self.files)
+        return str(self.files.keys())
 
     def addFile(self, fnames):
         for fn in [x for x in fnames if x not in self.files.keys()]:

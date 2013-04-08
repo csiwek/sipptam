@@ -14,8 +14,9 @@ This module implements a shared resource to store the result.
 import threading
 import datetime
 import logging
+import copy
 
-log = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class PDict(object):
@@ -37,13 +38,16 @@ class PDict(object):
         '''
         '''
         with self.lock:
-            return str(self.dict)
+            tmp = ['\n']
+            for key, value in sorted(self.dict.iteritems()):
+                tmp.append('%s  -->  %s' % (key, value))
+            return "\n".join(tmp)
         
-    def belongs(self, item):
+    def has(self, item):
         '''
         '''
         with self.lock:
-            return self.dict.has_key(key)
+            return key in self.dict
 
     def add(self, key, item):
         '''
@@ -58,7 +62,11 @@ class PDict(object):
         Gets the value of an element of the dict.
         '''
         with self.lock:
-            return self.dict[key]
+            return copy.copy(self.dict[key])
 
-    def update(self):
-        pass
+    def update(self, key, value):
+        with self.lock:
+            if key in self.dict:
+                self.dict[key].append(value)
+            else:
+                self.dict[key] = [value]

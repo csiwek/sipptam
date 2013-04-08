@@ -19,8 +19,12 @@ logger = logging.getLogger(__name__)
 instance = 0
 
 
+class operationFailed(Exception):
+    pass
+
 class noReturnExcept(Exception):
     pass
+
 
 def call(fun, args, max=5, pause=0.1, funNa=None, alarm=True):
     '''
@@ -39,9 +43,12 @@ def call(fun, args, max=5, pause=0.1, funNa=None, alarm=True):
             tries += 1
             logger.warning('This fun:\"%s\" didn\'t return anything' % (funNa))
             time.sleep(pause)
-    if alarm and not ret:
-        msg = 'This fun:%s didn\'t return anything (tries:%s)' % (funNa, tries)
-        raise noReturnExcept(msg)
+    if alarm:
+        if not ret:
+            msg = 'This fun:%s didn\'t return anything (tries:%s)' % (funNa, tries)
+            raise noReturnExcept(msg)
+        if not ret.ret:
+            raise operationFailed('Operation returned an error code:%s' % funNa)
     return ret
 
 
@@ -88,17 +95,32 @@ class Tas(object):
                 'scenario' : sipp.scenario,
                 'scenarioContent' : sipp.scenarioContent,
                 'injection' : sipp.injection,
-                'injectionContent' : sipp.injection,
+                'injectionContent' : sipp.injectionContent,
                 'duthost' : sipp.duthost,
                 'dutport' : sipp.dutport,
                 'port' : sipp.port}
         response = call(self.client.runSIPp, args, funNa="runSIPp")
         return response.ret
     
-    def _getStats(self, pid):
-        response = call(self.client.getStats, {'pid' : pid}, funNa='getStats')
+    def _getStats(self, pid, scenario):
+        response = call(self.client.getStats, 
+                        {'pid' : pid, 'scenario' : scenario}, 
+                        funNa='getStats')
+        ret = {'start' : int(response.ret.start),
+               'elapsed' : int(response.ret.elapsed),
+               'csuccess' : int(response.ret.csuccess),
+               'cfail' : int(response.ret.cfail),
+               'ctotal' : int(response.ret.ctotal),
+               'r' : int(response.ret.r),
+               'm' : int(response.ret.m),
+               'end' : bool(response.ret.end)}
+        return ret
+
+    def _powerOff(self, pid, port):
+        response = call(self.client.powerOff, 
+                        {'pid' : pid, 'port' : port},
+                        funNa='powerOff')
         return response.ret
-     
 
 if __name__ == '__main__':
     '''

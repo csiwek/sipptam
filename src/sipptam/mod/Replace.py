@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-sipptam.modification.Replace.py
+sipptam.mod.Replace.py
 
 Object which represents a replace element.
 
@@ -11,23 +11,31 @@ Object which represents a replace element.
 @organization: INdigital Telecom, Inc.
 @copyright: INdigital Telecom, Inc. 2013
 '''
+import logging
+
+from sipptam.mod.Mod import Mod
+
+logger = logging.getLogger(__name__)
 
 
-class Replace(object):
+class Replace(Mod):
     '''
     '''
-    kwargs = None
-    def __init__(self, **kwargs):
-        self.kwargs = kwargs
-        #for key, value in kwargs.iteritems():
-        #    print "%s = %s" % (key, value)
-        pass
-
-    def __str__(self):
-        return str(self.args)
-    
-    def apply(self):
-        print self.kwargs['src']
+    def apply(self, scenario, scenarioContent):
+        '''
+        If the mod matches we return the modified scenarioContent.
+        '''
+        newScenarioContent = None
+        if self.matches(scenario):
+            newScenarioContent = \
+                scenarioContent.replace(self.kwargs['src'],
+                                        self.kwargs['dst'])
+            logger.debug('Replacing:\"%s\" -> \"%s\" in scenario:\"%s\"' %
+                         (self.kwargs['src'], self.kwargs['dst'], scenario))
+        else:
+            logger.debug('Replace \"%s\" -> \"%s\" not match scenario:\"%s\"' %
+                         (self.kwargs['src'], self.kwargs['dst'], scenario))
+        return newScenarioContent
 
 if __name__ == '__main__':
     '''

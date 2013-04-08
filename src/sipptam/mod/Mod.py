@@ -12,28 +12,32 @@
     @copyright: INdigital Telecom, Inc. 2013. luismartingil.
     @license: See LICENSE_FILE.
 """
-#from sipptam.mod.Replace import Replace
-#from sipptam.mod.Fieldsf import Fieldsf
-#from sipptam.utils.Utils import fill
 
-class itemNotFoundExcept(Exception):
-    pass
+import re
+
 
 class Mod(object):
     '''
     '''
+    regex = None
     kwargs = None
     def __init__(self, **kwargs):
         self.kwargs = kwargs
-        
-    def getId(self):
-        return self.kwargs['id']
+        self.regex = kwargs['regex']
 
-    def apply(self, scenario, sfcontent):
-        '''
-        Returns: (sfcontent*, injection*)
-        '''
-        pass
+    def __str__(self):
+        tmp = []
+        for key, value in self.kwargs.iteritems():
+            tmp.append('    * %s:\"%s\"' % (key, value))
+        return "\n".join(tmp)
+
+    def matches(self, scenario):
+        return re.match(self.regex, scenario)
+
+
+    # TODO. Make it mandatory to define when subclassing from Mod class!
+    #def apply(self, scenario, scenarioContent):
+    #    pass
 
 if __name__ == '__main__':
     '''

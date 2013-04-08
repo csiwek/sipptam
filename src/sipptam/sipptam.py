@@ -30,7 +30,7 @@ from mod.Replace import Replace
 from mod.Injection import Injection
 from utils.Messages import showVersion, showHelp, showInteractiveOut
 from tas.TasPool import TasPool
-from thread.Workers import testrunWorker
+from thread.Workers import testrunWorker, statsWorker
 from thread.PDict import PDict
 
 
@@ -163,21 +163,26 @@ def main ():
 
     testrunL = fill(Testrun, configFile.obj.testrun)
     configDic = fill(Config, configFile.obj.config, dic = True)
-    modDic = fill(Mod, configFile.obj.mod, dic = True)
+    #modDic = fill(Mod, configFile.obj.mod, dic = True)
     duthost, dutport = configFile.obj.duthost, int(configFile.obj.dutport)
+    
+    # Lets create the proper modification objects
+    modDic = {}
+    for m in configFile.obj.mod:
+        tmpReplace, tmpInjection = [], []
+        if m.replace:
+            tmpReplace = fill(Replace, m.replace)
+        if m.injection:
+            tmpInjection = fill(Injection, m.injection)
+        modDic.update({m.id : tmpReplace + tmpInjection})
 
     # Some debugging.
     logger.debug('tasPool:%s' % tasPool)
     logger.debug('testrunL:%s' % testrunL)
     logger.debug('configDic:%s' % configDic)
     logger.debug('modDic:%s' % modDic)
+    logger.debug('scenarioCache:%s' % scenarioCache)
     logger.info('Running test against:\"%s:%s\"' % (duthost, dutport))
-
-    # Lets create the proper modification objects
-    for m in configFile.obj.mod:
-        tmp = {'replaces' : fill(Replace, m.replace),
-               'injections' : fill(Injection, m.injection)}
-        m._attrs.update(tmp)
 
     # Attaching {config, mod} objects in the testruns.
     for t in testrunL:
@@ -221,6 +226,13 @@ def main ():
         wth.setDaemon(True)
         wth.start()
 
+    # This thread will print stats.
+    sth = threading.Thread(target=statsWorker,
+                           name='statsThread',
+                           args=[pd,])
+    sth.setDaemon(True)
+    sth.start()
+
     # Feeding the threads with jobs using the queue. 
     # A job is a <(duthost, dutport), testrun, events>
     map(lambda (x, y): q.put(((duthost, dutport), x, y)), zip(testrunL, events))
@@ -237,7 +249,7 @@ def main ():
         if interactive:
             var = raw_input("Do you want to proceed? [N/y] ")
             if ('y' != var):
-                # TODO. Save results
+                # TODO. Save results before leaving
                 showInteractiveOut(_name, _version)
         logger.debug('Running the testrunWorkers. modRun:\"%s\"' % modRun)
         map(lambda x : x.set(), modRun)

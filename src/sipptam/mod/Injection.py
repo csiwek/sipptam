@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-sipptam.modification.Injection.py
+sipptam.mod.Injection.py
 
 Object which represents a fieldsf element.
 
@@ -11,25 +11,31 @@ Object which represents a fieldsf element.
 @organization: INdigital Telecom, Inc.
 @copyright: INdigital Telecom, Inc. 2013
 '''
+import logging
+
+from sipptam.mod.Mod import Mod
+
+logger = logging.getLogger(__name__)
 
 
-class Injection(object):
+class Injection(Mod):
     '''
     '''
-    kwargs = None
-    def __init__(self, **kwargs):
-        #for key, value in kwargs.iteritems():
-        #    print "%s = %s" % (key, value)
-        self.kwargs = kwargs
+    def apply(self, scenario):
+        '''
+        If the mod matches we return the injection file attached to the mod.
+        '''
+        # TODO. cache the scenarios that have been already processed
+        injection = None
+        if self.matches(scenario):
+            injection = self.kwargs['path']
+            logger.debug('Applying injection:\"%s\" to scenario:\"%s\"' %
+                         (injection, scenario))
+        else:
+            logger.debug('Injection:\"%s\" not match scenario:\"%s\"' %
+                         (injection, scenario))
+        return injection
 
-    def __str__(self):
-        tmp = []
-        for key, value in self.kwargs.iteritems():
-            tmp.append('    * %s:\"%s\"' % (key, value))
-        return "\n".join(tmp)
-
-    def apply(self):
-        pass
 
 if __name__ == '__main__':
     '''

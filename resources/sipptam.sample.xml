@@ -12,29 +12,10 @@
 
    <!-- TESTRUNS -->
    <!-- Mandatory. Test to run. -->
-   <testrun id="test-002--advanced--two"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/test-002*.xml"
-	    configlink="advanced"
-	    modlink="two"/>
-
-   <testrun id="test-000--simple"
+   <testrun id="test-000--advanced--two"
 	    scenarioPath="/usr/local/share/sipptam/scenarios/test-000*.xml"
 	    configlink="simple"/>
-
-   <testrun id="test-001--simple--one"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/test-001*.xml"
-	    configlink="simple"
-	    modlink="one"/>
-
-   <testrun id="test-666--simple--three"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/test-002*.xml"
-	    configlink="simple"
-	    modlink="three"/>
-
-   <testrun id="test-777--simple--four"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/test-002*.xml"
-	    configlink="simple"
-	    modlink="four"/>
+ 
    <!-- End TESTRUNS -->
 
    <!-- CONFIGURATIONS -->
@@ -46,35 +27,20 @@
 	   tries="1"/>
 
    <config id="advanced"
-	   ratio="5;10"
+	   ratio="5"
 	   max="10;50"
 	   pause="1.0"
-	   tries="5"/>
+	   tries="2"/>
    <!-- End CONFIGURATIONS -->
 
    <!-- MODIFICATIONS -->
    <!-- Optional. Modifications that might be applied by a testrun. -->
    <mod id="one">
-     <replace regex="(.*_a.xml)" src="__tmp1a__" dst="tmp1a"/>
-     <injection regex="(.*_a.xml)" path="/usr/local/share/sipptam/injections/injection1.sample.csv"/>
+     <replace regex="(.*_a.xml)" src="__notusednow1__" dst="tmp1a"/>
+     <replace regex="(.*_a.xml)" src="__notusednow2__" dst="tmp1a"/>
+     <injection regex="(.*)" path="/usr/local/share/sipptam/injections/injection1.sample.csv"/>
    </mod>
 
-   <mod id="two">
-     <replace regex="(.*_aaa1.xml)" src="__tmp1a__" dst="tmp1a"/>
-     <replace regex="(.*_bbb1.xml)" src="__tmp1a__" dst="tmp1a"/>
-     <injection regex="(.*_aaa2.xml)" path="/usr/local/share/sipptam/injections/injection1.sample.csv"/>
-     <injection regex="(.*_bbb2.xml)" path="/usr/local/share/sipptam/injections/injection2.sample.csv"/>
-   </mod>
-
-   <mod id="three">
-     <replace regex="(.*_aaa1.xml)" src="__tmp1a__" dst="tmp1a"/>
-     <replace regex="(.*_bbb1.xml)" src="__tmp1a__" dst="tmp1a"/>
-   </mod>
-
-   <mod id="four">
-     <injection regex="(.*_aaa2.xml)" path="/usr/local/share/sipptam/injections/injection1.sample.csv"/>
-     <injection regex="(.*_bbb2.xml)" path="/usr/local/share/sipptam/injections/injection2.sample.csv"/>
-   </mod>
    <!-- End MODIFICATIONS -->
 
    <!-- Mandatory. Change in case you know what you're doing. -->
