@@ -148,9 +148,9 @@ def main ():
         showHelp(_name, _version)
 
     # Reading the files and storing them for future reads.
-    scenarioCache = FileManager()
-    scenarioCache.addFile(configFile.obj.ssSet)
-    scenarioCache.addFile(configFile.obj.iSet)
+    fileCache = FileManager()
+    fileCache.addFile(configFile.obj.ssSet)
+    fileCache.addFile(configFile.obj.iSet)
 
     # Validation done. Creating objects from the parameters.
     tasPool = TasPool(pauseTasPool)
@@ -181,7 +181,7 @@ def main ():
     logger.debug('testrunL:%s' % testrunL)
     logger.debug('configDic:%s' % configDic)
     logger.debug('modDic:%s' % modDic)
-    logger.debug('scenarioCache:%s' % scenarioCache)
+    logger.debug('fileCache:%s' % fileCache)
     logger.info('Running test against:\"%s:%s\"' % (duthost, dutport))
 
     # Attaching {config, mod} objects in the testruns.
@@ -220,7 +220,7 @@ def main ():
 
     # Creating and starting testrunWorker threads.
     wthL = [threading.Thread(target=testrunWorker, 
-                             args=[q, pd, tasPool, scenarioCache, ]) 
+                             args=[q, pd, tasPool, fileCache, ]) 
             for x in range(nTestrunWorker)]
     for wth in wthL:
         wth.setDaemon(True)

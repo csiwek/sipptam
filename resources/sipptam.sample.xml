@@ -12,9 +12,10 @@
 
    <!-- TESTRUNS -->
    <!-- Mandatory. Test to run. -->
-   <testrun id="test-000--advanced--two"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/test-000*.xml"
-	    configlink="simple"/>
+   <testrun id="test-002--advanced--two"
+	    scenarioPath="/usr/local/share/sipptam/scenarios/test-002*.xml"
+	    configlink="simple"
+	    mod="one"/>
  
    <!-- End TESTRUNS -->
 
