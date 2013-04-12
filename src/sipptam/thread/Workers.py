@@ -37,16 +37,13 @@ def statsWorker(pd):
         time.sleep(2.0)
 
 
-def scenarioWorker(sipp, id, batons, triggers, ePowerOff, pd, tasPool):
+def scenarioWorker(sipp, id, batons, triggers, ePowerOff, pd, tas):
     '''
     '''
     try:
         # These events will help in the sync with the testrunWorker
         eBatonOn, eBatonOff = batons
         eReady, eRun = triggers
-
-        # I need a tas to start working with this scenario.
-        tas = tasPool.pop()
 
         # Asking for a free port.
         port = tas._getPort()
@@ -117,7 +114,6 @@ def scenarioWorker(sipp, id, batons, triggers, ePowerOff, pd, tasPool):
             logger.debug('Exception:%s traceback:%s' % (err, trace))
             logger.error(err)
         logger.debug('Returning tas to the pool. tas:\"%s\"', tas)
-        tasPool.append(tas)
 
 
 def testrunWorker(queue, pd, tasPool, filesCache):
@@ -145,8 +141,11 @@ def testrunWorker(queue, pd, tasPool, filesCache):
                 trigsL = [(threading.Event(), eRunG) for _ in testrun]
                 # ePowerOff will sync the threads when things go bad.
                 ePowerOff = threading.Event()
+                # Lets create the list of tas
+                tasL = [tasPool.pop() for _ in range(testrun)]
+
                 thL = []
-                for scenario, batons, trigs in zip(testrun, batonsChain, trigsL):
+                for scenario, tas, batons, trigs in zip(testrun, tasL, batonsChain, trigsL):
                     # Time to handle the modifications for each of the 
                     # scenarios in the testrun.
                     scenarioContent = filesCache.getFile(scenario)
@@ -181,7 +180,7 @@ def testrunWorker(queue, pd, tasPool, filesCache):
                                           target=scenarioWorker,
                                           args=[sipp, id, 
                                                 batons, trigs, ePowerOff,
-                                                pd, tasPool])
+                                                pd, tas])
                     th.setDaemon(True)
                     thL.append(th)
                 # Lets start the threads
@@ -199,6 +198,8 @@ def testrunWorker(queue, pd, tasPool, filesCache):
                 logger.debug('Joining the scenarioWorkers.')
                 for th in thL:
                     th.join()
+                # Returning the tas to the pool.
+                map(lambda x:tasPool.append(x), tasL)
                 # Little pause at the end. This will pause also even
                 # if this is the last 'try' of the testrun.
                 logger.info('Pausing \"%s\"secs between tries.' % pause)
