@@ -26,15 +26,15 @@ from sipptam.mod.Replace import Replace
 logger = logging.getLogger(__name__)
 
 
-class errorAnyScenario(Exception):
+class callFailExcept(Exception):
     pass
 
 def statsWorker(pd):
     '''
     '''
     while True:
-        logger.debug(pd)
-        time.sleep(2.0)
+        logger.info(pd)
+        time.sleep(0.5)
 
 
 def scenarioWorker(sipp, id, batons, triggers, ePowerOff, pd, tas):
@@ -46,7 +46,7 @@ def scenarioWorker(sipp, id, batons, triggers, ePowerOff, pd, tas):
         eReady, eRun = triggers
 
         # Asking for a free port.
-        port = tas._getPort()
+        port = tas.getSIPpBindPort()
         logger.debug('We just got a port:\"%s\"' % port)
         sipp.setBindPort(port)
 
@@ -80,33 +80,46 @@ def scenarioWorker(sipp, id, batons, triggers, ePowerOff, pd, tas):
 
         # TODO. If no new calls success increased in the X seconds (param)
         # flag the call as not success.
-        # Regularly check the stats and status of the scenario.
-        end = False
-        while not end and not ePowerOff.is_set():
+        # Regularly checking the status and stats of the scenario.
+        while not ePowerOff.is_set():
             logger.debug('Checking the stats of \"%s\".' % id)
-            stats = tas._getStats(pid)
-            pd.update(id, stats)
-            # If we have fail calls we have to powerOff the others scenarios.
-            if (stats['cfail'] > 0):
-                logger.info('Found some error calls in this SIPp instance, ' + \
-                                'setting the ePowerOff.')
-                ePowerOff.set()
-            if ((stats['end'] == True) or
-                (stats['csuccess'] == stats['ctotal'])):
-                end = True
+            try:
+                stats = tas._getStats(pid)
+                pd.update(id, stats)
+                if ((stats['errors'] > 0) or \
+                        (stats['cfail'] > 0) or \
+                        (stats['cdead'] > 0)):
+                    raise callFailExcept('Detected fail calls within scenario.')
+                # Scenario will be likely to be successful or it stopped
+                # running without any apparent reason.
+                if (stats['csuccess'] >= sipp.m):
+                    logger.debug('Scenario was success, scenario:\"%s\".' % \
+                                     sipp.scenario)
+                    break
+                if (not stats['running']):
+                    logger.debug('Scenario not running anymore, scenario:\"%s\".' % \
+                                     sipp.scenario)
+                    break
+            except callFailExcept:
+                logger.debug('Found fail calls, scenario:\"%s\".' % id)
+                raise
+            except Exception, err:
+                logger.debug('Unable to get stats, scenario:\"%s\".' % id)
+            finally:
+                time.sleep(1)
 
     except Exception, err:
-        logger.debug('Error found so we fake eReady and eBatonOff and leave.')
-        ePowerOff.set()
+        # Letting the other scenarioWorkers that is time to leave.
+        logger.debug('Error. Setting eReady and ePowerOff.')
         eReady.set()
+        ePowerOff.set()
         if eBatonOff: eBatonOff.set()
         trace = traceback.format_exc()
         logger.debug('Exception:%s traceback:%s' % (err, trace))
         logger.error(err)
-
     finally:
         try:
-            logger.debug('We have to sure this SIPp:\"%s\" is done.' % pid + \
+            logger.debug('We have to make sure SIPp:\"%s\" is done.' % pid + \
                              ' Also, we need to return the port:\"%s\"' % port)
             powerOff = tas._powerOff(pid)
         except Exception, err:
@@ -124,7 +137,27 @@ def testrunWorker(queue, pd, tasPool, filesCache):
         
         pause = float(testrun.getConf().getPause())
         tries = testrun.getConf().getTries()
-
+        # Lets create the list of tas.
+        tasL = [tasPool.pop() for _ in testrun]
+        # Asking for a sippBindPort for each of the tas.
+        map(lambda x : x._getPort(), tasL)
+        # Check if we have any field to replace such as !sipptas(*)!
+        # The same testrun object will have the logic to do so.
+        # Assumed a drastic and pesimistic solution which is adding the possible
+        # combinations of fields as Replaces objects which are going to
+        # be applied to all the modifications.
+        inputReplacesL = []
+        for t, n in zip(tasL, range(1, len(tasL) + 1)):
+            inputReplacesL.append(Replace(**{'regex' : '(.*)', 
+                                             'src' : '!sipptas(host(%s))!' % n, 
+                                             'dst' : str(t.getSIPpBindHost())}))
+            inputReplacesL.append(Replace(**{'regex' : '(.*)',
+                                             'src' : '!sipptas(port(%s))!' % n,
+                                             'dst' : str(t.getSIPpBindPort())}))
+        if testrun.has('mod'):
+            testrun.get('mod').extend(inputReplacesL)
+        else:
+            testrun.set('mod', inputReplacesL, type(inputReplacesL))
         # Going through the tries and all the {ratio, max} values.
         for t in range(tries):
             for r, m in testrun.getConf():
@@ -141,9 +174,7 @@ def testrunWorker(queue, pd, tasPool, filesCache):
                 trigsL = [(threading.Event(), eRunG) for _ in testrun]
                 # ePowerOff will sync the threads when things go bad.
                 ePowerOff = threading.Event()
-                # Lets create the list of tas
-                tasL = [tasPool.pop() for _ in range(testrun)]
-
+                # Thread list
                 thL = []
                 for scenario, tas, batons, trigs in zip(testrun, tasL, batonsChain, trigsL):
                     # Time to handle the modifications for each of the 
@@ -160,10 +191,8 @@ def testrunWorker(queue, pd, tasPool, filesCache):
                                         (testrun.getId(), os.path.basename(injection))
                                     injectionContent = filesCache.getFile(injection)
                             elif isinstance(item, Replace):
-                                res  = item.apply(scenario, 
-                                                  scenarioContent)
-                                if res:
-                                    scenarioContent = res
+                                scenarioContent  = item.apply(scenario,
+                                                              scenarioContent)
                             else:
                                 logger.warning('Mod unknown, discarding it.')
                     scenarioTmp = '%s__%s' % \
@@ -198,11 +227,11 @@ def testrunWorker(queue, pd, tasPool, filesCache):
                 logger.debug('Joining the scenarioWorkers.')
                 for th in thL:
                     th.join()
-                # Returning the tas to the pool.
-                map(lambda x:tasPool.append(x), tasL)
                 # Little pause at the end. This will pause also even
                 # if this is the last 'try' of the testrun.
                 logger.info('Pausing \"%s\"secs between tries.' % pause)
                 time.sleep(pause)
+        # Returning the tas to the pool.
+        map(lambda x:tasPool.append(x), tasL)
         # Setting the finish flag
         eDoneG.set()

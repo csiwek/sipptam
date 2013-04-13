@@ -25,7 +25,7 @@ class Replace(Mod):
         '''
         If the mod matches we return the modified scenarioContent.
         '''
-        newScenarioContent = None
+        newScenarioContent = scenarioContent
         if self.matches(scenario):
             newScenarioContent = \
                 scenarioContent.replace(self.kwargs['src'],

@@ -66,7 +66,4 @@ class PDict(object):
 
     def update(self, key, value):
         with self.lock:
-            if key in self.dict:
-                self.dict[key].append(value)
-            else:
-                self.dict[key] = [value]
+            self.dict[key] = [value]

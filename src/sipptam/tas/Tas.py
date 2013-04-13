@@ -55,6 +55,7 @@ def call(fun, args, max=5, pause=0.1, funNa=None, alarm=True):
 class Tas(object):
     host, port, jobs = None, None, None
     id = None
+    sippBindHost, sippBindPort = None, None
 
     def __init__(self, **kwargs):
         global instance
@@ -72,6 +73,8 @@ class Tas(object):
                                  exceptions = False)
         self.tasHost = kwargs['host']
         self.tasPort = kwargs['port']
+        # We will bind SIPp to the same host as the tas.
+        self.sippBindHost = self.tasHost
 
     def __str__(self):
         return self.id
@@ -85,9 +88,16 @@ class Tas(object):
     def getTasPort(self):
         return self.tasPort
 
-    def _getPort(self):
-        response = call(self.client.getPort, {'nu' : 0}, funNa='getPort')
-        return response.port
+    def getSIPpBindPort(self):
+        return self.sippBindPort
+
+    def getSIPpBindHost(self):
+        return self.sippBindHost
+
+    def _getPort(self, reuse=False):
+        if not(reuse and self.sippBindPort):
+            response = call(self.client.getPort, {'nu' : 0}, funNa='getPort')
+            self.sippBindPort = int(response.port)
 
     def _runSIPp(self, sipp):
         args = {'r' : sipp.r,
@@ -115,7 +125,8 @@ class Tas(object):
                'callrate' : float(response.ret.callrate),
                'cdead' : int(response.ret.cdead),
                'errors' : int(response.ret.errors),
-               'end' : bool(response.ret.end)}
+               'running' : bool(response.ret.running),
+               'ret' : bool(response.ret.ret)}
         return ret
 
     def _powerOff(self, pid):

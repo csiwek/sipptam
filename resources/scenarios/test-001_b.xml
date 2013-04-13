@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <scenario name="">
-  <recv request="INVITE" rrs="true" crlf="true">
-    <action>
-      <!-- Checking that the to header is 12345 -->
-      <!-- If it is not this value, call will be automatically flaged as Fail -->
-      <ereg regexp="same_display_from <sip:same_from@" search_in="hdr" header="From:" check_it="true" assign_to="1"/>
-      <log message="From header is [$1]"/>
-    </action>
-  </recv>
+  <recv request="INVITE" rrs="true" crlf="true" />
   <send>
     <![CDATA[
 
@@ -22,8 +15,20 @@ Content-Length: 0
 
 ]]>
   </send>
-
   <send>
+<![CDATA[
+SIP/2.0 180 Ringing
+[last_Via:]
+[last_From:]
+[last_To:];tag=[call_number]-INV-UAS
+[last_Call-ID:]
+[last_CSeq:]
+Contact: [field0] <sip:[field0]@[local_ip]:[local_port]>
+[last_Record-Route:]
+Content-Length: 0
+]]>
+  </send>
+  <send retrans="500">
     <![CDATA[
 
       SIP/2.0 200 OK
@@ -41,22 +46,23 @@ Content-Length: 0
       s=-
       c=IN IP[media_ip_type] [media_ip]
       t=0 0
-      m=audio [auto_media_port] RTP/AVP 18
+      m=audio 123 RTP/AVP 18
       a=rtpmap:18 G729/8000
 
     ]]>
   </send>
   <recv request="ACK" crlf="true" />
 
+  <!--
   <nop>
     <action>
       <exec play_pcap_audio="pcaps/g711a.pcap"/>
     </action>
   </nop>
-
+  -->
 
   <recv request="BYE" crlf="true" />
-  <send>
+  <send retrans="500">
     <![CDATA[
 
       SIP/2.0 200 OK
@@ -71,5 +77,4 @@ Content-Length: 0
 
     ]]>
   </send>
-
 </scenario>

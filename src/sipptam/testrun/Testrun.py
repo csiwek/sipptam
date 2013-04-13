@@ -66,13 +66,6 @@ class Testrun(object):
                                     'key:\"%s\" t:\"%s\" type(key):\"%s\"' %
                                     (key, t, type(key)))
 
-    def run(self):
-        for ratio in range(1, 3):
-            for max in range(6, 7):
-                for tries in range(1, 2):
-                    for s in self.get('scenarioNameL'):
-                        print s
-
 if __name__ == '__main__':
     '''
     Main execution thread.

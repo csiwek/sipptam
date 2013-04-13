@@ -139,7 +139,7 @@ def checkSemantics(obj):
                 lxml.etree.parse(s)
             except Exception, err:
                 raise scenarioValidateExcept \
-                    ('Bad XML validation of scenario:\"%s\"' % s)
+                    ('Bad XML validation of scenario:\"%s\". %s' % (s, err))
             else:
                 logger.debug('Success while XML parsing scenario:\"%s\"' % s)
 

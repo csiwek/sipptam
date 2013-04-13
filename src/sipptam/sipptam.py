@@ -163,7 +163,6 @@ def main ():
 
     testrunL = fill(Testrun, configFile.obj.testrun)
     configDic = fill(Config, configFile.obj.config, dic = True)
-    #modDic = fill(Mod, configFile.obj.mod, dic = True)
     duthost, dutport = configFile.obj.duthost, int(configFile.obj.dutport)
     
     # Lets create the proper modification objects
@@ -261,7 +260,9 @@ def main ():
 
     # Time to get the results.
     logger.debug('Getting results!')
-    logger.info('The end!')
+    logger.info('-' * 60)
+    logger.debug('Results: \n %s' % pd)
+    logger.info('-' * 60)
 
 if __name__ == '__main__':
     main()

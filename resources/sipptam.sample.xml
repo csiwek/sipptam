@@ -14,13 +14,13 @@
   -->
 
 <!-- Device under test (DUT). Mandatory. -->
-<sipptam duthost="192.168.203.150"
+<sipptam duthost="10.22.22.110"
 	 dutport="5060">
 
    <!-- Slaves to use. Mandatory. -->
-   <tas host="127.0.0.1" port="8008" jobs="5"/>
-   <tas host="127.0.0.1" port="8009" jobs="5"/>
-   <tas host="127.0.0.1" port="8010" jobs="10"/>
+   <tas host="10.22.22.2" port="8008" jobs="5"/>
+   <tas host="10.22.22.2" port="8009" jobs="5"/>
+   <tas host="10.22.22.2" port="8010" jobs="10"/>
 
    <!-- Testruns definition. Mandatory (at least one) -->
    <testrun id="test-000" scenarioPath="/usr/local/share/sipptam/scenarios/test-000*.xml"
@@ -30,7 +30,7 @@
    <!-- Configs used by testruns. Mandatory (at least one) -->
    <config id="simple"
 	   ratio="1"
-	   max="50"
+	   max="1"
 	   pause="1.0"
 	   tries="1"/>
 
@@ -51,7 +51,7 @@
    <!-- * execMode            : {serial, parallel} -->
    <!-- * scenarioValidate    : Validates XML syntax of scenarios -->
    <!-- * regexValidate       : Validates all the used regexs -->
-   <advanced execMode="serial"
+   <advanced execMode="parallel"
 	     scenarioValidate="True"
 	     regexValidate="True"/>
 </sipptam>
