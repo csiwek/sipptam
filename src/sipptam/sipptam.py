@@ -28,7 +28,7 @@ from mod.Mod import Mod
 from utils.FileManager import FileManager
 from mod.Replace import Replace
 from mod.Injection import Injection
-from utils.Messages import showVersion, showHelp, showInteractiveOut
+from utils.Messages import showVersion, showHelp
 from tas.TasPool import TasPool
 from thread.Workers import testrunWorker, statsWorker
 from thread.PDict import PDict
@@ -58,7 +58,6 @@ def main ():
     configFilePath = '/usr/local/share/sipptam/sipptam.sample.xml'
     loglevel, logformat = LEVELS['info']
     logFacilityLevel = 0
-    interactive = False
     background = False
     version = False
     help = False
@@ -68,7 +67,7 @@ def main ():
 
     # Lets parse input parameters.
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'c:l:s:ibvh')
+        opts, args = getopt.getopt(sys.argv[1:], 'c:l:s:bvh')
         optsLetters = [x for x,y in opts]
         if '-s' in optsLetters:
             if not int([y for (x,y) in opts if (x == '-s')][0]) in range(0, 9):
@@ -78,9 +77,6 @@ def main ():
             if not [y for (x,y) in opts if (x == '-l')][0] in LEVELS.keys():
                 raise Exception('Invalid loglevel. Valid loglevels are:\"%s\"' %
                                 LEVELS.keys())
-        # Check modes incompability.
-        if '-i' in optsLetters and '-b' in optsLetters:
-            raise Exception('Interactive & background mode aren\'t compatible')
     except Exception, msg:
         logging.error(msg)
         showHelp(_name, _version)
@@ -95,9 +91,6 @@ def main ():
             continue
         elif o == '-l':
             loglevel, logformat = LEVELS[a]
-            continue
-        elif o == '-i':
-            interactive = True
             continue
         elif o == '-b':
             background = True
@@ -118,8 +111,8 @@ def main ():
     logger.handlers = [] # Clearing previous logs
     formatter = logging.Formatter(logformat)
     logFacility = 'local%s' % logFacilityLevel
-    handlers = [logging.StreamHandler(stream=sys.stdout),
-                SysLogHandler(address=addr, facility=logFacility)]
+    #handlers = [logging.StreamHandler(stream=sys.stdout),
+    handlers = [SysLogHandler(address=addr, facility=logFacility)]
     for h in handlers:
         h.setFormatter(formatter)
         logger.addHandler(h)
@@ -160,7 +153,6 @@ def main ():
     tasPool.shuffle()
     # We don't want previous SIPp running.
     # TODO.
-
     testrunL = fill(Testrun, configFile.obj.testrun)
     configDic = fill(Config, configFile.obj.config, dic = True)
     duthost, dutport = configFile.obj.duthost, int(configFile.obj.dutport)
@@ -226,9 +218,10 @@ def main ():
         wth.start()
 
     # This thread will print stats.
+    eLeave = threading.Event()
     sth = threading.Thread(target=statsWorker,
                            name='statsThread',
-                           args=[pd,])
+                           args=[pd, eLeave])
     sth.setDaemon(True)
     sth.start()
 
@@ -242,14 +235,6 @@ def main ():
             logger.info('Waiting for the testrunWorkers to be ready...')
             time.sleep(pauseCheckAlleReady)
         logger.debug('All testrunWorkers are ready.')
-        # Checking if the user still wants to run these testruns.
-        logger.debug('Checking interactive mode, interactive:\"%s\"' % 
-                      interactive)
-        if interactive:
-            var = raw_input("Do you want to proceed? [N/y] ")
-            if ('y' != var):
-                # TODO. Save results before leaving
-                showInteractiveOut(_name, _version)
         logger.debug('Running the testrunWorkers. modRun:\"%s\"' % modRun)
         map(lambda x : x.set(), modRun)
 
@@ -259,10 +244,13 @@ def main ():
         time.sleep(pauseCheckAlleDone)
 
     # Time to get the results.
-    logger.debug('Getting results!')
-    logger.info('-' * 60)
-    logger.debug('Results: \n %s' % pd)
-    logger.info('-' * 60)
+    #logger.debug('Getting results!')
+    #logger.info('-' * 60)
+    #logger.debug('Results: \n %s' % pd)
+    #logger.info('-' * 60)
+    eLeave.set()
+    sth.join()
+    
 
 if __name__ == '__main__':
     main()

@@ -63,7 +63,7 @@ To: 2604462807 <sip:2604462807@[remote_ip]:[remote_port]>;[$10]
 [last_Call-ID:]
 CSeq: [cseq] REFER
 Max-Forwards: 70
-Refer-To: sip:refered_user@!sipptas(host(3))!:!sipptas(port(3))!
+Refer-To: sip:refered_user@!sipptas(host(2))!:!sipptas(port(2))!
 Content-Length: 0
 [routes]
 ]]>

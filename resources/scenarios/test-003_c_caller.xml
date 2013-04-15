@@ -3,7 +3,7 @@
 	<send start_rtd="true">
 <![CDATA[
 
-INVITE sip:[field0]@[remote_ip];ouri=911@!sipptas(host(2))!:!sipptas(port(2))! SIP/2.0
+INVITE sip:[field0]@[remote_ip];ouri=911@!sipptas(host(1))!:!sipptas(port(1))! SIP/2.0
 Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
 From: same_display_from <sip:same_from@[local_ip]>;tag=[call_number]-INV-UAC
 To: [field0] <sip:[field0]@[remote_ip]>

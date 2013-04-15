@@ -16,16 +16,6 @@ import sys
 log = logging.getLogger(__name__)
 
 
-def showInteractiveOut(name, version):
-    '''
-    '''
-    msgs = ['You decided not to continue.',
-            'Thanks for using this software.',
-            '%s - %s' % (name, version),
-            '']
-    sys.stdout.write('\n'.join(msgs))
-    sys.exit(1)
-
 def showVersion(name, version):
     '''
     Helper function to show the 

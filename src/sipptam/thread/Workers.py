@@ -12,12 +12,15 @@ This module implements different thread workers.
 @copyright: INdigital Telecom, Inc. 2012
 '''
 
+import sys
 import traceback
 import threading
 import time
 import random
 import logging
 import os
+import curses
+import texttable
 
 from sipptam.sipp.SIPp import SIPp
 from sipptam.mod.Injection import Injection
@@ -29,31 +32,40 @@ logger = logging.getLogger(__name__)
 class callFailExcept(Exception):
     pass
 
-
-def compressId():
-    pass
-
-def uncompressId():
-    pass
-
-def statsWorker(pd):
+def statsWorker(pd, eLeave):
     '''
     '''
-    import pprint
-    while True:
+    extra = 2
+    dheader = None
+    while not dheader:
         tmp = pd.get()
-        tests = {}
-        for key,value in tmp.iteritems():
+        for key,value in iter(sorted(tmp.iteritems())):
+            if value[0]:
+                dheader = value[0].keys()
+    sheader = ['test-id', 'try', 'r', 'm', 'scenario']
+    header =  sheader + dheader
+    width = [len(x) + extra for x in header]
+    while not eLeave.is_set():
+        tab = texttable.Texttable()
+        tab.header(header)
+        tab.set_cols_width(width)
+        tmp = pd.get()
+        for key,value in iter(sorted(tmp.iteritems())):
             test, t, r, m, scenario = key.split(';')
-            if not tests.has_key(test): tests[test] = {}
-            if not tests[test].has_key(t): tests[test][t] = {}
-            if not tests[test][t].has_key(r): tests[test][t][r] = {}
-            if not tests[test][t][r].has_key(m): tests[test][t][r][m] = {}
-            s = os.path.basename(scenario)
-            if not tests[test][t][r][m].has_key(s): tests[test][t][r][m][s] = {}
-            tests[test][t][r][m][s] = value
-        pprint.pprint(tests)
-        time.sleep(0.5)
+            srow = [test, t, r, m, os.path.basename(scenario)]
+            drow = []
+            if value[0]:
+                for keyDynamic in dheader:
+                    if value[0].has_key(keyDynamic):
+                        drow.append(value[0][keyDynamic])
+                    else:
+                        drow.append(None)
+            else:
+                drow = [None for _ in dheader]
+            tab.add_row(srow + drow)
+        s = tab.draw()
+        print s
+        time.sleep(0.3)
 
 
 def scenarioWorker(sipp, id, batons, triggers, ePowerOff, pd, tas):
@@ -107,6 +119,11 @@ def scenarioWorker(sipp, id, batons, triggers, ePowerOff, pd, tas):
             logger.debug('Checking the stats of \"%s\".' % id)
             try:
                 stats = tas._getStats(pid)
+                try:
+                    stats.update({'SIPp\nbinded' : '%s:%s' % (tas.getSIPpBindHost(), 
+                                                                tas.getSIPpBindPort())})
+                except Exception, err:
+                    logger.error('Error adding sipptas to stats. Err:\"%s\"' % err)
                 pd.update(id, stats)
                 if ((stats['errors'] > 0) or \
                         (stats['cfail'] > 0) or \
@@ -126,7 +143,7 @@ def scenarioWorker(sipp, id, batons, triggers, ePowerOff, pd, tas):
                 logger.debug('Found fail calls, scenario:\"%s\".' % id)
                 raise
             except Exception, err:
-                logger.debug('Unable to get stats, scenario:\"%s\".' % id)
+                logger.debug('Unable to get stats, scenario:\"%s\". Err:\"%s\"' % (id, err))
             finally:
                 time.sleep(1)
 
@@ -168,6 +185,7 @@ def testrunWorker(queue, pd, tasPool, filesCache):
         # Assumed a drastic and pesimistic solution which is adding the possible
         # combinations of fields as Replaces objects which are going to
         # be applied to all the modifications.
+        inputReplacesL = None
         inputReplacesL = []
         for t, n in zip(tasL, range(1, len(tasL) + 1)):
             inputReplacesL.append(Replace(**{'regex' : '(.*)', 
@@ -176,10 +194,8 @@ def testrunWorker(queue, pd, tasPool, filesCache):
             inputReplacesL.append(Replace(**{'regex' : '(.*)',
                                              'src' : '!sipptas(port(%s))!' % n,
                                              'dst' : str(t.getSIPpBindPort())}))
-        if testrun.has('mod'):
-            testrun.get('mod').extend(inputReplacesL)
-        else:
-            testrun.set('mod', inputReplacesL, type(inputReplacesL))
+        if testrun.has('mod'): inputReplacesL.extend(testrun.get('mod'))
+        testrun.set('inputmod', inputReplacesL, type(inputReplacesL))
         # Going through the tries and all the {ratio, max} values.
         for t in range(tries):
             for r, m in testrun.getConf():
@@ -203,8 +219,8 @@ def testrunWorker(queue, pd, tasPool, filesCache):
                     # scenarios in the testrun.
                     scenarioContent = filesCache.getFile(scenario)
                     injection, injectionContent, injectionTmp = None, None, None
-                    if testrun.has('mod'):
-                        for item in testrun.get('mod'):
+                    if testrun.has('inputmod'):
+                        for item in testrun.get('inputmod'):
                             if isinstance(item, Injection):
                                 res = item.apply(scenario)
                                 if res:
