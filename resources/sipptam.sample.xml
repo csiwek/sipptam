@@ -18,27 +18,31 @@
 	 dutport="5060">
 
    <!-- Slaves to use. Mandatory. -->
-   <tas host="10.22.22.2" port="8008" jobs="5"/>
-   <tas host="10.22.22.2" port="8009" jobs="5"/>
-   <tas host="10.22.22.2" port="8010" jobs="10"/>
+   <tas host="10.22.22.200" port="8008" jobs="2"/>
+   <tas host="10.22.22.201" port="8008" jobs="2"/>
 
    <!-- Testruns definition. Mandatory (at least one) -->
-   <testrun id="test-000" scenarioPath="/usr/local/share/sipptam/scenarios/test-000*.xml"
-	    configlink="simple"
+   <testrun id="test-111" scenarioPath="/usr/local/share/sipptam/scenarios/test-000_*.xml"
+	    configlink="advanced"
+	    modlink="one"/>
+
+   <!-- Testruns definition. Mandatory (at least one) -->
+   <testrun id="test-222" scenarioPath="/usr/local/share/sipptam/scenarios/test-000_*.xml"
+	    configlink="advanced"
 	    modlink="one"/>
 
    <!-- Configs used by testruns. Mandatory (at least one) -->
    <config id="simple"
 	   ratio="1"
-	   max="1"
+	   max="5"
 	   pause="1.0"
 	   tries="1"/>
 
    <config id="advanced"
-	   ratio="5"
-	   max="10;50"
-	   pause="1.0"
-	   tries="2"/>
+	   ratio="1"
+	   max="1"
+	   pause="5.0"
+	   tries="1"/>
 
    <!-- Modifications that might be applied by a testrun. Optional. -->
    <mod id="one">

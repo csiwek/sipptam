@@ -57,12 +57,12 @@ class PDict(object):
         with self.lock:
             self.dict[key] = item
 
-    def get(self, key):
+    def get(self):
         '''
-        Gets the value of an element of the dict.
+        Returns a copy of the internal dict.
         '''
         with self.lock:
-            return copy.copy(self.dict[key])
+            return copy.copy(self.dict)
 
     def update(self, key, value):
         with self.lock:

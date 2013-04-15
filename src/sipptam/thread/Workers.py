@@ -29,11 +29,30 @@ logger = logging.getLogger(__name__)
 class callFailExcept(Exception):
     pass
 
+
+def compressId():
+    pass
+
+def uncompressId():
+    pass
+
 def statsWorker(pd):
     '''
     '''
+    import pprint
     while True:
-        logger.info(pd)
+        tmp = pd.get()
+        tests = {}
+        for key,value in tmp.iteritems():
+            test, t, r, m, scenario = key.split(';')
+            if not tests.has_key(test): tests[test] = {}
+            if not tests[test].has_key(t): tests[test][t] = {}
+            if not tests[test][t].has_key(r): tests[test][t][r] = {}
+            if not tests[test][t][r].has_key(m): tests[test][t][r][m] = {}
+            s = os.path.basename(scenario)
+            if not tests[test][t][r][m].has_key(s): tests[test][t][r][m][s] = {}
+            tests[test][t][r][m][s] = value
+        pprint.pprint(tests)
         time.sleep(0.5)
 
 
@@ -44,6 +63,9 @@ def scenarioWorker(sipp, id, batons, triggers, ePowerOff, pd, tas):
         # These events will help in the sync with the testrunWorker
         eBatonOn, eBatonOff = batons
         eReady, eRun = triggers
+
+        # Init the pd
+        pd.update(id, None)
 
         # Asking for a free port.
         port = tas.getSIPpBindPort()
