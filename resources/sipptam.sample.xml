@@ -105,8 +105,8 @@
 
    <!-- Configs used by testruns. Mandatory (at least one) -->
    <config id="simple"
-	   ratio="1"
-	   max="5"
+	   ratio="5"
+	   max="20"
 	   pause="1.0"
 	   tries="1"/>
 
