@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<scenario name="">
+  <recv request="INVITE" rrs="true" crlf="true">
+    <action>
+      <ereg regexp="Remote-Party-ID: \"987654321\" <sip:987654321@(.*)>;party=calling;screen=no;privacy=off"
+	    check_it="true"
+            assign_to="dummy"/>
+      <log message="Remote-Party_ID is [$dummy]"/>
+      <!-- Checking that the to header is 554433 -->
+      <!-- If it is not this value, call will be automatically flaged as Fail -->
+      <ereg regexp="554433 <sip:554433@" search_in="hdr" header="To:" check_it="true" assign_to="1"/>
+      <log message="To header is [$1]"/>
+    </action>
+  </recv>
+  <send>
+    <![CDATA[
+
+SIP/2.0 100 Trying
+[last_Via:]
+[last_From:]
+[last_To:];tag=[call_number]
+[last_Call-ID:]
+[last_CSeq:]
+Contact: <sip:[local_ip]:[local_port];transport=[transport]>
+Content-Length: 0
+
+]]>
+  </send>
+  <send>
+<![CDATA[
+SIP/2.0 180 Ringing
+[last_Via:]
+[last_From:]
+[last_To:];tag=[call_number]-INV-UAS
+[last_Call-ID:]
+[last_CSeq:]
+Contact: [field0] <sip:[field0]@[local_ip]:[local_port]>
+[last_Record-Route:]
+Content-Length: 0
+]]>
+  </send>
+  <send retrans="500">
+    <![CDATA[
+
+      SIP/2.0 200 OK
+      [last_Via:]
+      [last_From:]
+      [last_To:];tag=[pid]SIPpTag01[call_number]
+      [last_Call-ID:]
+      [last_CSeq:]
+      Contact: <sip:[local_ip]:[local_port];transport=[transport]>
+      Content-Type: application/sdp
+      Content-Length: [len]
+
+      v=0
+      o=user1 53655765 2353687637 IN IP[local_ip_type] [local_ip]
+      s=-
+      c=IN IP[media_ip_type] [media_ip]
+      t=0 0
+      m=audio [auto_media_port] RTP/AVP 18
+      a=rtpmap:18 G729/8000
+
+    ]]>
+  </send>
+  <recv request="ACK" crlf="true" />
+
+  <!--
+  <nop>
+    <action>
+      <exec play_pcap_audio="pcaps/g711a.pcap"/>
+    </action>
+  </nop>
+  -->
+
+  <recv request="BYE" crlf="true" />
+  <send retrans="500">
+    <![CDATA[
+
+      SIP/2.0 200 OK
+      [last_Via:]
+      [last_From:]
+      [last_To:];tag=[pid]SIPpTag01[call_number]
+      [last_Call-ID:]
+      [last_CSeq:]
+      Contact: <sip:[local_ip]:[local_port];transport=[transport]>
+      Content-Type: application/sdp
+      Content-Length: [len]
+
+    ]]>
+  </send>
+</scenario>
