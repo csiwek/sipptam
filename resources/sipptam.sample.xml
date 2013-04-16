@@ -21,8 +21,8 @@
    <tas host="10.22.22.201" port="8008" jobs="3"/>
 
    <!-- Testruns definition. Mandatory (at least one) -->
-   <testrun id="test-0017"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0017_*.xml"
+   <testrun id="test-0023"
+	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0023_*.xml"
 	    configlink="simple"
 	    modlink="one"/>
 
