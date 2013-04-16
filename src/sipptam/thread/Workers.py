@@ -118,7 +118,9 @@ def scenarioWorker(sipp, id, batons, triggers, ePowerOff, pd, tas):
         while not ePowerOff.is_set():
             logger.debug('Checking the stats of \"%s\".' % id)
             try:
-                stats = tas._getStats(pid)
+                statsTmp = tas._getStats(pid)
+                if statsTmp:
+                    stats = statsTmp
                 try:
                     stats.update({'SIPp\nbinded' : '%s:%s' % (tas.getSIPpBindHost(), 
                                                                 tas.getSIPpBindPort())})
@@ -126,8 +128,7 @@ def scenarioWorker(sipp, id, batons, triggers, ePowerOff, pd, tas):
                     logger.error('Error adding sipptas to stats. Err:\"%s\"' % err)
                 pd.update(id, stats)
                 if ((stats['errors'] > 0) or \
-                        (stats['cfail'] > 0) or \
-                        (stats['cdead'] > 0)):
+                        (stats['cfail'] > 0)):
                     raise callFailExcept('Detected fail calls within scenario.')
                 # Scenario will be likely to be successful or it stopped
                 # running without any apparent reason.

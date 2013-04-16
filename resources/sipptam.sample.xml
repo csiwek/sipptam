@@ -18,16 +18,11 @@
 	 dutport="5060">
 
    <!-- Slaves to use. Mandatory. -->
-   <tas host="10.22.22.200" port="8008" jobs="3"/>
    <tas host="10.22.22.201" port="8008" jobs="3"/>
 
    <!-- Testruns definition. Mandatory (at least one) -->
-   <testrun id="test-000"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/test-000_*.xml"
-	    configlink="simple"
-	    modlink="one"/>
-   <testrun id="test-003"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/test-003_*.xml"
+   <testrun id="test-0010"
+	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0010_*.xml"
 	    configlink="simple"
 	    modlink="one"/>
 
@@ -56,6 +51,6 @@
    <!-- * scenarioValidate    : Validates XML syntax of scenarios -->
    <!-- * regexValidate       : Validates all the used regexs -->
    <advanced execMode="parallel"
-	     scenarioValidate="True"
+	     scenarioValidate="False"
 	     regexValidate="True"/>
 </sipptam>
