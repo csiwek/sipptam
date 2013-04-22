@@ -26,7 +26,7 @@ class SIPp(object):
     trace_err = None
     
     def __init__(self, r, m, scenario, scenarioContent, duthost, dutport, 
-                 port=5060, injection=None, injectionContent=None,
+                 host, port=5060, injection=None, injectionContent=None,
                  sipp='sipp', trace_err=False):
         self.r = r
         self.m = m
@@ -35,7 +35,7 @@ class SIPp(object):
         self.scenarioPath = os.path.join('/tmp/', scenario)
         self.duthost = duthost
         self.dutport = dutport
-        self.port = port
+        self.host, self.port = host, port
         self.sipp  = sipp
         if injection: self.injectionPath = os.path.join('/tmp/', injection)
         self.injection = injection

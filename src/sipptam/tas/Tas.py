@@ -32,7 +32,7 @@ def call(fun, args, max=5, pause=0.1, funNa=None, alarm=True):
     times with a pause of @pause in between when they fail.
     @funNa if we want to set a friendly function's name for debugging.
     '''
-    #logger.debug('Calling fun:\"%s\" args:\"%s\"' % (funNa, args))
+    logger.debug('Calling fun:\"%s\" args:\"%s\"' % (funNa, args))
     if not funNa: funNa = fun.__name__
     ret, tries = None, 0
     while not ret and tries < max:
@@ -41,12 +41,14 @@ def call(fun, args, max=5, pause=0.1, funNa=None, alarm=True):
             logger.debug('This fun:\"%s\" returned:\"%s\"' % (funNa, ret))
         except Exception, err:
             tries += 1
-            logger.warning('This fun:\"%s\" didn\'t return anything' % (funNa))
+            logger.warning('This fun:\"%s\" didn\'t return anything' % funNa)
             time.sleep(pause)
     if alarm:
         if not ret:
             msg = 'This fun:%s didn\'t return anything (tries:%s)' % (funNa, tries)
             raise noReturnExcept(msg)
+        if not hasattr(ret, 'ret'):
+            raise operationFailed('Operation returned invalid data:%s' % funNa)
         if not ret.ret:
             raise operationFailed('Operation returned an error code:%s' % funNa)
     return ret
@@ -100,6 +102,7 @@ class Tas(object):
             self.sippBindPort = int(response.port)
 
     def _runSIPp(self, sipp):
+        logger.debug('Calling runSIPp()...')
         args = {'r' : sipp.r,
                 'm' : sipp.m,
                 'scenario' : sipp.scenario,
@@ -108,8 +111,11 @@ class Tas(object):
                 'injectionContent' : sipp.injectionContent,
                 'duthost' : sipp.duthost,
                 'dutport' : sipp.dutport,
+                'host' : sipp.host,
                 'port' : sipp.port}
+        logger.debug('Calling runSIPp() with args:%s' % args)
         response = call(self.client.runSIPp, args, funNa="runSIPp")
+        logger.debug('Returned from runSIPp() with response:%s' % response)
         return response.ret
     
     def _getStats(self, pid):

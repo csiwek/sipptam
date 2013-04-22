@@ -14,12 +14,12 @@
   -->
 
 <!-- Device under test (DUT). Mandatory. -->
-<sipptam duthost="10.22.22.110"
+<sipptam duthost="192.168.203.150"
 	 dutport="5060">
 
    <!-- Slaves to use. Mandatory. -->
-   <tas host="10.22.22.200" port="8008" jobs="25"/>
-   <tas host="10.22.22.201" port="8008" jobs="25"/>
+   <tas host="192.168.200.100" port="8008" jobs="20"/>
+   <tas host="192.168.200.102" port="8008" jobs="20"/>
 
    <!-- Testruns definition. Mandatory (at least one) -->
    <testrun id="test-0001"
@@ -105,8 +105,8 @@
 
    <!-- Configs used by testruns. Mandatory (at least one) -->
    <config id="simple"
-	   ratio="5"
-	   max="20"
+	   ratio="1"
+	   max="5"
 	   pause="1.0"
 	   tries="1"/>
 

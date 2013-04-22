@@ -19,7 +19,6 @@ import time
 import random
 import logging
 import os
-import curses
 import texttable
 
 from sipptam.sipp.SIPp import SIPp
@@ -72,6 +71,8 @@ def scenarioWorker(sipp, id, batons, triggers, ePowerOff, pd, tas):
     '''
     '''
     try:
+        pid = None
+
         # These events will help in the sync with the testrunWorker
         eBatonOn, eBatonOff = batons
         eReady, eRun = triggers
@@ -100,6 +101,7 @@ def scenarioWorker(sipp, id, batons, triggers, ePowerOff, pd, tas):
         logger.debug('Executing sipp')
         ret = tas._runSIPp(sipp)
         pid = ret.pid
+        logger.debug('runSIPp returned with ret:%s' % ret)
 
         # Handling off the baton so next worker can start its scenario.
         # We set a proper pause before handling off the baton, the reason
@@ -159,9 +161,10 @@ def scenarioWorker(sipp, id, batons, triggers, ePowerOff, pd, tas):
         logger.error(err)
     finally:
         try:
-            logger.debug('We have to make sure SIPp:\"%s\" is done.' % pid + \
-                             ' Also, we need to return the port:\"%s\"' % port)
-            powerOff = tas._powerOff(pid)
+            if pid:
+                logger.debug('We have to make sure SIPp:\"%s\" is done.' % pid + \
+                                 ' Also, we need to return the port:\"%s\"' % port)
+                powerOff = tas._powerOff(pid)
         except Exception, err:
             trace = traceback.format_exc()
             logger.debug('Exception:%s traceback:%s' % (err, trace))
@@ -239,7 +242,7 @@ def testrunWorker(queue, pd, tasPool, filesCache):
                     duthost, dutport = addr
                     # We will create the SIPp object with the proper params.
                     sipp = SIPp(r, m, scenarioTmp, scenarioContent, 
-                                duthost, dutport, injection=injectionTmp,
+                                duthost, dutport, tas.getSIPpBindHost(), injection=injectionTmp,
                                 injectionContent=injectionContent)
                     # Creating threads..
                     n = '%s__%s' % (threading.currentThread().name, scenarioTmp)
