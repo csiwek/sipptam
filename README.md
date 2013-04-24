@@ -28,7 +28,7 @@ Two basic type of entities in the {sipptam, sipptas} world.
 Configuration is made through an XML file passed at runtime.
 
 ## config.xml
-You have a configuration file example [a here](resources/sipptam.sample.xml)
+You have a configuration file example [here](http://192.168.200.12/sipptam/blob/master/resources/sipptam.sample.xml)
 
     <myxml>
        <someElement />  
