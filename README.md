@@ -35,18 +35,18 @@ Configuration is made through an XML file passed at runtime.
 2. You have a configuration file **example** [here](http://192.168.200.12/sipptam/tree/master/resources/sipptam.sample.xml)
 
 ## Parameters
-- `sipptam`, basic sipptam root **node**. Mandatory. Cardinality : 1.
-- `sipptam.duthost`, device under test host
-- `sipptam.port`, device under test port
-- `tas`, test automation slave **node**. Mandatory. Cardinality : Unbounded.
-- `tas.host`, host to communicate with the tas.
-- `tas.port`, port to communicate with the tas.
-- `tas.jobs`, max jobs to assign to this tas.
+- _**sipptam**_, basic sipptam root **node**. Mandatory. Cardinality : 1.
+- _**sipptam.duthost**_, device under test host
+- _**sipptam.port**_, device under test port
+- _**tas**_, test automation slave **node**. Mandatory. Cardinality : Unbounded.
+- _**tas.host**_, host to communicate with the tas.
+- _**tas.port**_, port to communicate with the tas.
+- _**tas.jobs**_, max jobs to assign to this tas.
 
-- `testrun`, testrun **node**. Mandatory. Cardinality : Unbounded.
-- `testrun.id`, identifier for the testrun.
-- `testrun.scenarioPath`, path where to find the scenarios of the testrun.
-- `testrun.configLink`, link to the configuration of the testrun. Config must be defined.
+- _**testrun**_, testrun **node**. Mandatory. Cardinality : Unbounded.
+- _**testrun.id**_, identifier for the testrun.
+- _**testrun.scenarioPath**_, path where to find the scenarios of the testrun.
+- _**testrun.configLink**_, link to the configuration of the testrun. Config must be defined.
 - _**testrun.modLink**_, max jobs to assign to this testrun. Mod must be defined. Optional.
 ```    <testrun id="test-0001"
     	     scenarioPath="/usr/local/share/sipptam/scenarios/test-001*.xml"
