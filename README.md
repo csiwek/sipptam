@@ -42,6 +42,8 @@ You have a configuration file example [here](http://192.168.200.12/sipptam/blob/
 	def myFunction(...):
 		asdf
 
+***
+
 # Installation
 ## Debian package
 TODO.
