@@ -8,10 +8,10 @@ sipptam automates the use of SIPp.
 # The need of sipptam
 
 ## SIPp
-SIPp is a great tool created by HP which allows to generate SIP traffic. A SIPp execution requires an scenario to run, the scenario defines the messages that are going to be sent and received as well as another logic. The traditional SIPp execution forces the user to run the desired SIPp command manually.
+SIPp is a great tool created by HP which allows to generate SIP traffic. A SIPp execution requires an scenario to run, the scenario defines the messages that are going to be sent and received as well as another logic.
 
 ## Testing your SIP code using SIPp
-SIPp has a flexible way to define its scenarios and makes easy to simulate different SIP traffic flows. Using SIPp as a bulk load tester is a well-known thing that covers perfectly. Drawback arises when you have to test repeatedly multiple scenarios. The task ends up tedious.
+SIPp has a flexible way to define its scenarios and makes easy to simulate different SIP traffic flows. SIPp is sometimes used as a powerfull SIP bulk load tester. The traditional SIPp execution forces the user to run the desired SIPp command manually. Drawback arises when you have to test repeatedly multiple scenarios. The fact of manually run a high number of SIPp commands has obvious disadvantages (human errors, waste of time).
 
 ## 
 
