@@ -28,6 +28,11 @@ Two basic type of entities in the {sipptam, sipptas} world.
 Configuration is made through an XML file passed at runtime.
 
 ## config.xml
+```xml
+<myxml>
+   <someElement />  
+</myxml>
+```
 
 	from Lang import timeIt	
 
