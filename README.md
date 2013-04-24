@@ -71,8 +71,29 @@ You can find the **schema** of the XML configuration file [here](http://192.168.
 * _**config.ratio**_, semicolon separated list of ratio (SIPp parameter, calls per seconds).
 * _**config.max**_, semicolon separated list of calls (SIPp parameter, maximum calls to make).
 * _**config.pause**_, seconds to pause between every {ratio, max} combination.
-* _**config.tries**_, max jobs to assign to this config.
+* _**config.tries**_, number of times to execute every {ratio, max} combination.
 
+```   <config id="advanced"
+              ratio="5;10"
+	      max="20;60"
+	      pause="5.0"
+	      tries="2"/>
+```
+
+
+### \<mod\> 
+* Optional. Cardinality : **Unbounded**.
+* _**mod.id**_, identifier for the configlink.
+#### \<replace\>
+* Optional. Cardinality : **Unbounded**.
+* _**mod.replace.regex**_, .
+* _**mod.replace.src**_, .
+* _**mod.replace.dst**_, .
+#### \<injection\>
+Injection modification are used to inject values from external files. Files injectected will be passed with the scenarios that apply. Please check the -inf param of SIPp [here]http://sipp.sourceforge.net/doc/reference.html#Injecting+values+from+an+external+CSV+during+calls
+* Optional. Cardinality : **Unbounded**.
+* _**mod.injection.regex**_, this injection modification will be applied to the scenarios (of the testrun that is using this modification) that match.
+* _**mod.injection.path**_, identifier for the configlink.
 ```     <mod id="one">
 	    	 <replace regex="(.*_a.xml)" src="__notusednow1__" dst="tmp1a"/>
 		 <replace regex="(.*_a.xml)" src="__notusednow2__" dst="tmp1a"/>
