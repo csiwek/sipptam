@@ -33,15 +33,8 @@ Configuration is made through an XML file passed at runtime.
 
     <sipptam duthost="10.22.22.112" dutport="5060">
 
-    <tas host="10.22.22.200" port="8008" jobs="25"/>
-
-    <testrun id="test-0001"		 
-    	     scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0001_*.xml"
-    	     configlink="simple"
-	     modlink="one"/>
 
 ***
-
 # Installation
 ## Debian package
 TODO.
