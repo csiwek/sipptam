@@ -46,6 +46,13 @@ Configuration is made through an XML file passed at runtime.
 * _**tas.port**_, port to communicate with the tas.
 * _**tas.jobs**_, max jobs to assign to this tas.
 
+```     <mod id="one">
+	    	 <replace regex="(.*_a.xml)" src="__notusednow1__" dst="tmp1a"/>
+		 <replace regex="(.*_a.xml)" src="__notusednow2__" dst="tmp1a"/>
+		 <injection regex="(.*)" path="/usr/local/share/sipptam/injections/injection1.sample.csv"/>
+	</mod>
+```
+
 ### \<testrun\>
 * Mandatory. Cardinality : Unbounded.
 * _**testrun.id**_, identifier for the testrun.
