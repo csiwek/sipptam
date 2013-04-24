@@ -67,8 +67,8 @@ You can find the **schema** of the XML configuration file [here](http://192.168.
 
 ### \<config\> 
 * Mandatory. Cardinality : **Unbounded**.
-* _**config.id**_, host to communicate with the config.
-* _**config.ratio**_, port to communicate with the config.
+* _**config.id**_, identifier for the configlink.
+* _**config.ratio**_, semicolon separated list of ratio (SIPp parameter, calls per seconds).
 * _**config.max**_, max jobs to assign to this config.
 * _**config.pause**_, max jobs to assign to this config.
 * _**config.tries**_, max jobs to assign to this config.
