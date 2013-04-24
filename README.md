@@ -1,6 +1,4 @@
-<div style="float:center;margin:0 10px 10px 0" markdown="1">
 ![ScreenShot](http://192.168.200.12/sipptam/blob/master/doc/sipptam_logo_small.png)
-</div>
 
 SIPp Test Automation Manager
 ============================
@@ -32,11 +30,11 @@ Configuration is made through an XML file passed at runtime.
 ## config.xml
 [a relative link](resources/sipptam.sample.xml)
 
-```xml
-<myxml>
-   <someElement />  
-</myxml>
-```
+    ```xml
+    <myxml>
+       <someElement />  
+    </myxml>
+    ```
 
 	from Lang import timeIt	
 
