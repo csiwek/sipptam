@@ -36,12 +36,12 @@ Having this folder:
 - `/tmp/test-0002_b.xml`
 - `/tmp/test-0002_c.xml`
 
-A testrun defined by "/tmp/test-0002_*.xml" would select this scenarios:
+A testrun defined with this scenarioPath "/tmp/test-0002_*.xml" would select this scenarios:
 - `/tmp/test-0002_a.xml`
 - `/tmp/test-0002_b.xml`
 - `/tmp/test-0002_c.xml`
 
-In this example, `/tmp/test-0002_a.xml` will run first, `/tmp/test-0002_b.xml` will run second and `/tmp/test-0002_c.xml` will run third. The last scenario selected (`/tmp/test-0002_c.xml` in this example) will be the one that will send the first INVITE in the scenario, this way the user makes sure the first two scenarios are already waiting for this INVITE.
+Again, the order which scenarios are selected defines the order execution. In this example, `/tmp/test-0002_a.xml` will run first, `/tmp/test-0002_b.xml` will run second and `/tmp/test-0002_c.xml` will run third. The last scenario selected (`/tmp/test-0002_c.xml` in this example) will be the one that will send the first INVITE in the scenario, this way the user makes sure the first two scenarios are already waiting for this INVITE.
 
 
 ## Execution mode
