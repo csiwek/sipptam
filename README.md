@@ -46,11 +46,7 @@ Configuration is made through an XML file passed at runtime.
 * _**tas.port**_, port to communicate with the tas.
 * _**tas.jobs**_, max jobs to assign to this tas.
 
-```     <mod id="one">
-	    	 <replace regex="(.*_a.xml)" src="__notusednow1__" dst="tmp1a"/>
-		 <replace regex="(.*_a.xml)" src="__notusednow2__" dst="tmp1a"/>
-		 <injection regex="(.*)" path="/usr/local/share/sipptam/injections/injection1.sample.csv"/>
-	</mod>
+```<tas host="10.22.22.200" port="8008" jobs="25"/>
 ```
 
 ### \<testrun\>
@@ -65,6 +61,20 @@ Configuration is made through an XML file passed at runtime.
     	     configlink="simple"
 	     modlink="one"/>
 ```
+
+### \<tas\> 
+* Mandatory. Cardinality : Unbounded.
+* _**tas.host**_, host to communicate with the tas.
+* _**tas.port**_, port to communicate with the tas.
+* _**tas.jobs**_, max jobs to assign to this tas.
+
+```     <mod id="one">
+	    	 <replace regex="(.*_a.xml)" src="__notusednow1__" dst="tmp1a"/>
+		 <replace regex="(.*_a.xml)" src="__notusednow2__" dst="tmp1a"/>
+		 <injection regex="(.*)" path="/usr/local/share/sipptam/injections/injection1.sample.csv"/>
+	</mod>
+```
+
 
 
 ***
