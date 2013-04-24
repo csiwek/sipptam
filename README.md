@@ -24,11 +24,32 @@ Two basic type of entities in the {sipptam, sipptas} world.
 
 ***
 
+Hello there !
+
+<div id="container">
+    <img />
+    This is an image
+</div>
+
+Hi !
+
+#container {
+    height:100px;
+    line-height:100px;
+}
+
+#container img {
+    vertical-align:middle;
+    max-height:100%;
+}
+***
+
 # Configuration
 Configuration is made through an XML file passed at runtime.
 
 ## config.xml
 [a relative link](resources/sipptam.sample.xml)
+
 ```xml
 <myxml>
    <someElement />  
