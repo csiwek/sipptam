@@ -22,8 +22,34 @@ Two basic type of entities in the {sipptam, sipptas} world.
 - `sipptam`, manager which reads the scenarios and parameters, it distributes the SIPp jobs among the slaves (`sipptas`), checks the process of them and outputs the result back to the user.
 - `sipptas`, slave which performs SIPp jobs. It provides an API for executing SIPp jobs in the box where it is running.
 
+TODO image
+
 ## Scenario execution order
-TODO
+
+#### Example
+Having this folder:
+- `/tmp/test-0000.xml`
+- `/tmp/test-0001_a.xml`
+- `/tmp/test-0001_b.xml`
+- `/tmp/test-0002_a.xml`
+- `/tmp/test-0002_b.xml`
+- `/tmp/test-0002_c.xml`
+
+A testrun defined by "/tmp/test-0002_*.xml" would select this scenarios:
+- `/tmp/test-0002_a.xml`
+- `/tmp/test-0002_b.xml`
+- `/tmp/test-0002_c.xml`
+
+**The order which scenarios are selected defines the order execution.** In this example, `/tmp/test-0002_a.xml` will run first, `/tmp/test-0002_b.xml` will run second and `/tmp/test-0002_c.xml` will run third. The last scenario selected (`/tmp/test-0002_c.xml` in this example) will be the one that will send the first INVITE in the scenario, this way the user makes sure the first two scenarios are already waiting for this INVITE.
+
+
+## Execution mode
+parallel, serial
+
+TODO image
+
+r, m, tries
+TODO plot
 
 ***
 
