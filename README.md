@@ -7,7 +7,7 @@ SIPp Test Automation Manager
 
 # Introduction
 
-## SIPp
+## [SIPp](http://sipp.sourceforge.net/)
 SIPp is a great tool created by HP which allows to generate SIP traffic. A SIPp execution requires an scenario to run, the scenario defines the messages that are going to be sent and received as well as another logic.
 ## Testing your SIP code using SIPp
 SIPp has a flexible way to define its scenarios and makes easy to simulate different SIP traffic flows. SIPp is sometimes used as a powerful SIP bulk load tester. The traditional SIPp execution forces the user to run the desired SIPp command manually. 
