@@ -65,11 +65,13 @@ You can find the **schema** of the XML configuration file [here](http://192.168.
 	     modlink="one"/>
 ```
 
-### \<tas\> 
+### \<config\> 
 * Mandatory. Cardinality : **Unbounded**.
-* _**tas.host**_, host to communicate with the tas.
-* _**tas.port**_, port to communicate with the tas.
-* _**tas.jobs**_, max jobs to assign to this tas.
+* _**config.id**_, host to communicate with the config.
+* _**config.ratio**_, port to communicate with the config.
+* _**config.max**_, max jobs to assign to this config.
+* _**config.pause**_, max jobs to assign to this config.
+* _**config.tries**_, max jobs to assign to this config.
 
 ```     <mod id="one">
 	    	 <replace regex="(.*_a.xml)" src="__notusednow1__" dst="tmp1a"/>
