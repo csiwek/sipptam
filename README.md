@@ -1,4 +1,6 @@
+<div style="float:left;margin:0 10px 10px 0" markdown="1">
 ![ScreenShot](http://192.168.200.12/sipptam/blob/master/doc/sipptam_logo_small.png)
+</div>
 
 SIPp Test Automation Manager
 ============================
@@ -22,26 +24,6 @@ Two basic type of entities in the {sipptam, sipptas} world.
 - `sipptam`, manager which reads the scenarios and parameters, it distributes the SIPp jobs among the slaves (`sipptas`), checks the process of them and outputs the result back to the user.
 - `sipptas`, slave which performs SIPp jobs. It provides an API for executing SIPp jobs in the box where it is running.
 
-***
-
-Hello there !
-
-<div id="container">
-    <img />
-    This is an image
-</div>
-
-Hi !
-
-#container {
-    height:100px;
-    line-height:100px;
-}
-
-#container img {
-    vertical-align:middle;
-    max-height:100%;
-}
 ***
 
 # Configuration
