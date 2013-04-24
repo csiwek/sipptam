@@ -3,9 +3,21 @@
 SIPp Test Automation Manager
 ============================
 
-`sipptam` automates the use of SIPp. It distributes the SIPp scenarios and parameters using.
+`sipptam` automates the use of SIPp.
 
-# 
+# The need of `sipptam`
+
+## SIPp
+SIPp is a great tool created by HP which allows to generate SIP traffic. A SIPp execution requires an scenario to run, the scenario defines the messages that are going to be sent and received as well as another logic. The traditional SIPp execution forces the user to run the desired SIPp command manually.
+
+## Testing your SIP code using SIPp
+SIPp has an smart way to define its scenarios and make it easy for the user to simulate different SIP traffic flows. Its engine to make bulk calls is very impressive. 
+
+##
+
+When you have two or more scenarios for the same test it is a little inconvenient.
+Developing SIP applications requires an environment 
+It distributes the SIPp scenarios and parameters using different slaves. 
 
 ## Reusing a binded port in the tas.
 - The device under tests keeps sending SIP messages to a port that we were using
