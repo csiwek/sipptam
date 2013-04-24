@@ -111,6 +111,17 @@ Injection modification are used to inject values from external files. Files inje
 ```
 
 
+### \<advanced\>
+* Mandatory. Cardinality : **1**.
+* _**advanced.execMode**_, execution mode. parallel will run all the testruns at the same time. serial will run one testrun after another in the way they are defined.
+* _**advanced.scenarioValidate**_, checks that all the scenarios loaded in the testruns pass basic XML validation.
+* _**advanced.regexValidate**_, checks that the regex defined by the user are correct.
+
+```   <advanced execMode="parallel"
+      		scenarioValidate="False"
+		regexValidate="True"/>
+```
+
 
 ***
 
