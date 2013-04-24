@@ -15,7 +15,7 @@ SIPp makes easy to simulate different SIP traffic flows. SIPp is sometimes used 
 ***
 
 # How it works
-## Manager and slave(s). `sipptam` and `sipptas` [Yin yang](http://en.wikipedia.org/wiki/Yin_and_yang)
+## Manager and slave(s). Yin yang : sipptam and sipptas.
 Two basic type of entities in the {sipptam, sipptas} world.
 - `sipptam`, manager which reads the scenarios and parameters, it distributes the SIPp jobs among the slaves (`sipptas`), checks the process of them and outputs the result back to the user.
 - `sipptas`, slave which performs SIPp jobs. It provides an API for executing SIPp jobs in the box where it is running.
