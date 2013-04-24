@@ -5,19 +5,15 @@ SIPp Test Automation Manager
 
 sipptam automates the use of SIPp.
 
-# The need of sipptam
-
 ## SIPp
 SIPp is a great tool created by HP which allows to generate SIP traffic. A SIPp execution requires an scenario to run, the scenario defines the messages that are going to be sent and received as well as another logic.
 
 ## Testing your SIP code using SIPp
-SIPp has a flexible way to define its scenarios and makes easy to simulate different SIP traffic flows. SIPp is sometimes used as a powerfull SIP bulk load tester. The traditional SIPp execution forces the user to run the desired SIPp command manually. Drawback arises when you have to test repeatedly multiple scenarios. The fact of manually run a high number of SIPp commands has obvious disadvantages (human errors, waste of time).
+SIPp has a flexible way to define its scenarios and makes easy to simulate different SIP traffic flows. SIPp is sometimes used as a powerful SIP bulk load tester. The traditional SIPp execution forces the user to run the desired SIPp command manually. 
 
-## 
+## The need of sipptam
+The fact of manually run a high number of SIPp commands has obvious disadvantages such as human errors or waste of time. SIPp lacks of ways to automate it. This is where sipptam starts to make sense. If you just have a couple of SIPp scenarios to run against you device under test (SIP UA, SIP proxy, SIP b2bua) manual execution could be allowed, when you have N number of SIPp scenarios and N gets high, you have to look for SIPp automation, sipptam will help you on this.
 
-When you have two or more scenarios for the same test it is a little inconvenient.
-Developing SIP applications requires an environment 
-It distributes the SIPp scenarios and parameters using different slaves. 
 
 ## Reusing a binded port in the tas.
 - The device under tests keeps sending SIP messages to a port that we were using
