@@ -35,18 +35,18 @@ Configuration is made through an XML file passed at runtime.
 2. You have a configuration file **example** [here](http://192.168.200.12/sipptam/tree/master/resources/sipptam.sample.xml)
 
 ## Parameters
-### <sipptam>. 
+### \<sipptam\>
 * Mandatory. Cardinality : 1.
 * _**sipptam.duthost**_, device under test host
 * _**sipptam.port**_, device under test port
 
-### <tas>. 
+### \<tas\> 
 * Mandatory. Cardinality : Unbounded.
 * _**tas.host**_, host to communicate with the tas.
 * _**tas.port**_, port to communicate with the tas.
 * _**tas.jobs**_, max jobs to assign to this tas.
 
-### <testrun>. 
+### \<testrun\>
 * Mandatory. Cardinality : Unbounded.
 * _**testrun.id**_, identifier for the testrun.
 * _**testrun.scenarioPath**_, path where to find the scenarios of the testrun.
