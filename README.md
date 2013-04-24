@@ -3,7 +3,7 @@
 SIPp Test Automation Manager
 ============================
 
-`sipptam` automates the use of SIPp. Uses slaves, or `sipptas`, to distribute the SIPp scenarios.
+`sipptam` automates the use of SIPp. It distributes the SIPp scenarios and parameters using.
 
 # 
 
