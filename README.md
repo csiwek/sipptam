@@ -31,7 +31,7 @@ TODO
 Configuration is made through an XML file passed at runtime.
 
 ## Example
-You have a configuration file **example** [here](http://192.168.200.12/sipptam/tree/master/resources/sipptam.sample.xml)
+You can find one [here](http://192.168.200.12/sipptam/tree/master/resources/sipptam.sample.xml)
 
 ## Schema
 You can find the **schema** of the XML configuration file [here](http://192.168.200.12/sipptam/tree/master/src/sipptam/validate/Schema.py)
