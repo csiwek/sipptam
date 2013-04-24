@@ -31,7 +31,7 @@ Configuration is made through an XML file passed at runtime.
 1. You can find the **schema** of the XML configuration file [here](http://192.168.200.12/sipptam/tree/master/src/sipptam/validate/Schema.py)
 2. You have a configuration file **example** [here](http://192.168.200.12/sipptam/tree/master/resources/sipptam.sample.xml)
 
-   if then else
+    if then else
 ***
 
 # Installation
