@@ -14,6 +14,8 @@ SIPp has a flexible way to define its scenarios and makes easy to simulate diffe
 ## The need of sipptam
 The fact of manually run a high number of SIPp commands has obvious disadvantages such as human errors or waste of time. SIPp lacks of ways to automate it. This is where sipptam starts to make sense. If you just have a couple of SIPp scenarios to run against you device under test (SIP UA, SIP proxy, SIP b2bua) manual execution could be allowed, when you have N number of SIPp scenarios and N gets high, you have to look for SIPp automation, sipptam is what you are looking for. `sipptam` automates the use of SIPp.
 
+***
+
 # How it works
 ## sipptam and sipptas as twins : manager and slave(s)
 Two basic type of entities in the {sipptam, sipptas} world.
