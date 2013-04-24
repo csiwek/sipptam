@@ -23,7 +23,7 @@ Two basic type of entities in the {sipptam, sipptas} world.
 TODO image
 
 ## Scenario execution order
-**The order which scenarios are selected defines the scenarios order execution.**
+Syncing the execution of scenarios is something that definitely can make the testrun to pass or to fail. Sipptam makes sure the execution is made as the user wants. **The order which scenarios are selected defines the scenarios order execution.** Let's see an example.
 
 #### Example
 Having this folder:
