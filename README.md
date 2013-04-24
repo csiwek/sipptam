@@ -1,9 +1,7 @@
 ![ScreenShot](http://192.168.200.12/sipptam/blob/master/doc/sipptam_logo_small.png)
 
-SIPp Test Automation Manager
-============================
-
-sipptam automates the use of SIPp.
+SIPp Test Automation Manager. Automating the use of SIPp.
+=========================================================
 
 ***
 
