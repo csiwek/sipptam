@@ -13,8 +13,7 @@ SIPp is a great tool created by HP which allows to generate SIP traffic. A SIPp 
 ## Testing your SIP code using SIPp
 SIPp has a flexible way to define its scenarios and makes easy to simulate different SIP traffic flows. Using SIPp as a bulk load tester is a well-known thing that covers perfectly. Drawback arises when you have to test repeatedly multiple scenarios. The task ends up tedious.
 
-
-##
+## 
 
 When you have two or more scenarios for the same test it is a little inconvenient.
 Developing SIP applications requires an environment 
