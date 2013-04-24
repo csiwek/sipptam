@@ -69,8 +69,8 @@ You can find the **schema** of the XML configuration file [here](http://192.168.
 * Mandatory. Cardinality : **Unbounded**.
 * _**config.id**_, identifier for the configlink.
 * _**config.ratio**_, semicolon separated list of ratio (SIPp parameter, calls per seconds).
-* _**config.max**_, max jobs to assign to this config.
-* _**config.pause**_, max jobs to assign to this config.
+* _**config.max**_, semicolon separated list of calls (SIPp parameter, maximum calls to make).
+* _**config.pause**_, pause between executions.
 * _**config.tries**_, max jobs to assign to this config.
 
 ```     <mod id="one">
