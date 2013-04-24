@@ -85,23 +85,29 @@ You can find the **schema** of the XML configuration file [here](http://192.168.
 * Optional. Cardinality : **Unbounded**.
 * _**mod.id**_, identifier for the configlink.
 
-###### \<replace\>
-* Optional. Cardinality : **Unbounded**.
-* _**mod.replace.regex**_, .
-* _**mod.replace.src**_, .
-* _**mod.replace.dst**_, .
-
-###### \<injection\>
-Injection modification are used to inject values from external files. Files injectected will be passed with the scenarios that apply. Please check the -inf param of SIPp [here](http://sipp.sourceforge.net/doc/reference.html#Injecting+values+from+an+external+CSV+during+calls).
-* Optional. Cardinality : **Unbounded**.
-* _**mod.injection.regex**_, scenarios from the testrun which match this regex will use the injection file.
-* _**mod.injection.path**_, injection file to attach to the .
-
 ```     <mod id="one">
 	    	 <replace regex="(.*_a.xml)" src="__notusednow1__" dst="tmp1a"/>
 		 <replace regex="(.*_a.xml)" src="__notusednow2__" dst="tmp1a"/>
 		 <injection regex="(.*)" path="/usr/local/share/sipptam/injections/injection1.sample.csv"/>
 	</mod>
+```
+
+###### \<replace\>
+* Optional. Cardinality : **Unbounded**.
+* _**mod.replace.regex**_, scenarios from the testrun which match this regex will use this ``replace`` modification.
+* _**mod.replace.src**_, string to be replaced in the scenario.
+* _**mod.replace.dst**_, string to replace in the scenario.
+
+```     <replace regex="(.*_a.xml)" src="__notusednow2__" dst="tmp1a"/>
+```
+
+###### \<injection\>
+Injection modification are used to inject values from external files. Files injectected will be passed with the scenarios that apply. Please check the -inf param of SIPp [here](http://sipp.sourceforge.net/doc/reference.html#Injecting+values+from+an+external+CSV+during+calls).
+* Optional. Cardinality : **Unbounded**.
+* _**mod.injection.regex**_, scenarios from the testrun which match this regex will use this ``injection`` modification.
+* _**mod.injection.path**_, injection file to attach to the .
+
+```     <injection regex="(.*)" path="/usr/local/share/sipptam/injections/injection1.sample.csv"/>
 ```
 
 
