@@ -26,13 +26,15 @@ TODO image
 Syncing the execution of scenarios is something that definitely can make the testrun to pass or to fail. Sipptam makes sure the execution is made as the user wants. **The order which scenarios are selected defines the scenarios order execution.** Let's see an example.
 
 #### Example
-Having this folder:
+We have a folder with Having this folder:
+- `(...)`
 - `/tmp/test-0000.xml`
 - `/tmp/test-0001_a.xml`
 - `/tmp/test-0001_b.xml`
 - `/tmp/test-0002_a.xml`
 - `/tmp/test-0002_b.xml`
 - `/tmp/test-0002_c.xml`
+- `(...)`
 
 A testrun defined with this `scenarioPath="/tmp/test-0002_*.xml"` would select this scenarios:
 - `/tmp/test-0002_a.xml`
