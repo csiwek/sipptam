@@ -84,11 +84,13 @@ You can find the **schema** of the XML configuration file [here](http://192.168.
 ### \<mod\> 
 * Optional. Cardinality : **Unbounded**.
 * _**mod.id**_, identifier for the configlink.
+
 #### \<replace\>
 * Optional. Cardinality : **Unbounded**.
 * _**mod.replace.regex**_, .
 * _**mod.replace.src**_, .
 * _**mod.replace.dst**_, .
+
 #### \<injection\>
 Injection modification are used to inject values from external files. Files injectected will be passed with the scenarios that apply. Please check the -inf param of SIPp [here]http://sipp.sourceforge.net/doc/reference.html#Injecting+values+from+an+external+CSV+during+calls
 * Optional. Cardinality : **Unbounded**.
