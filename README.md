@@ -34,6 +34,8 @@ You have a configuration file example [here](http://192.168.200.12/sipptam/blob/
        <someElement />  
     </myxml>
 
+~~~~
+
 	from Lang import timeIt	
 
 `timeIt` is a function decorator, so with the function you want to time, do:
@@ -43,7 +45,7 @@ You have a configuration file example [here](http://192.168.200.12/sipptam/blob/
 		asdf
 
 ***
-
+****
 # Installation
 ## Debian package
 TODO.
