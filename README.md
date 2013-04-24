@@ -28,6 +28,7 @@ Two basic type of entities in the {sipptam, sipptas} world.
 Configuration is made through an XML file passed at runtime.
 
 ## config.xml
+[a relative link](resources/sipptam.sample.xml)
 ```xml
 <myxml>
    <someElement />  
