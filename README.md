@@ -5,7 +5,10 @@ SIPp Test Automation Manager
 
 sipptam automates the use of SIPp.
 
+***
+
 # Introduction
+
 ## SIPp
 SIPp is a great tool created by HP which allows to generate SIP traffic. A SIPp execution requires an scenario to run, the scenario defines the messages that are going to be sent and received as well as another logic.
 ## Testing your SIP code using SIPp
@@ -19,7 +22,7 @@ Two basic type of entities in the {sipptam, sipptas} world.
 - `sipptam`, manager which reads the scenarios and parameters, it distributes the SIPp jobs among the slaves (`sipptas`), checks the process of them and outputs the result back to the user.
 - `sipptas`, slave which performs SIPp jobs. It provides an API for executing SIPp jobs in the box where it is running.
 
-# Configuration
+***
 
 # Configuration
 Configuration is made through an XML file passed at runtime.
