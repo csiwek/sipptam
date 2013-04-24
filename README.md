@@ -54,22 +54,7 @@ Configuration is made through an XML file passed at runtime.
     	     configlink="simple"
 	     modlink="one"/>
 ```
-    <config id="simple"
-    	    ratio="1"
-	    max="1"
-	    pause="1.0"
-	    tries="1"/>
-~~~
-    <mod id="one">
-    	 <replace regex="(.*_a.xml)" src="__notusednow1__" dst="tmp1a"/>
-	 <replace regex="(.*_a.xml)" src="__notusednow2__" dst="tmp1a"/>
-	 <injection regex="(.*)" path="/usr/local/share/sipptam/injections/injection1.sample.csv"/>
-    </mod>
-~~~
-   <advanced execMode="parallel"
-             scenarioValidate="False"
-	     regexValidate="True"/>
-~~~
+
 
 ***
 
