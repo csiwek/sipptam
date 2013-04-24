@@ -14,99 +14,22 @@
   -->
 
 <!-- Device under test (DUT). Mandatory. -->
-<sipptam duthost="192.168.203.150"
+<sipptam duthost="10.22.22.112"
 	 dutport="5060">
 
    <!-- Slaves to use. Mandatory. -->
-   <tas host="192.168.200.100" port="8008" jobs="20"/>
-   <tas host="192.168.200.102" port="8008" jobs="20"/>
+   <tas host="10.22.22.200" port="8008" jobs="25"/>
 
    <!-- Testruns definition. Mandatory (at least one) -->
    <testrun id="test-0001"
 	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0001_*.xml"
 	    configlink="simple"
 	    modlink="one"/>
-   <testrun id="test-0002"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0002_*.xml"
-	    configlink="simple"
-	    modlink="one"/>
-   <testrun id="test-0003"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0003_*.xml"
-	    configlink="simple"
-	    modlink="one"/>
-   <testrun id="test-0004"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0004_*.xml"
-	    configlink="simple"
-	    modlink="one"/>
-   <testrun id="test-0005"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0005_*.xml"
-	    configlink="simple"
-	    modlink="one"/>
-   <testrun id="test-0006"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0006_*.xml"
-	    configlink="simple"
-	    modlink="one"/>
-   <testrun id="test-0007"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0007_*.xml"
-	    configlink="simple"
-	    modlink="one"/>
-   <testrun id="test-0008"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0008_*.xml"
-	    configlink="simple"
-	    modlink="one"/>
-   <testrun id="test-0009"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0009_*.xml"
-	    configlink="simple"
-	    modlink="one"/>
-   <testrun id="test-0010"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0010_*.xml"
-	    configlink="simple"
-	    modlink="one"/>
-   <testrun id="test-0011"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0011_*.xml"
-	    configlink="simple"
-	    modlink="one"/>
-   <testrun id="test-0012"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0012_*.xml"
-	    configlink="simple"
-	    modlink="one"/>
-   <testrun id="test-0013"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0013_*.xml"
-	    configlink="simple"
-	    modlink="one"/>
-   <testrun id="test-0014"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0014_*.xml"
-	    configlink="simple"
-	    modlink="one"/>
-   <testrun id="test-0015"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0015_*.xml"
-	    configlink="simple"
-	    modlink="one"/>
-   <testrun id="test-0016"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0016_*.xml"
-	    configlink="simple"
-	    modlink="one"/>
-   <testrun id="test-0017"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0017_*.xml"
-	    configlink="simple"
-	    modlink="one"/>
-   <testrun id="test-0020"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0020_*.xml"
-	    configlink="simple"
-	    modlink="one"/>
-   <testrun id="test-0021"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0021_*.xml"
-	    configlink="simple"
-	    modlink="one"/>
-   <testrun id="test-0022"
-	    scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0022_*.xml"
-	    configlink="simple"
-	    modlink="one"/>
 
    <!-- Configs used by testruns. Mandatory (at least one) -->
    <config id="simple"
 	   ratio="1"
-	   max="5"
+	   max="1"
 	   pause="1.0"
 	   tries="1"/>
 
