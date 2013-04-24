@@ -22,6 +22,9 @@ Two basic type of entities in the {sipptam, sipptas} world.
 - `sipptam`, manager which reads the scenarios and parameters, it distributes the SIPp jobs among the slaves (`sipptas`), checks the process of them and outputs the result back to the user.
 - `sipptas`, slave which performs SIPp jobs. It provides an API for executing SIPp jobs in the box where it is running.
 
+## Scenario execution order
+TODO
+
 ***
 
 # Configuration
@@ -32,15 +35,24 @@ Configuration is made through an XML file passed at runtime.
 2. You have a configuration file **example** [here](http://192.168.200.12/sipptam/tree/master/resources/sipptam.sample.xml)
 
 ## Parameters
-- sipptam.duthost, device under test host
-- sipptam.port, device under test port
-- tas, test automation slave
-    <tas host="10.22.22.200" port="8008" jobs="25"/>
-~~~
-    <testrun id="test-0001"		 
+- `sipptam`, basic sipptam root **node**. Mandatory. Cardinality : 1.
+- `sipptam.duthost`, device under test host
+- `sipptam.port`, device under test port
+- `tas`, test automation slave **node**. Mandatory. Cardinality : Unbounded.
+- `tas.host`, host to communicate with the tas.
+- `tas.port`, port to communicate with the tas.
+- `tas.jobs`, max jobs to assign to this tas.
+
+- `testrun`, testrun **node**. Mandatory. Cardinality : Unbounded.
+- `testrun.id`, identifier for the testrun.
+- `testrun.scenarioPath`, path where to find the scenarios of the testrun.
+- `testrun.configLink`, link to the configuration of the testrun. Config must be defined.
+- `testrun.modLink`, max jobs to assign to this testrun. Mod must be defined. Optional.
+    <testrun id="test-0001"
     	     scenarioPath="/usr/local/share/sipptam/scenarios/INb2bua-0001_*.xml"
     	     configlink="simple"
 	     modlink="one"/>
+
 ~~~
     <config id="simple"
     	    ratio="1"
