@@ -49,10 +49,12 @@ Configuration is made through an XML file passed at runtime.
 - `testrun.configLink`, link to the configuration of the testrun. Config must be defined.
 - `testrun.modLink`, max jobs to assign to this testrun. Mod must be defined. Optional.
 ~~~
+
     <testrun id="test-0001"
     	     scenarioPath="/usr/local/share/sipptam/scenarios/test-001*.xml"
     	     configlink="simple"
 	     modlink="one"/>
+
 ~~~
 
 
