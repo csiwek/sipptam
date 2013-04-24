@@ -28,7 +28,10 @@ Two basic type of entities in the {sipptam, sipptas} world.
 Configuration is made through an XML file passed at runtime.
 
 ## config.xml
-You have a configuration file example [here](http://192.168.200.12/sipptam/blob/master/resources/sipptam.sample.xml)
+1. You can find the schema of the XML configuration file [here]http://192.168.200.12/sipptam/tree/master/src/sipptam/validate/Schema.py
+2. You have a configuration file example [here](http://192.168.200.12/sipptam/tree/master/resources/sipptam.sample.xml)
+
+    <sipptam duthost="10.22.22.112" dutport="5060">
 
     <myxml>
        <someElement />  
