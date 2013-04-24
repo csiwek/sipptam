@@ -5,7 +5,7 @@ SIPp Test Automation Manager
 
 `sipptam` automates the use of SIPp.
 
-# The need of `sipptam`
+# The need of sipptam
 
 ## SIPp
 SIPp is a great tool created by HP which allows to generate SIP traffic. A SIPp execution requires an scenario to run, the scenario defines the messages that are going to be sent and received as well as another logic. The traditional SIPp execution forces the user to run the desired SIPp command manually.
