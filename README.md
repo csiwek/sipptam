@@ -33,19 +33,13 @@ You have a configuration file example [here](http://192.168.200.12/sipptam/blob/
     <myxml>
        <someElement />  
     </myxml>
-
 ~~~~
+    <myxml>
+       <someElement />  
+    </myxml>
 
-	from Lang import timeIt	
-
-`timeIt` is a function decorator, so with the function you want to time, do:
-
-	@timeIt
-	def myFunction(...):
-		asdf
 
 ***
-****
 # Installation
 ## Debian package
 TODO.
@@ -55,3 +49,6 @@ TODO.
 
 ## Python Package Index
 TODO.
+
+***
+****
