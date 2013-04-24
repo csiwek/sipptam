@@ -40,8 +40,11 @@ Configuration is made through an XML file passed at runtime.
 * _**sipptam.duthost**_, device under test host
 * _**sipptam.port**_, device under test port
 
+```<sipptam duthost="10.22.22.112" dutport="5060">
+```
+
 ### \<tas\> 
-#### Mandatory. Cardinality : **Unbounded**.
+* Mandatory. Cardinality : **Unbounded**.
 * _**tas.host**_, host to communicate with the tas.
 * _**tas.port**_, port to communicate with the tas.
 * _**tas.jobs**_, max jobs to assign to this tas.
@@ -50,7 +53,7 @@ Configuration is made through an XML file passed at runtime.
 ```
 
 ### \<testrun\>
-#### Mandatory. Cardinality : **Unbounded**.
+* Mandatory. Cardinality : **Unbounded**.
 * _**testrun.id**_, identifier for the testrun.
 * _**testrun.scenarioPath**_, path where to find the scenarios of the testrun.
 * _**testrun.configLink**_, link to the configuration of the testrun. Config must be defined.
