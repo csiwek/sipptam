@@ -1,4 +1,4 @@
-<div style="float:left;margin:0 10px 10px 0" markdown="1">
+<div style="float:center;margin:0 10px 10px 0" markdown="1">
 ![ScreenShot](http://192.168.200.12/sipptam/blob/master/doc/sipptam_logo_small.png)
 </div>
 
