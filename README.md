@@ -41,3 +41,13 @@ You have a configuration file example [here](http://192.168.200.12/sipptam/blob/
 	@timeIt
 	def myFunction(...):
 		asdf
+
+# Installation
+## Debian package
+TODO.
+
+## RPM package
+TODO.
+
+## Python Package Index
+TODO.
