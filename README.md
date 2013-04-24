@@ -30,11 +30,11 @@ TODO
 # Configuration
 Configuration is made through an XML file passed at runtime.
 
-## config.xml
-1. You can find the **schema** of the XML configuration file [here](http://192.168.200.12/sipptam/tree/master/src/sipptam/validate/Schema.py)
-2. You have a configuration file **example** [here](http://192.168.200.12/sipptam/tree/master/resources/sipptam.sample.xml)
+## Example
+You have a configuration file **example** [here](http://192.168.200.12/sipptam/tree/master/resources/sipptam.sample.xml)
 
-## Parameters
+## Schema
+You can find the **schema** of the XML configuration file [here](http://192.168.200.12/sipptam/tree/master/src/sipptam/validate/Schema.py)
 ### \<sipptam\>
 * Mandatory. Cardinality : **1**.
 * _**sipptam.duthost**_, device under test host
