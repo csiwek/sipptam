@@ -52,6 +52,7 @@ Configuration is made through an XML file passed at runtime.
 * _**testrun.scenarioPath**_, path where to find the scenarios of the testrun.
 * _**testrun.configLink**_, link to the configuration of the testrun. Config must be defined.
 * _**testrun.modLink**_, max jobs to assign to this testrun. Mod must be defined. Optional.
+
 ```    <testrun id="test-0001"
     	     scenarioPath="/usr/local/share/sipptam/scenarios/test-001*.xml"
     	     configlink="simple"
