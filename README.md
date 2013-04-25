@@ -40,7 +40,7 @@ We have a folder with multiple scenarios:
 - `/tmp/test-0004_b.xml`
 - `(...)`
 
-A testrun defined with this `scenarioPath="/tmp/test-0002_*.xml"` would select this scenarios:
+A testrun defined with this `scenarioPath="/tmp/test-0002_*.xml"` would select these scenarios:
 - `/tmp/test-0002_a.xml`
 - `/tmp/test-0002_b.xml`
 - `/tmp/test-0002_c.xml`
