@@ -694,7 +694,7 @@
            x="85.714287"
            y="501.23734" /></flowRegion><flowPara
          id="flowPara4177"
-         style="font-size:22.05292511000000033px;fill:#ffff00;-inkscape-font-specification:kefa;font-family:kefa">SIP traffic</flowPara></flowRoot>    <rect
+         style="font-size:22.05292511px;fill:#ffff00;font-family:kefa;-inkscape-font-specification:kefa">SIP</flowPara></flowRoot>    <rect
        ry="20.637369"
        y="353.99219"
        x="518.09961"
@@ -860,8 +860,8 @@
            width="242.85715"
            id="rect4776"
            style="fill:#000000" /></flowRegion><flowPara
-         style="font-size:22.05292511000000033px;fill:#000000;-inkscape-font-specification:kefa;font-family:kefa"
-         id="flowPara4778">SIP traffic</flowPara></flowRoot>    <path
+         style="font-size:22.05292511px;fill:#000000;font-family:kefa;-inkscape-font-specification:kefa"
+         id="flowPara4778">SIP</flowPara></flowRoot>    <path
        sodipodi:nodetypes="cccc"
        inkscape:connector-curvature="0"
        id="path3142"
