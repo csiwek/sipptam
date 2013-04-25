@@ -60,13 +60,13 @@ Based on our previous example,
 
 ##### Why would this be useful?
 Imagine we have a transfer scenarios using the REFER model, we might have to know where we are referring the call to. In this case we will refer the call to the scenario which is going to be executed in position 2 in the testrun.
-    <![CDATA[
+```    <![CDATA[
     REFER sip:[field0]@[remote_ip]:[remote_port] SIP/2.0
     (...)
     Refer-To: sip:refered_user@!sipptas(host(2))!:!sipptas(port(2))!
     (...)
     ]]>
-
+```
 
 ## Execution modes
 Different ways to define how the execution is going to be done:
