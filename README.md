@@ -57,6 +57,8 @@ Based on our previous example,
 * `/tmp/test-0002_a.xml`, will be `0`
 * `/tmp/test-0002_b.xml`, will be `1`
 * `/tmp/test-0002_c.xml`, will be `2`
+So if you want to refer to the `ip` of the tas running the `/tmp/test-0002_a.xml` scenario, we have to refer to it in the other scenarios as `!sipptas(host(1))!` and `!sipptas(port(1))!`.
+
 
 ##### Why would this be useful?
 Imagine we have a transfer scenarios using the REFER model, we might have to know where we are referring the call to. In this case we will refer the call to the scenario which is going to be executed in position 2 in the testrun.
