@@ -60,18 +60,18 @@ Based on our previous example,
 
 ##### Why would this be useful?
 Imagine we have a transfer scenarios using the REFER model, we might have to know where we are referring the call to. As you can see in the scenarios examples this can be done:
-	<![CDATA[
-	REFER sip:[field0]@[remote_ip]:[remote_port] SIP/2.0
-	Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
-	From: 911 <sip:911@[local_ip]:[local_port]>;tag=[call_number]-INV-UAS
-	To: 2604462807 <sip:2604462807@[remote_ip]:[remote_port]>;[$10]
-	[last_Call-ID:]
-	CSeq: [cseq] REFER
-	Max-Forwards: 70
-	Refer-To: sip:refered_user@!sipptas(host(2))!:!sipptas(port(2))!
-	Content-Length: 0
-	[routes]
-	]]>
+    <![CDATA[
+    REFER sip:[field0]@[remote_ip]:[remote_port] SIP/2.0
+    Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+    From: 911 <sip:911@[local_ip]:[local_port]>;tag=[call_number]-INV-UAS
+    To: 2604462807 <sip:2604462807@[remote_ip]:[remote_port]>;[$10]
+    [last_Call-ID:]
+    CSeq: [cseq] REFER
+    Max-Forwards: 70
+    Refer-To: sip:refered_user@!sipptas(host(2))!:!sipptas(port(2))!
+    Content-Length: 0
+    [routes]
+    ]]>
 
 All the ports for the configuration are dinamically provided by the sipptas. SIPp instances in the sipptas will 
 
