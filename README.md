@@ -56,7 +56,7 @@ Where _X_ is an integer which refers to the scenario that is going to be execute
 Based on our previous example,
 * `/tmp/test-0002_a.xml`, will be `0`
 * `/tmp/test-0002_b.xml`, will be `1`
-* `/tmp/test-0002_c.xml`, will be `1`
+* `/tmp/test-0002_c.xml`, will be `2`
 
 ##### Why would this be useful?
 Imagine we have a transfer scenarios using the REFER model, we might have to know where we are referring the call to. In this case we will refer the call to the scenario which is going to be executed in position 2 in the testrun.
