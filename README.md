@@ -78,7 +78,7 @@ Different ways to define how the execution is going to be done:
 2. `serial` : Each testrun at a time.
 
 ###### Note
-_Using parallel mode really makes the different from the manual use of SIPp. This mode allow us to run different scenarios at the same time against the dut. This won't be_
+_Using parallel mode really makes the different from the manual use of SIPp. This mode allow us to run different scenarios at the same time against the dut. This is not supported by SIPp by any means._
 
 Different ways to define how many executions of the testruns:
 1. `tries` : Number of times to execute the same testrun.
