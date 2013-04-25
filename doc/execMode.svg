@@ -133,10 +133,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.27179736"
-     inkscape:cx="900.54243"
-     inkscape:cy="779.42443"
+     inkscape:cx="1119.4555"
+     inkscape:cy="1000.1771"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g4476"
      showgrid="false"
      width="2052.36px"
      inkscape:window-width="1440"
@@ -160,7 +160,7 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Layer#1"
-     style="opacity:0.092;display:inline"
+     style="opacity:0.09200003;display:inline"
      sodipodi:insensitive="true">
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -725,7 +725,26 @@
        inkscape:connector-curvature="0"
        id="path4202"
        d="m 424.52021,-325.2108 c 0,139.4311 -4.4707,1051.38821 -4.4707,1192.07117"
-       style="fill:#ffffff;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:1;stroke-opacity:0.11504425;stroke-dasharray:none;marker-start:none;marker-end:none;fill-opacity:1" />
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:1;stroke-opacity:0.11504427;stroke-dasharray:none;marker-start:none;marker-end:none" />
+    <rect
+       style="opacity:0.37068966;fill:#000000;fill-opacity:1;stroke:none"
+       id="rect3230"
+       width="11.037635"
+       height="60.706993"
+       x="943.71777"
+       y="627.30499"
+       transform="translate(0,-391.72782)"
+       rx="8.081214"
+       ry="9.5964489" />
+    <rect
+       ry="9.5964489"
+       rx="8.081214"
+       y="235.57718"
+       x="1782.578"
+       height="60.706993"
+       width="11.037635"
+       id="rect3232"
+       style="opacity:0.37068966;fill:#000000;fill-opacity:1;stroke:none" />
   </g>
   <g
      style="display:inline"
@@ -1246,5 +1265,29 @@
            id="flowPara4804">testrun#3. tries=1, r=5, m=50</flowPara><flowPara
            style="font-size:55px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ffffff;font-family:Kefa;-inkscape-font-specification:Kefa"
            id="flowPara4806" /></flowRoot>    </g>
-  </g>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3212"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       transform="translate(-346.79515,-368.67185)"><flowRegion
+         id="flowRegion3214"><rect
+           id="rect3216"
+           width="709.42297"
+           height="272.00674"
+           x="1308.573"
+           y="624.39398" /></flowRegion><flowPara
+         id="flowPara3218"
+         style="font-size:50px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Kefa;-inkscape-font-specification:Kefa">t1</flowPara></flowRoot>    <flowRoot
+       transform="translate(488.70667,-425.86002)"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       id="flowRoot3220"
+       xml:space="preserve"><flowRegion
+         id="flowRegion3222"><rect
+           y="624.39398"
+           x="1308.573"
+           height="272.00674"
+           width="709.42297"
+           id="rect3224" /></flowRegion><flowPara
+         style="font-size:50px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Kefa;-inkscape-font-specification:Kefa"
+         id="flowPara3226">t2</flowPara></flowRoot>  </g>
 </svg>
