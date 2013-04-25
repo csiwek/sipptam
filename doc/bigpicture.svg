@@ -16,8 +16,8 @@
    inkscape:version="0.48.2 r9819"
    sodipodi:docname="bigpicture.svg"
    inkscape:export-filename="/Volumes/lmartin_data/INdigital/90projects/sipptam/doc/bigpicture.png"
-   inkscape:export-xdpi="81.220001"
-   inkscape:export-ydpi="81.220001">
+   inkscape:export-xdpi="63.82"
+   inkscape:export-ydpi="63.82">
   <defs
      id="defs4">
     <marker
@@ -144,7 +144,7 @@
      inkscape:cx="1268.3846"
      inkscape:cy="722.66349"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g4506"
      showgrid="false"
      width="2052.36px"
      inkscape:window-width="1440"
@@ -357,7 +357,8 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,391.72782)"
-     style="display:inline">
+     style="display:inline"
+     sodipodi:insensitive="true">
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
