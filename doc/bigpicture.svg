@@ -140,11 +140,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.53648423"
-     inkscape:cx="1268.3846"
-     inkscape:cy="722.66349"
+     inkscape:zoom="0.44168879"
+     inkscape:cx="1027.6896"
+     inkscape:cy="732.54716"
      inkscape:document-units="px"
-     inkscape:current-layer="g4506"
+     inkscape:current-layer="layer1"
      showgrid="false"
      width="2052.36px"
      inkscape:window-width="1440"
@@ -357,8 +357,7 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,391.72782)"
-     style="display:inline"
-     sodipodi:insensitive="true">
+     style="display:inline">
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
@@ -472,7 +471,7 @@
            y="501.23734"
            style="fill:#ffffff" /></flowRegion><flowPara
          id="flowPara3971"
-         style="font-size:20px;fill:#ffffff">sipptas</flowPara></flowRoot>    <rect
+         style="font-size:20px;fill:#ffffff;-inkscape-font-specification:kefa;font-family:kefa">sipptas</flowPara></flowRoot>    <rect
        style="fill:#ff2a2a;fill-opacity:1;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3146"
        width="114.28571"
@@ -493,7 +492,7 @@
            y="501.23734"
            style="fill:#ffffff" /></flowRegion><flowPara
          id="flowPara3154"
-         style="font-size:20px;fill:#ffffff">sipptas</flowPara></flowRoot>    <rect
+         style="font-size:20px;fill:#ffffff;-inkscape-font-specification:kefa;font-family:kefa">sipptas</flowPara></flowRoot>    <rect
        ry="31.428572"
        y="492.74747"
        x="1546.7899"
@@ -513,7 +512,7 @@
            width="242.85715"
            id="rect3162"
            style="fill:#ffffff" /></flowRegion><flowPara
-         style="font-size:20px;fill:#ffffff"
+         style="font-size:20px;fill:#ffffff;-inkscape-font-specification:kefa;font-family:kefa"
          id="flowPara3164">sipptas</flowPara></flowRoot>    <flowRoot
        transform="translate(1645.437,-257.90774)"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -525,13 +524,13 @@
            height="157.14285"
            width="242.85715"
            id="rect3982" /></flowRegion><flowPara
-         style="font-size:28px;text-align:center;line-height:108.00000429%;text-anchor:middle"
+         style="font-size:28px;text-align:center;line-height:108.00000429000000679%;text-anchor:middle;-inkscape-font-specification:kefa;font-family:kefa"
          id="flowPara3984">device</flowPara><flowPara
-         style="font-size:28px;text-align:center;line-height:108.00000429%;text-anchor:middle"
+         style="font-size:28px;text-align:center;line-height:108.00000429000000679%;text-anchor:middle;-inkscape-font-specification:kefa;font-family:kefa"
          id="flowPara3988">under</flowPara><flowPara
-         style="font-size:28px;text-align:center;line-height:108.00000429%;text-anchor:middle"
+         style="font-size:28px;text-align:center;line-height:108.00000429000000679%;text-anchor:middle;-inkscape-font-specification:kefa;font-family:kefa"
          id="flowPara3990">test</flowPara><flowPara
-         style="font-size:20px"
+         style="font-size:20px;-inkscape-font-specification:kefa;font-family:kefa"
          id="flowPara3986" /></flowRoot>    <flowRoot
        transform="matrix(1.3891113,0,0,1.3891113,1133.2034,-430.32554)"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Sans"
@@ -544,7 +543,7 @@
            width="242.85715"
            id="rect7189"
            style="fill:#ffffff" /></flowRegion><flowPara
-         style="font-size:20px;fill:#ffffff"
+         style="font-size:20px;fill:#ffffff;-inkscape-font-specification:kefa;font-family:kefa"
          id="flowPara7191">sipptam</flowPara></flowRoot>    <rect
        ry="20.637369"
        y="31.705708"
@@ -606,7 +605,7 @@
            width="242.85715"
            id="rect4101"
            style="fill:#2b0000" /></flowRegion><flowPara
-         style="font-size:22.05292511px;fill:#2b0000"
+         style="font-size:22.05292511000000033px;fill:#2b0000;-inkscape-font-specification:Kefa;font-family:Kefa;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
          id="flowPara4103">sipptam()</flowPara></flowRoot>    <rect
        rx="0"
        style="fill:#0000ff;fill-opacity:1;stroke:#000000;stroke-width:2.39468527;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
@@ -629,7 +628,7 @@
            x="85.714287"
            y="501.23734" /></flowRegion><flowPara
          id="flowPara4147"
-         style="font-size:22.05292511px;fill:#000080">getPort()</flowPara></flowRoot>    <rect
+         style="font-size:22.05292511000000033px;fill:#000080;-inkscape-font-specification:Kefa;font-family:Kefa;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal">getPort()</flowPara></flowRoot>    <rect
        rx="0"
        style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:2.39468527;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect4149"
@@ -651,7 +650,7 @@
            x="85.714287"
            y="501.23734" /></flowRegion><flowPara
          id="flowPara4157"
-         style="font-size:22.05292511px;fill:#800000">return(port)</flowPara></flowRoot>    <rect
+         style="font-size:22.05292511000000033px;fill:#800000;-inkscape-font-specification:kefa;font-family:kefa">return(port)</flowPara></flowRoot>    <rect
        ry="20.637369"
        y="226.354"
        x="518.09961"
@@ -672,7 +671,7 @@
            width="242.85715"
            id="rect4165"
            style="fill:#000080" /></flowRegion><flowPara
-         style="font-size:22.05292511px;fill:#000080"
+         style="font-size:22.05292511000000033px;fill:#000080;-inkscape-font-specification:kefa;font-family:kefa"
          id="flowPara4167">runSIPp()</flowPara></flowRoot>    <rect
        rx="0"
        style="fill:#ffff00;fill-opacity:1;stroke:#000000;stroke-width:2.39468527;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
@@ -695,7 +694,7 @@
            x="85.714287"
            y="501.23734" /></flowRegion><flowPara
          id="flowPara4177"
-         style="font-size:22.05292511px;fill:#ffff00">SIP traffic</flowPara></flowRoot>    <rect
+         style="font-size:22.05292511000000033px;fill:#ffff00;-inkscape-font-specification:kefa;font-family:kefa">SIP traffic</flowPara></flowRoot>    <rect
        ry="20.637369"
        y="353.99219"
        x="518.09961"
@@ -716,7 +715,7 @@
            width="242.85715"
            id="rect4185"
            style="fill:#000080" /></flowRegion><flowPara
-         style="font-size:22.05292511px;fill:#000080"
+         style="font-size:22.05292511000000033px;fill:#000080;-inkscape-font-specification:kefa;font-family:kefa"
          id="flowPara4187">checkStats()</flowPara></flowRoot>    <flowRoot
        transform="matrix(2.1717619,1.9946069e-8,-1.9946069e-8,2.1717619,396.17456,-672.48442)"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#800000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -729,7 +728,7 @@
            width="242.85715"
            id="rect4195"
            style="fill:#800000" /></flowRegion><flowPara
-         style="font-size:22.05292511px;fill:#800000"
+         style="font-size:22.05292511000000033px;fill:#800000;-inkscape-font-specification:kefa;font-family:kefa"
          id="flowPara4197">return(stats)</flowPara></flowRoot>    <rect
        rx="0"
        style="fill:#2b0000;fill-opacity:1;stroke:#000000;stroke-width:2.39468527;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
@@ -752,7 +751,7 @@
            x="85.714287"
            y="501.23734" /></flowRegion><flowPara
          id="flowPara4217"
-         style="font-size:22.05292511px;fill:#2b0000">return(result)</flowPara></flowRoot>    <text
+         style="font-size:22.05292511000000033px;fill:#2b0000;-inkscape-font-specification:kefa;font-family:kefa">return(result)</flowPara></flowRoot>    <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Sans"
        x="532.54321"
@@ -861,7 +860,7 @@
            width="242.85715"
            id="rect4776"
            style="fill:#000000" /></flowRegion><flowPara
-         style="font-size:22.05292511px;fill:#000000"
+         style="font-size:22.05292511000000033px;fill:#000000;-inkscape-font-specification:kefa;font-family:kefa"
          id="flowPara4778">SIP traffic</flowPara></flowRoot>    <path
        sodipodi:nodetypes="cccc"
        inkscape:connector-curvature="0"
