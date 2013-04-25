@@ -60,7 +60,7 @@ Based on our previous example,
 * `/tmp/test-0002_a.xml`, will be `0`
 * `/tmp/test-0002_b.xml`, will be `1`
 * `/tmp/test-0002_c.xml`, will be `2`
-So if you want to refer to the `ip` and `port` of the tas running the `/tmp/test-0002_a.xml` scenario, we have to refer to it in the other scenarios as `!sipptas(host(0))!` and `!sipptas(port(0))!`.
+So if you want to refer to the *ip* and *port* of the tas running the `/tmp/test-0002_a.xml` scenario, we have to refer to it in the other scenarios as *!sipptas(host(0))!* and *!sipptas(port(0))!*.
 
 
 ##### Why would this be useful?
