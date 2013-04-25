@@ -59,21 +59,14 @@ Based on our previous example,
 * `/tmp/test-0002_c.xml`, will be `1`
 
 ##### Why would this be useful?
-Imagine we have a transfer scenarios using the REFER model, we might have to know where we are referring the call to. As you can see in the scenarios examples this can be done:
+Imagine we have a transfer scenarios using the REFER model, we might have to know where we are referring the call to. In this case we will refer the call to the scenario which is going to be executed in position 2 in the testrun.
     <![CDATA[
     REFER sip:[field0]@[remote_ip]:[remote_port] SIP/2.0
-    Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
-    From: 911 <sip:911@[local_ip]:[local_port]>;tag=[call_number]-INV-UAS
-    To: 2604462807 <sip:2604462807@[remote_ip]:[remote_port]>;[$10]
-    [last_Call-ID:]
-    CSeq: [cseq] REFER
-    Max-Forwards: 70
-    Refer-To: sip:refered_user@_*!sipptas(host(2))!*_:!_*sipptas(port(2))!*_
-    Content-Length: 0
-    [routes]
+    (...)
+    Refer-To: sip:refered_user@!sipptas(host(2))!:!sipptas(port(2))!
+    (...)
     ]]>
 
-All the ports for the configuration are dinamically provided by the sipptas. SIPp instances in the sipptas will 
 
 ## Execution modes
 Different ways to define how the execution is going to be done:
