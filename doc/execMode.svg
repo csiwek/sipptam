@@ -133,10 +133,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.27179736"
-     inkscape:cx="1113.9367"
+     inkscape:cx="668.7521"
      inkscape:cy="779.42443"
      inkscape:document-units="px"
-     inkscape:current-layer="g4476"
+     inkscape:current-layer="layer2"
      showgrid="false"
      width="2052.36px"
      inkscape:window-width="1440"
@@ -160,7 +160,7 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Layer#1"
-     style="opacity:0.14166667"
+     style="opacity:0.092;display:inline"
      sodipodi:insensitive="true">
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -327,7 +327,8 @@
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="Layer"
-     style="opacity:0.04672899;display:inline">
+     style="opacity:0.04672899;display:inline"
+     sodipodi:insensitive="true">
     <rect
        style="fill:#ececec;fill-opacity:1;stroke:#000000;stroke-width:16.39999962;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:85.27999802"
        id="rect4770"
@@ -352,7 +353,8 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,391.72782)"
-     style="display:inline">
+     style="display:inline"
+     sodipodi:insensitive="true">
     <path
        style="fill:none;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:1;stroke-opacity:1;stroke-dasharray:none;marker-start:url(#Arrow2Mstart);marker-end:none"
        d="m 1948.5877,258.63629 c -139.4311,0 -1764.48704,4.47078 -1905.170075,4.47078"
@@ -732,7 +734,8 @@
      transform="translate(0,391.72782)"
      id="g4476"
      inkscape:groupmode="layer"
-     inkscape:label="Layer 1 copy">
+     inkscape:label="Layer 1 copy"
+     sodipodi:insensitive="true">
     <flowRoot
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
        id="flowRoot4480"
@@ -1185,7 +1188,7 @@
              x="1308.573"
              y="624.39398" /></flowRegion><flowPara
            id="flowPara4750"
-           style="font-size:55px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ffffff;font-family:Kefa;-inkscape-font-specification:Kefa">testrun#3. tries=1, r=5, m=5</flowPara><flowPara
+           style="font-size:55px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ffffff;font-family:Kefa;-inkscape-font-specification:Kefa">testrun#3. tries=1, r=5, m=50</flowPara><flowPara
            id="flowPara4752"
            style="font-size:55px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ffffff;font-family:Kefa;-inkscape-font-specification:Kefa" /></flowRoot>    </g>
     <g
@@ -1243,7 +1246,7 @@
              id="rect4802"
              style="fill:#ffffff" /></flowRegion><flowPara
            style="font-size:55px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ffffff;font-family:Kefa;-inkscape-font-specification:Kefa"
-           id="flowPara4804">testrun#3. tries=1, r=5, m=5</flowPara><flowPara
+           id="flowPara4804">testrun#3. tries=1, r=5, m=50</flowPara><flowPara
            style="font-size:55px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ffffff;font-family:Kefa;-inkscape-font-specification:Kefa"
            id="flowPara4806" /></flowRoot>    </g>
   </g>
