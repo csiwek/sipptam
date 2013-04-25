@@ -45,8 +45,35 @@ A testrun defined with this `scenarioPath="/tmp/test-0002_*.xml"` would select t
 Again, the order which scenarios are selected defines the scenarios order execution. In this example, `/tmp/test-0002_a.xml` will run first, `/tmp/test-0002_b.xml` will run second and `/tmp/test-0002_c.xml` will run third. The last scenario selected (`/tmp/test-0002_c.xml` in this example) will be the one that will send the first INVITE in the scenario, this way the user makes sure the first two scenarios are already waiting for this INVITE and the testrun is well syncronized.
 
 
-## How SIPp instances are binded in the `sipptas`?
-All the ports for the configuration are dinamically provided by the sipptas. SIPp instances in the `sipptas` will 
+## How SIPp instances are binded in the sipptas?
+SIPp instances need to bind to a specific port. This port is dynamicaly provided by the sipptas.
+
+#### Tweaking the scenario to get the proper {host, port} from the _tas_:
+Scenarios are being executed in a random port and host from the given available _tas_ resources.  Since most of the scenarios are talking SIP each other we might need to know which is the IP or port of the other scenario in the same testrun. Sipptam provides a way to define this in the scenarios:
+* !sipptas(host(_X_))!
+* !sipptas(port(_X_))!
+Where _X_ is an integer which refers to the scenario that is going to be executed in that position.
+Based on our previous example,
+* `/tmp/test-0002_a.xml`, will be `0`
+* `/tmp/test-0002_b.xml`, will be `1`
+* `/tmp/test-0002_c.xml`, will be `1`
+
+##### Why would this be useful?
+Imagine we have a transfer scenarios using the REFER model, we might have to know where we are referring the call to. As you can see in the scenarios examples this can be done:
+	<![CDATA[
+	REFER sip:[field0]@[remote_ip]:[remote_port] SIP/2.0
+	Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+	From: 911 <sip:911@[local_ip]:[local_port]>;tag=[call_number]-INV-UAS
+	To: 2604462807 <sip:2604462807@[remote_ip]:[remote_port]>;[$10]
+	[last_Call-ID:]
+	CSeq: [cseq] REFER
+	Max-Forwards: 70
+	Refer-To: sip:refered_user@!sipptas(host(2))!:!sipptas(port(2))!
+	Content-Length: 0
+	[routes]
+	]]>
+
+All the ports for the configuration are dinamically provided by the sipptas. SIPp instances in the sipptas will 
 
 ## Execution modes
 Different ways to define how the execution is going to be done:
