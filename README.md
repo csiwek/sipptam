@@ -10,7 +10,7 @@ SIPp Test Automation Manager
 ## SIPp
 [SIPp](http://sipp.sourceforge.net/) is a great tool created by HP which allows to generate SIP traffic. A SIPp execution requires an scenario to run, the scenario defines the messages that are going to be sent and received as well as another logic. Multiple parameters can be defined. Also, it has a flexible way to define its highly customizable scenarios.
 ## Testing your SIP code using SIPp. The need of sipptam
-SIPp makes easy to simulate different SIP traffic flows. SIPp is sometimes used as a powerful SIP bulk load tester. The traditional SIPp execution forces the user to run the desired SIPp command manually. The fact of manually run a high number of SIPp commands has obvious disadvantages such as human errors or waste of time. SIPp lacks of ways to automate it. This is where sipptam starts to make sense. If you just have a couple of SIPp scenarios to run against your device under test (SIP UA, SIP proxy, SIP b2bua) manual execution could be allowed, when you have N number of SIPp scenarios and N gets high, you have to look for SIPp automation, sipptam is what you are looking for. **`sipptam` automates the use of SIPp**.
+SIPp makes easy to simulate different SIP traffic flows. SIPp is sometimes used as a powerful SIP bulk load tester. The traditional SIPp execution forces the user to run the desired SIPp command manually. The fact of manually run a high number of SIPp commands has obvious disadvantages such as human errors or waste of time. SIPp lacks of ways to automate it. This is where sipptam starts to make sense. If you just have a couple of SIPp scenarios to run against your device under test (SIP UA, SIP proxy, SIP b2bua) manual execution could be allowed, when you have N number of SIPp scenarios and N gets high, you have to look for SIPp automation, sipptam is what you are looking for. **sipptam automates the use of SIPp**.
 
 ***
 
@@ -45,15 +45,22 @@ A testrun defined with this `scenarioPath="/tmp/test-0002_*.xml"` would select t
 Again, the order which scenarios are selected defines the scenarios order execution. In this example, `/tmp/test-0002_a.xml` will run first, `/tmp/test-0002_b.xml` will run second and `/tmp/test-0002_c.xml` will run third. The last scenario selected (`/tmp/test-0002_c.xml` in this example) will be the one that will send the first INVITE in the scenario, this way the user makes sure the first two scenarios are already waiting for this INVITE and the testrun is well syncronized.
 
 
-## Execution mode
-parallel, serial
-r, m, tries
-
-TODO image
-TODO plot
-
 ## How SIPp instances are binded in the `sipptas`?
 All the ports for the configuration are dinamically provided by the sipptas. SIPp instances in the `sipptas` will 
+
+## Execution modes
+Different ways to define how the execution is going to be done:
+1. `parallel` : All the testruns at the same time.
+2. `serial` : Each testrun at a time.
+
+Different ways to define how many executions of the testruns:
+1. `tries` : Number of times to execute the same testrun.
+
+Different ways to define the call rate and the maximum number of calls:
+1. `ratio` : calls per second. 
+2. `max` : maxinum number of calls.
+
+
 
 ***
 
