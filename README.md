@@ -50,8 +50,8 @@ SIPp instances need to bind to a specific port. This port is dynamicaly provided
 
 #### Tweaking the scenario to get the proper {host, port} from the _tas_:
 Scenarios are being executed in a random port and host from the given available _tas_ resources.  Since most of the scenarios are talking SIP each other we might need to know which is the IP or port of the other scenario in the same testrun. Sipptam provides a way to define this in the scenarios:
-* !sipptas(host(_X_))!
-* !sipptas(port(_X_))!
+* `!sipptas(host(_X_))!`
+* `!sipptas(port(_X_))!`
 Where _X_ is an integer which refers to the scenario that is going to be executed in that position.
 Based on our previous example,
 * `/tmp/test-0002_a.xml`, will be `0`
