@@ -80,7 +80,7 @@ Different ways to define the call rate and the maximum number of calls:
 1. `ratio` : calls per second. 
 2. `max` : maxinum number of calls.
 
-
+![ScreenShot](http://192.168.200.12/sipptam/blob/master/doc/execMode.png)
 
 ***
 
