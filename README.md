@@ -68,7 +68,7 @@ Imagine we have a transfer scenarios using the REFER model, we might have to kno
     [last_Call-ID:]
     CSeq: [cseq] REFER
     Max-Forwards: 70
-    Refer-To: sip:refered_user@!sipptas(host(2))!:!sipptas(port(2))!
+    Refer-To: sip:refered_user@_*!sipptas(host(2))!*_:!_*sipptas(port(2))!*_
     Content-Length: 0
     [routes]
     ]]>
