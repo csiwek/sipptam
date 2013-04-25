@@ -20,7 +20,7 @@ Two basic type of entities in the {sipptam, sipptas} world.
 - `sipptam`, manager which reads the scenarios and parameters, it distributes the SIPp jobs among the slaves (`sipptas`), checks the process of them and outputs the result back to the user.
 - `sipptas`, slave which performs SIPp jobs. It provides an API for executing SIPp jobs in the box where it is running.
 
-TODO image
+![ScreenShot](http://192.168.200.12/sipptam/blob/master/doc/bigpicture.png)
 
 ## Scenario execution order
 Syncing the execution of scenarios is something that definitely can make the testrun to pass or to fail. Sipptam makes sure the execution is made as the user wants. **The order which scenarios are selected defines the scenarios order execution.** Let's see an example.
@@ -46,11 +46,13 @@ Again, the order which scenarios are selected defines the scenarios order execut
 
 ## Execution mode
 parallel, serial
+r, m, tries
 
 TODO image
-
-r, m, tries
 TODO plot
+
+## How SIPp instances are binded in the `sipptas`?
+All the ports for the configuration are dinamically provided by the sipptas. SIPp instances in the `sipptas` will 
 
 ***
 
