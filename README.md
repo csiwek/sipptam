@@ -45,7 +45,7 @@ A testrun defined with this `scenarioPath="/tmp/test-0002_*.xml"` would select t
 - `/tmp/test-0002_b.xml`
 - `/tmp/test-0002_c.xml`
 
-Again, the order which scenarios are selected defines the scenarios order execution. In this example, `/tmp/test-0002_a.xml` will run first, `/tmp/test-0002_b.xml` will run second and `/tmp/test-0002_c.xml` will run third. The last scenario selected (`/tmp/test-0002_c.xml` in this example) will be the one that will send the first INVITE in the scenario, this way the user makes sure the first two scenarios are already waiting for this INVITE and the testrun is well syncronized.
+Again, the order which scenarios are selected defines the scenarios order execution. In this example, `/tmp/test-0002_a.xml` will run first, `/tmp/test-0002_b.xml` will run second and `/tmp/test-0002_c.xml` will run third. The last scenario selected (`/tmp/test-0002_c.xml` in this example) is likely to be the one which sends the first INVITE in the scenario, this way the user makes sure the first two scenarios are already waiting for this INVITE and the testrun is properly syncronized and executed.
 
 
 ## How SIPp instances are binded in the sipptas?
