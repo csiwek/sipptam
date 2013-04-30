@@ -14,7 +14,7 @@
   -->
 
 <!-- Device under test (DUT). Mandatory. -->
-<sipptam duthost="10.22.22.112"
+<sipptam duthost="10.22.22.111"
 	 dutport="5060">
 
    <!-- Slaves to use. Mandatory. -->
@@ -127,7 +127,7 @@
    <!-- * execMode            : {serial, parallel} -->
    <!-- * scenarioValidate    : Validates XML syntax of scenarios -->
    <!-- * regexValidate       : Validates all the used regexs -->
-   <advanced execMode="serial"
+   <advanced execMode="parallel"
 	     scenarioValidate="False"
 	     regexValidate="True"/>
 </sipptam>
