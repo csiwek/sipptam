@@ -14,7 +14,7 @@
   -->
 
 <!-- Device under test (DUT). Mandatory. -->
-<sipptam duthost="10.22.22.111"
+<sipptam duthost="10.22.22.2"
 	 dutport="5060">
 
    <!-- Slaves to use. Mandatory. -->

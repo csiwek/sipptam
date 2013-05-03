@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 '''
-sipptam.config.Validate.py
+sipptam.validate.Validate.py
 
 Generic object to save the configuration parameters.
 

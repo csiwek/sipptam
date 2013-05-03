@@ -198,4 +198,4 @@ def checkSemantics(obj):
             else:
                 logger.debug('Success parsing regex:\"%s\"' % r)
     else:
-        logger.debugD('No need to validate the regexValidate param.')
+        logger.debug('No need to validate the regexValidate param.')
