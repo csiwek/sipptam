@@ -3,12 +3,14 @@
 	<send retrans="500" start_rtd="true">
 <![CDATA[
 
-INVITE sip:[field0]@[remote_ip];ouri=911@!sipptas(host(1))!:!sipptas(port(1))! SIP/2.0
+INVITE sip:911@[remote_ip];token_inline;rpid=_value_;ouri=pvar(fU)987654321@!sipptas(host(1))!:!sipptas(port(1))!;t=lmartin SIP/2.0
 Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
 From: [field1] <sip:[field1]@[local_ip]>;tag=[call_number]-INV-UAC
 To: [field0] <sip:[field0]@[remote_ip]>
 Call-ID: [call_id]
 CSeq: [cseq] INVITE
+Test1: lmartin11
+Test2: lmartin22
 Contact: [field1] <sip:[field1]@[local_ip]:[local_port]>
 Max-Forwards: 70
 Content-Type: application/sdp

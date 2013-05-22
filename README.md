@@ -1,4 +1,4 @@
-![ScreenShot](http://192.168.200.12/sipptam/blob/master/doc/sipptam_logo_small.png)
+![ScreenShot](http://projects.indigitaldev.net/b2bua/sipptam/blob/master/doc/sipptam_logo_small.png)
 
 SIPp Test Automation Manager
 ============================
@@ -21,7 +21,7 @@ Three basic type of entities in the {sipptam} world.
 - `sipptas`, slave which performs SIPp jobs. It provides an API for executing SIPp jobs in the box where it is running.
 - `dut`, device under test. Device to test such as [asterisk](http://www.asterisk.org/), [opensips](http://www.opensips.org/), [kamailio](http://www.kamailio.org/).
 
-![ScreenShot](http://192.168.200.12/sipptam/blob/master/doc/bigpicture.png)
+![ScreenShot](http://projects.indigitaldev.net/b2bua/sipptam/blob/master/doc/bigpicture.png)
 
 ## Scenario execution order
 Syncing the execution of scenarios is something that definitely can make the testrun to pass or to fail. Sipptam makes sure the execution is made as the user wants. **The order which scenarios are selected defines the scenarios order execution.** Let's see an example.
@@ -89,7 +89,7 @@ Different ways to define the call rate and the maximum number of calls:
 
 Let's see an example, (notice that t1 defines the end of the execution of the testruns in a parallel mode, t2 is when using serial mode).
 
-![ScreenShot](http://192.168.200.12/sipptam/blob/master/doc/execMode.png)
+![ScreenShot](http://projects.indigitaldev.net/b2bua/sipptam/blob/master/doc/execMode.png)
 
 ***
 
@@ -97,10 +97,10 @@ Let's see an example, (notice that t1 defines the end of the execution of the te
 Configuration is made through an XML file passed at runtime.
 
 ## Example
-You can find one [here](http://192.168.200.12/sipptam/tree/master/resources/sipptam.sample.xml)
+You can find one [here](http://projects.indigitaldev.net/b2bua/sipptam/tree/master/resources/sipptam.sample.xml)
 
 ## Schema
-You can find the **schema** of the XML configuration file [here](http://192.168.200.12/sipptam/tree/master/src/sipptam/validate/Schema.py)
+You can find the **schema** of the XML configuration file [here](http://projects.indigitaldev.net/b2bua/sipptam/tree/master/src/sipptam/validate/Schema.py)
 ### \<sipptam\>
 * Mandatory. Cardinality : **1**.
 * _**sipptam.duthost**_, device under test host
