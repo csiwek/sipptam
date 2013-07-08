@@ -35,7 +35,7 @@ from thread.PDict import PDict
 
 
 __name__ = 'sipptam'
-__version__ = '0.0.9.dev000'
+__version__ = '0.0.9.dev001'
 
 
 def main ():
