@@ -1,11 +1,19 @@
 #!/usr/bin/python
 
+import re
 import glob
 import os
 import sys
 from setuptools import setup, find_packages
 
-nname = 'sipptam'
+main_path = 'src/sipptam/sipptam.py'
+
+def get_name(f):
+    return re.search(r"""__name__\s+=\s+(?P<quote>['"])(?P<name>.+?)(?P=quote)""", open(f).read()).group('name')
+def get_version(f):
+    return re.search(r"""__version__\s+=\s+(?P<quote>['"])(?P<version>.+?)(?P=quote)""", open(f).read()).group('version')
+
+nname = get_name(main_path)
 
 setup(name         = nname,
       version      = "0.0.9",

@@ -34,36 +34,42 @@ from thread.Workers import testrunWorker, statsWorker
 from thread.PDict import PDict
 
 
+__name__ = 'sipptam'
+__version__ = '0.0.9.dev000'
+
+
 def main ():
-    '''
-    Main function.
-    '''
-    # Defines a logging level and logging format based on a given string key.
-    LEVELS = {'debug': (logging.DEBUG,
-                        '%(levelname)-9s %(name)-30s %(threadName)-54s' + 
-                        ' +%(lineno)-4d' +
-                        ' %(message)s'),
-              'info': (logging.INFO,
-                       '%(levelname)-9s %(name)-30s %(message)s'),
-              'warning': (logging.WARNING,
-                          '%(levelname)-9s %(name)-30s %(message)s'),
-              'error': (logging.ERROR,
-                        '%(levelname)-9s %(name)-30s %(message)s'),
-              'critical': (logging.CRITICAL,
-                           '%(levelname)-9s %(name)-30s %(message)s')} 
-    
+    """ Main function """
     # Setting some default variables
-    _name = 'sipptam'
-    _version = '0.1'
+    _name = __name__
+    _version = __version__
+    _id = '%s-%s' % (_name, _version)
     configFilePath = '/usr/local/share/sipptam/sipptam.sample.xml'
-    loglevel, logformat = LEVELS['info']
-    logFacilityLevel = 0
     background = False
     version = False
     help = False
+    # Some pauses
     pauseTasPool = 0.1
     pauseCheckAlleReady = 1.0
     pauseCheckAlleDone = 1.0
+
+    # Defines a logging level and logging format based on a given string key.
+    LEVELS = {'debug': (logging.DEBUG,
+                        _id + '%(levelname)-9s %(name)-30s %(threadName)-54s' + 
+                        ' +%(lineno)-4d' +
+                        ' %(message)s'),
+              'info': (logging.INFO,
+                       _id + '%(levelname)-9s %(name)-30s %(message)s'),
+              'warning': (logging.WARNING,
+                          _id + '%(levelname)-9s %(name)-30s %(message)s'),
+              'error': (logging.ERROR,
+                        _id + '%(levelname)-9s %(name)-30s %(message)s'),
+              'critical': (logging.CRITICAL,
+                           _id + '%(levelname)-9s %(name)-30s %(message)s')} 
+    
+    logstr = 'info'
+    logFacilityLevel = 0
+    loglevel, logformat = LEVELS[logstr]
 
     # Lets parse input parameters.
     try:
@@ -90,7 +96,8 @@ def main ():
             logFacilityLevel = a
             continue
         elif o == '-l':
-            loglevel, logformat = LEVELS[a]
+            logStr = a
+            loglevel, logformat = LOG_ATTR[logStr]
             continue
         elif o == '-b':
             background = True
@@ -151,8 +158,7 @@ def main ():
                                           multiple='jobs'))
     # We need to clean the SIPp instances that are running.
     tasPool.shuffle()
-    # We don't want previous SIPp running.
-    # TODO.
+    # We don't want previous SIPp running. TODO.
     testrunL = fill(Testrun, configFile.obj.testrun)
     configDic = fill(Config, configFile.obj.config, dic = True)
     duthost, dutport = configFile.obj.duthost, int(configFile.obj.dutport)
