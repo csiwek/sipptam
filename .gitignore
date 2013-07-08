@@ -2,3 +2,4 @@
 src/sipptam.egg-info/
 build/
 *~
+dist/

@@ -35,7 +35,7 @@ from thread.PDict import PDict
 
 
 __name__ = 'sipptam'
-__version__ = '0.0.9.dev001'
+__version__ = '0.0.10.dev001'
 
 
 def main ():
@@ -54,7 +54,7 @@ def main ():
     pauseCheckAlleDone = 1.0
 
     # Defines a logging level and logging format based on a given string key.
-    LEVELS = {'debug': (logging.DEBUG,
+    LOG_ATTR = {'debug': (logging.DEBUG,
                         _id + '%(levelname)-9s %(name)-30s %(threadName)-54s' + 
                         ' +%(lineno)-4d' +
                         ' %(message)s'),
@@ -69,7 +69,7 @@ def main ():
     
     logstr = 'info'
     logFacilityLevel = 0
-    loglevel, logformat = LEVELS[logstr]
+    loglevel, logformat = LOG_ATTR[logstr]
 
     # Lets parse input parameters.
     try:
@@ -80,9 +80,9 @@ def main ():
                 raise Exception('Invalid syslog facility level. Expecting 0-9')
         # We must check the valid loglevel first.
         if '-l' in optsLetters:
-            if not [y for (x,y) in opts if (x == '-l')][0] in LEVELS.keys():
+            if not [y for (x,y) in opts if (x == '-l')][0] in LOG_ATTR.keys():
                 raise Exception('Invalid loglevel. Valid loglevels are:\"%s\"' %
-                                LEVELS.keys())
+                                LOG_ATTR.keys())
     except Exception, msg:
         logging.error(msg)
         showHelp(_name, _version)
