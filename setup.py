@@ -16,7 +16,7 @@ def get_version(f):
 nname = get_name(main_path)
 
 setup(name         = nname,
-      version      = "0.0.9",
+      version      = get_version(main_path),
       author       = "INdigital Telecom",
       author_email = "luis.martin.gil@indigital.net",
       url          = "http://www.indigital.net",
