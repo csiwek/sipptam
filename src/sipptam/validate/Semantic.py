@@ -57,7 +57,7 @@ def checkDuplicates(l, exception):
     Checks if we have any duplicates in the list @l,
     if not @exception is raised.
     '''
-    if any([True for _,size in collections.Counter(l).items() if size > 1]):
+    if len(l) != len(set(l)):
         raise exception
 
 def checkDefinedUsed(definedL, usedL, exception):
