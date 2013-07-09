@@ -16,7 +16,6 @@ import re
 from lxml import etree
 import glob
 import os
-import sets
 
 logger = logging.getLogger(__name__)
 
