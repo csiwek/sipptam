@@ -82,7 +82,7 @@ def scenarioWorker(sipp, id, batons, triggers, ePowerOff, pd, tas):
 
         # Asking for a free port.
         port = tas.getSIPpBindPort()
-        logger.debug('We just got a port:\"%s\"' % port)
+        logger.debug('I just got a port:\"%s\"' % port)
         sipp.setBindPort(port)
 
         # We have a port, we are ready to start.
