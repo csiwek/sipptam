@@ -55,17 +55,17 @@ def main ():
 
     # Defines a logging level and logging format based on a given string key.
     LOG_ATTR = {'debug': (logging.DEBUG,
-                        _id + ' %(levelname)-9s %(name)-30s %(threadName)-54s' + 
-                        ' +%(lineno)-4d' +
-                        ' %(message)s'),
-              'info': (logging.INFO,
-                       _id + ' %(levelname)-9s %(name)-30s %(message)s'),
-              'warning': (logging.WARNING,
+                          _id + ' %(levelname)-9s %(name)-30s %(threadName)-54s' + 
+                          ' +%(lineno)-4d' +
+                          ' %(message)s'),
+                'info': (logging.INFO,
+                         _id + ' %(levelname)-9s %(name)-30s %(message)s'),
+                'warning': (logging.WARNING,
+                            _id + ' %(levelname)-9s %(name)-30s %(message)s'),
+                'error': (logging.ERROR,
                           _id + ' %(levelname)-9s %(name)-30s %(message)s'),
-              'error': (logging.ERROR,
-                        _id + ' %(levelname)-9s %(name)-30s %(message)s'),
-              'critical': (logging.CRITICAL,
-                           _id + ' %(levelname)-9s %(name)-30s %(message)s')} 
+                'critical': (logging.CRITICAL,
+                             _id + ' %(levelname)-9s %(name)-30s %(message)s')} 
     
     logstr = 'info'
     logFacilityLevel = 0
