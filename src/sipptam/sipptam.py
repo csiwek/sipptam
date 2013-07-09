@@ -65,7 +65,7 @@ def main ():
               'error': (logging.ERROR,
                         _id + ' %(levelname)-9s %(name)-30s %(message)s'),
               'critical': (logging.CRITICAL,
-                           _id + '%(levelname)-9s %(name)-30s %(message)s')} 
+                           _id + ' %(levelname)-9s %(name)-30s %(message)s')} 
     
     logstr = 'info'
     logFacilityLevel = 0
