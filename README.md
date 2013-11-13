@@ -25,7 +25,7 @@ SIPp makes easy to simulate different SIP traffic flows. SIPp is sometimes used 
 
 ### Yin yang : sipptam (manager) and sipptas (slave).
 
-Three basic type of entities in the {sipptam} world.
+Distributed system to run SIPp instances. Three basic type of entities in the {sipptam} world.
 - `sipptam`, manager which reads the scenarios and parameters, it distributes the SIPp jobs among the slaves (`sipptas`), checks the status and outputs the result back to the user.
 - `sipptas`, slave which performs SIPp jobs. It provides an API for executing SIPp jobs in the box where it is running.
 - `dut`, device under test. Device to test such as [asterisk](http://www.asterisk.org/), [opensips](http://www.opensips.org/), [kamailio](http://www.kamailio.org/).
