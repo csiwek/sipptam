@@ -1,34 +1,34 @@
 ![](doc/sipptam_logo_small.png)
 
-SIPp Test Automation Manager. Distributed system to run SIPp instances
-======================================================================
+SIPp Test Automation Manager.
+=============================
 
-***
+## Introduction
 
-# Introduction
+Distributed system to run SIPp instances.
 
-## SIPp
+### SIPp
 
 [SIPp](http://sipp.sourceforge.net/) is a great tool created by HP which allows to generate SIP traffic. A SIPp execution requires an scenario to run, the scenario defines the messages that are going to be sent and received as well as another logic. Multiple parameters can be defined. Also, it has a flexible way to define its highly customizable scenarios.
 
-## Testing your SIP code using SIPp. The need of sipptam
+### Testing your SIP code using SIPp. The need of sipptam
 
 SIPp makes easy to simulate different SIP traffic flows. SIPp is sometimes used as a powerful SIP bulk load tester. The traditional SIPp execution forces the user to run the desired SIPp command manually. The fact of manually run a high number of SIPp commands has obvious disadvantages such as human errors or waste of time. SIPp lacks of ways to automate it. This is where sipptam starts to make sense. If you just have a couple of SIPp scenarios to run against your device under test (SIP UA, SIP proxy, SIP b2bua) manual execution could be allowed, when you have N number of SIPp scenarios and N gets high, you have to look for SIPp automation, sipptam is what you are looking for. **sipptam automates the use of SIPp**.
 
 ***
 
-# How it works
+## How it works
 
-## Yin yang : sipptam (manager) and sipptas (slave).
+### Yin yang : sipptam (manager) and sipptas (slave).
 
 Three basic type of entities in the {sipptam} world.
 - `sipptam`, manager which reads the scenarios and parameters, it distributes the SIPp jobs among the slaves (`sipptas`), checks the status and outputs the result back to the user.
 - `sipptas`, slave which performs SIPp jobs. It provides an API for executing SIPp jobs in the box where it is running.
 - `dut`, device under test. Device to test such as [asterisk](http://www.asterisk.org/), [opensips](http://www.opensips.org/), [kamailio](http://www.kamailio.org/).
 
-![ScreenShot](http://projects.indigitaldev.net/b2bua/sipptam/raw/master/doc/bigpicture.png)
+![](doc/bigpicture.png)
 
-## Scenario execution order
+### Scenario execution order
 
 Syncing the execution of scenarios is something that definitely can make the testrun to pass or to fail. Sipptam makes sure the execution is made as the user wants. **The order which scenarios are selected defines the scenarios order execution.** Let's see an example.
 
@@ -53,7 +53,7 @@ A testrun defined with this `scenarioPath="/tmp/test-0002_*.xml"` would select t
 
 Again, the order which scenarios are selected defines the scenarios order execution. In this example, `/tmp/test-0002_a.xml` will run first, `/tmp/test-0002_b.xml` will run second and `/tmp/test-0002_c.xml` will run third. The last scenario selected (`/tmp/test-0002_c.xml` in this example) is likely to be the one which sends the first INVITE in the scenario, this way the user makes sure the first two scenarios are already waiting for this INVITE and the testrun is properly syncronized and executed.
 
-## How SIPp instances are binded in the sipptas?
+### How SIPp instances are binded in the sipptas?
 
 SIPp instances need to bind to a specific port. This port is dynamicaly provided by the sipptas.
 
@@ -69,8 +69,8 @@ Based on our previous example,
 * `/tmp/test-0002_c.xml`, will be `2`
 So if you want to refer to the *ip* and *port* of the tas running the `/tmp/test-0002_a.xml` scenario, we have to refer to it in the other scenarios as *!sipptas(host(0))!* and *!sipptas(port(0))!*.
 
-
 ##### Why would this be useful?
+
 Imagine we have a transfer scenarios using the REFER model, we might have to know where we are referring the call to. In this case we will refer the call to the scenario which is going to be executed in position 2 in the testrun.
 ``` <![CDATA[
     (...)
@@ -80,11 +80,13 @@ Imagine we have a transfer scenarios using the REFER model, we might have to kno
 ```
 
 ## Execution modes
+
 Different ways to define how the execution is going to be done:
 1. `parallel` : All the testruns at the same time.
 2. `serial` : Each testrun at a time.
 
 ###### Note
+
 _Using parallel mode really makes the different from the manual use of SIPp. This mode allow us to run different scenarios at the same time against the dut. This is not supported by SIPp by any means._
 
 Different ways to define how many executions of the testruns:
@@ -96,7 +98,7 @@ Different ways to define the call rate and the maximum number of calls:
 
 Let's see an example, (notice that t1 defines the end of the execution of the testruns in a parallel mode, t2 is when using serial mode).
 
-![ScreenShot](http://projects.indigitaldev.net/b2bua/sipptam/raw/master/doc/execMode.png)
+![](doc/execMode.png)
 
 ***
 
@@ -104,10 +106,10 @@ Let's see an example, (notice that t1 defines the end of the execution of the te
 Configuration is made through an XML file passed at runtime.
 
 ## Example
-You can find one [here](http://projects.indigitaldev.net/b2bua/sipptam/tree/master/resources/sipptam.sample.xml)
+You can find one [here](resources/sipptam.sample.xml)
 
 ## Schema
-You can find the **schema** of the XML configuration file [here](http://projects.indigitaldev.net/b2bua/sipptam/tree/master/src/sipptam/validate/Schema.py)
+You can find the **schema** of the XML configuration file [here](src/sipptam/validate/Schema.py)
 ### \<sipptam\>
 * Mandatory. Cardinality : **1**.
 * _**sipptam.duthost**_, device under test host
