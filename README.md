@@ -111,11 +111,13 @@ You can find one [here](resources/sipptam.sample.xml)
 You can find the **schema** of the XML configuration file [here](src/sipptam/validate/Schema.py)
 
 ### \<sipptam\>
+
 * Mandatory. Cardinality : **1**.
 * _**sipptam.duthost**_, device under test host
 * _**sipptam.port**_, device under test port
 
-```<sipptam duthost="10.22.22.112" dutport="5060">
+```
+<sipptam duthost="10.22.22.112" dutport="5060">
 ```
 
 ### \<tas\>
@@ -125,7 +127,8 @@ You can find the **schema** of the XML configuration file [here](src/sipptam/val
 * _**tas.port**_, port to communicate with the tas.
 * _**tas.jobs**_, max jobs to assign to this tas.
 
-```<tas host="10.22.22.200" port="8008" jobs="25"/>
+```
+<tas host="10.22.22.200" port="8008" jobs="25"/>
 ```
 
 ### \<testrun\>
