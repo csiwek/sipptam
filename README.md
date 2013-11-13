@@ -18,8 +18,6 @@ Author: Luis Martin Gil
 
 SIPp makes easy to simulate different SIP traffic flows. SIPp is sometimes used as a powerful SIP bulk load tester. The traditional SIPp execution forces the user to run the desired SIPp command manually. The fact of manually run a high number of SIPp commands has obvious disadvantages such as human errors or waste of time. SIPp lacks of ways to automate it. This is where sipptam starts to make sense. If you just have a couple of SIPp scenarios to run against your device under test (SIP UA, SIP proxy, SIP b2bua) manual execution could be allowed, when you have N number of SIPp scenarios and N gets high, you have to look for SIPp automation, sipptam is what you are looking for. **sipptam automates the use of SIPp**.
 
-***
-
 ## How it works
 
 ### Yin yang : sipptam (manager) and sipptas (slave).
@@ -103,8 +101,6 @@ Let's see an example, (notice that t1 defines the end of the execution of the te
 
 ![](doc/execMode.png)
 
-***
-
 # Configuration
 Configuration is made through an XML file passed at runtime.
 
@@ -113,6 +109,7 @@ You can find one [here](resources/sipptam.sample.xml)
 
 ## Schema
 You can find the **schema** of the XML configuration file [here](src/sipptam/validate/Schema.py)
+
 ### \<sipptam\>
 * Mandatory. Cardinality : **1**.
 * _**sipptam.duthost**_, device under test host
@@ -121,7 +118,8 @@ You can find the **schema** of the XML configuration file [here](src/sipptam/val
 ```<sipptam duthost="10.22.22.112" dutport="5060">
 ```
 
-### \<tas\> 
+### \<tas\>
+ 
 * Mandatory. Cardinality : **Unbounded**.
 * _**tas.host**_, host to communicate with the tas.
 * _**tas.port**_, port to communicate with the tas.
@@ -131,19 +129,22 @@ You can find the **schema** of the XML configuration file [here](src/sipptam/val
 ```
 
 ### \<testrun\>
+
 * Mandatory. Cardinality : **Unbounded**.
 * _**testrun.id**_, identifier for the testrun.
 * _**testrun.scenarioPath**_, path where to find the scenarios of the testrun.
 * _**testrun.configLink**_, link to the configuration of the testrun. Config must be defined.
 * _**testrun.modLink**_, max jobs to assign to this testrun. Mod must be defined. Optional.
 
-```    <testrun id="test-0001"
-    	     scenarioPath="/usr/local/share/sipptam/scenarios/test-001*.xml"
-    	     configlink="simple"
-	     modlink="one"/>
+```    
+<testrun id="test-0001"
+	 scenarioPath="/usr/local/share/sipptam/scenarios/test-001*.xml"
+    	 configlink="simple"
+	 modlink="one"/>
 ```
 
 ### \<config\> 
+
 * Mandatory. Cardinality : **Unbounded**.
 * _**config.id**_, identifier for the configlink.
 * _**config.ratio**_, semicolon separated list of ratio (SIPp parameter, calls per seconds).
@@ -151,11 +152,12 @@ You can find the **schema** of the XML configuration file [here](src/sipptam/val
 * _**config.pause**_, seconds to pause between every {ratio, max} combination.
 * _**config.tries**_, number of times to execute every {ratio, max} combination.
 
-```   <config id="advanced"
-              ratio="5;10"
-	      max="20;60"
-	      pause="5.0"
-	      tries="2"/>
+```   
+<config id="advanced"
+        ratio="5;10"
+        max="20;60"
+	pause="5.0"
+	tries="2"/>
 ```
 
 
@@ -163,23 +165,27 @@ You can find the **schema** of the XML configuration file [here](src/sipptam/val
 * Optional. Cardinality : **Unbounded**.
 * _**mod.id**_, identifier for the configlink.
 
-```     <mod id="one">
-	    	 <replace regex="(.*_a.xml)" src="__notusednow1__" dst="tmp1a"/>
-		 <replace regex="(.*_a.xml)" src="__notusednow2__" dst="tmp1a"/>
-		 <injection regex="(.*)" path="/usr/local/share/sipptam/injections/injection1.sample.csv"/>
-	</mod>
+```     
+<mod id="one">
+   	 <replace regex="(.*_a.xml)" src="__notusednow1__" dst="tmp1a"/>
+	 <replace regex="(.*_a.xml)" src="__notusednow2__" dst="tmp1a"/>
+	 <injection regex="(.*)" path="/usr/local/share/sipptam/injections/injection1.sample.csv"/>
+</mod>
 ```
 
 ###### \<replace\>
+
 * Optional. Cardinality : **Unbounded**.
 * _**mod.replace.regex**_, scenarios from the testrun which match this regex will use this ``replace`` modification.
 * _**mod.replace.src**_, string to be replaced in the scenario.
 * _**mod.replace.dst**_, string to replace in the scenario.
 
-```     <replace regex="(.*_a.xml)" src="__notusednow2__" dst="tmp1a"/>
+```     
+<replace regex="(.*_a.xml)" src="__notusednow2__" dst="tmp1a"/>
 ```
 
 ###### \<injection\>
+
 Injection modification are used to inject values from external files. Files injectected will be passed with the scenarios that apply. Please check the -inf param of SIPp [here](http://sipp.sourceforge.net/doc/reference.html#Injecting+values+from+an+external+CSV+during+calls).
 * Optional. Cardinality : **Unbounded**.
 * _**mod.injection.regex**_, scenarios from the testrun which match this regex will use this ``injection`` modification.
@@ -190,14 +196,16 @@ Injection modification are used to inject values from external files. Files inje
 
 
 ### \<advanced\>
+
 * Mandatory. Cardinality : **1**.
 * _**advanced.execMode**_, execution mode. parallel will run all the testruns at the same time. serial will run one testrun after another in the way they are defined.
 * _**advanced.scenarioValidate**_, checks that all the scenarios loaded in the testruns pass basic XML validation.
 * _**advanced.regexValidate**_, checks that the regex defined by the user are correct.
 
-```   <advanced execMode="parallel"
-      		scenarioValidate="False"
-		regexValidate="True"/>
+```
+<advanced execMode="parallel"
+ 	  scenarioValidate="False"
+	  regexValidate="True"/>
 ```
 
 
