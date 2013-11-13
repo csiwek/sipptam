@@ -7,7 +7,7 @@ sipptam.thread.PDict.py
 This module implements a shared resource to store the result.
 
 @author:  Luis Martin Gil
-@contact: luis.martin.gil@indigital.net
+@contact: martingil.luis@gmail.com
 @organization: INdigital Telecom, Inc.
 @copyright: INdigital Telecom, Inc. 2012
 '''

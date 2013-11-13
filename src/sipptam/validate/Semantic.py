@@ -8,7 +8,7 @@ Adds some attributes to make things easier later.
 Removes not used configuration.
 
 @author:  Luis Martin Gil
-@contact: luis.martin.gil@indigital.net
+@contact: martingil.luis@gmail.com
 @organization: INdigital Telecom, Inc.
 @copyright: INdigital Telecom, Inc. 2012
 '''

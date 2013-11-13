@@ -5,16 +5,13 @@
      ~~~~~~~
      Configuration file example.
 
-     INdigital Telecom 2013.
-
      luismartingil
-     luis.martin.gil@indigital.net
-     http://www.luismartingil.com
+     martingil.luis@gmail.com
 
   -->
 
 <!-- Device under test (DUT). Mandatory. -->
-<sipptam duthost="10.22.22.2"
+<sipptam duthost="10.22.22.30"
 	 dutport="5060">
 
    <!-- Slaves to use. Mandatory. -->
@@ -23,22 +20,22 @@
 
    <!-- Testruns definition. Mandatory (at least one) -->
    <testrun id="test-ouri"
-	    scenarioPath="/Users/lmartin/Desktop/pyb2bua/blackbox-test/scenarios/test-ouri-0000*.xml"
+	    scenarioPath="/scenarios/test-ouri-0000*.xml"
 	    configlink="simple"
 	    modlink="one"/>
 
    <testrun id="test-to"
-	    scenarioPath="/Users/lmartin/Desktop/pyb2bua/blackbox-test/scenarios/test-t-0000*.xml"
+	    scenarioPath="/scenarios/test-t-0000*.xml"
 	    configlink="simple"
 	    modlink="one"/>
 
    <testrun id="test-from"
-	    scenarioPath="/Users/lmartin/Desktop/pyb2bua/blackbox-test/scenarios/test-f-0000*.xml"
+	    scenarioPath="/scenarios/test-f-0000*.xml"
 	    configlink="simple"
 	    modlink="one"/>
 
    <testrun id="test-fring"
-	    scenarioPath="/Users/lmartin/Desktop/pyb2bua/blackbox-test/scenarios/test-fring-0000*.xml"
+	    scenarioPath="/scenarios/test-fring-0000*.xml"
 	    configlink="simple"
 	    modlink="one"/>
    

@@ -7,7 +7,7 @@ sipptam.thread.workers.py
 This module implements different thread workers.
 
 @author:  Luis Martin Gil
-@contact: luis.martin.gil@indigital.net
+@contact: martingil.luis@gmail.com
 @organization: INdigital Telecom, Inc.
 @copyright: INdigital Telecom, Inc. 2012
 '''

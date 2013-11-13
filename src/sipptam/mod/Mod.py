@@ -7,7 +7,7 @@
     Object which represents a mod element.
 
     @author:  Luis Martin Gil
-    @contact: luis.martin.gil@indigital.net
+    @contact: martingil.luis@gmail.com
     @organization: INdigital Telecom, Inc.
     @copyright: INdigital Telecom, Inc. 2013. luismartingil.
     @license: See LICENSE_FILE.

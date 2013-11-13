@@ -1,8 +1,0 @@
-#
-# sipptam startup options
-#
-
-# Set to yes to enable sipptam, once configured properly
-# by editing /etc/sipptam/config.ini
-RUN_SIPPTAM=no
-

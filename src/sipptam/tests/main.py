@@ -7,7 +7,7 @@ sipptam.tests.Tests.py
 This runs all the tests.
 
 @author:  Luis Martin Gil
-@contact: luis.martin.gil@indigital.net
+@contact: martingil.luis@gmail.com
 @organization: INdigital Telecom, Inc.
 @copyright: INdigital Telecom, Inc. 2012
 '''

@@ -7,7 +7,7 @@ sipptam.thread.Pool.py
 This module implements the Pool class.
 
 @author:  Luis Martin Gil
-@contact: luis.martin.gil@indigital.net
+@contact: martingil.luis@gmail.com
 @organization: INdigital Telecom, Inc.
 @copyright: INdigital Telecom, Inc. 2012
 '''

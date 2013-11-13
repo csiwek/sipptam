@@ -17,9 +17,9 @@ nname = get_name(main_path)
 
 setup(name         = nname,
       version      = get_version(main_path),
-      author       = "INdigital Telecom",
-      author_email = "luis.martin.gil@indigital.net",
-      url          = "http://www.indigital.net",
+      author       = "Luis Martin Gil",
+      author_email = "martingil.luis@gmail.com",
+      url          = "http://www.luismartingil.com",
       description  = "%s - Sipp Test Automation Manager" % nname,
       classifiers  = [
         "Classifier: Development Status :: 4 - Beta",
