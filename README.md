@@ -1,4 +1,4 @@
-![ScreenShot](http://projects.indigitaldev.net/b2bua/sipptam/blob/master/doc/sipptam_logo_small.png)
+![ScreenShot](http://projects.indigitaldev.net/b2bua/sipptam/raw/master/doc/sipptam_logo_small.png)
 
 SIPp Test Automation Manager
 ============================
@@ -30,7 +30,7 @@ Three basic type of entities in the {sipptam} world.
 - `sipptas`, slave which performs SIPp jobs. It provides an API for executing SIPp jobs in the box where it is running.
 - `dut`, device under test. Device to test such as [asterisk](http://www.asterisk.org/), [opensips](http://www.opensips.org/), [kamailio](http://www.kamailio.org/).
 
-![ScreenShot](http://projects.indigitaldev.net/b2bua/sipptam/blob/master/doc/bigpicture.png)
+![ScreenShot](http://projects.indigitaldev.net/b2bua/sipptam/raw/master/doc/bigpicture.png)
 
 ## Scenario execution order
 
@@ -100,7 +100,7 @@ Different ways to define the call rate and the maximum number of calls:
 
 Let's see an example, (notice that t1 defines the end of the execution of the testruns in a parallel mode, t2 is when using serial mode).
 
-![ScreenShot](http://projects.indigitaldev.net/b2bua/sipptam/blob/master/doc/execMode.png)
+![ScreenShot](http://projects.indigitaldev.net/b2bua/sipptam/raw/master/doc/execMode.png)
 
 ***
 
