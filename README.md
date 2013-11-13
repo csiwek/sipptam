@@ -3,6 +3,8 @@
 SIPp Test Automation Manager.
 =============================
 
+Status: Beta version
+
 Year: 2013
 
 Author: Luis Martin Gil. [INdigital Telecom](http://www.indigital.net)
