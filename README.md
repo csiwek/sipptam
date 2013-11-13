@@ -6,7 +6,9 @@ SIPp Test Automation Manager.
 Distributed system to run SIPp instances. 
 
 Author: Luis Martin Gil
+
 Company: INdigital Telecom
+
 Year: 2013
 
 ## Introduction
