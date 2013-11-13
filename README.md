@@ -3,9 +3,14 @@
 SIPp Test Automation Manager.
 =============================
 
-## Introduction
+Distributed system to run SIPp instances. 
 
-Distributed system to run SIPp instances.
+INdigital Telecom.
+Author: luismartingil martingil.luis@gmail.com
+
+***
+
+## Introduction
 
 ### SIPp
 
