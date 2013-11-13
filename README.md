@@ -1,4 +1,4 @@
-![ScreenShot](http://projects.indigitaldev.net/b2bua/sipptam/raw/master/doc/sipptam_logo_small.png)
+![](doc/sipptam_logo_small.png)
 
 SIPp Test Automation Manager. Distributed system to run SIPp instances
 ======================================================================
