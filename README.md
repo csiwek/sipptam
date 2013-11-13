@@ -194,7 +194,8 @@ Injection modification are used to inject values from external files. Files inje
 * _**mod.injection.regex**_, scenarios from the testrun which match this regex will use this ``injection`` modification.
 * _**mod.injection.path**_, injection file to attach to the .
 
-```     <injection regex="(.*)" path="/usr/local/share/sipptam/injections/injection1.sample.csv"/>
+```
+<injection regex="(.*)" path="/usr/local/share/sipptam/injections/injection1.sample.csv"/>
 ```
 
 
@@ -211,17 +212,16 @@ Injection modification are used to inject values from external files. Files inje
 	  regexValidate="True"/>
 ```
 
-
-***
-
 # Installation
+
 ## Debian package
+
 TODO.
 
 ## RPM package
+
 TODO.
 
 ## Python Package Index
-TODO.
 
-***
+TODO.
