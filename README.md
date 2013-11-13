@@ -5,7 +5,7 @@ SIPp Test Automation Manager.
 
 Year: 2013
 
-Author: Luis Martin Gil. ![INdigital Telecom](http://www.indigital.net)
+Author: Luis Martin Gil. [INdigital Telecom](http://www.indigital.net)
 
 ## Introduction
 
