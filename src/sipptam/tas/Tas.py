@@ -28,7 +28,7 @@ class noReturnExcept(Exception):
 
 def call(fun, args, max=5, pause=0.1, funNa=None, alarm=True):
     '''
-    Just a DRY helper function which executes a function @max 
+    Just a DRY helper function which executes a function @max
     times with a pause of @pause in between when they fail.
     @funNa if we want to set a friendly function's name for debugging.
     '''
@@ -62,15 +62,15 @@ class Tas(object):
     def __init__(self, **kwargs):
         global instance
         instance += 1
-        self.id   = '%s_%s_%s' % (instance, 
+        self.id   = '%s_%s_%s' % (instance,
                                   kwargs['host'],
                                   kwargs['port'])
         s = 'http://%s:%s/' % (kwargs['host'], kwargs['port'])
         self.client = SoapClient(location = s,
-                                 action = s, 
-                                 namespace = s, 
+                                 action = s,
+                                 namespace = s,
                                  soap_ns='soap',
-                                 trace = False,
+                                 #trace = False,
                                  ns = False,
                                  exceptions = False)
         self.tasHost = kwargs['host']
@@ -117,10 +117,10 @@ class Tas(object):
         response = call(self.client.runSIPp, args, funNa="runSIPp")
         logger.debug('Returned from runSIPp() with response:%s' % response)
         return response.ret
-    
+
     def _getStats(self, pid):
-        response = call(self.client.getStats, 
-                        {'pid' : pid}, 
+        response = call(self.client.getStats,
+                        {'pid' : pid},
                         funNa='getStats')
         ret = {'startDate' : str(response.ret.startDate),
                'startTime' : str(response.ret.startTime),
@@ -136,7 +136,7 @@ class Tas(object):
         return ret
 
     def _powerOff(self, pid):
-        response = call(self.client.powerOff, 
+        response = call(self.client.powerOff,
                         {'pid' : pid},
                         funNa='powerOff')
         return response.ret
